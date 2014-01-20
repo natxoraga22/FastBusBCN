@@ -7,6 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		382AF97E188B675B003161C5 /* BusStopViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 382AF97D188B675B003161C5 /* BusStopViewController.m */; };
+		3839FA511888914A005D146D /* HTMLAttribute.m in Sources */ = {isa = PBXBuildFile; fileRef = 3839FA401888914A005D146D /* HTMLAttribute.m */; };
+		3839FA521888914A005D146D /* HTMLDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 3839FA421888914A005D146D /* HTMLDocument.m */; };
+		3839FA531888914A005D146D /* HTMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 3839FA451888914A005D146D /* HTMLNode.m */; };
+		3839FA541888914A005D146D /* HTMLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 3839FA471888914A005D146D /* HTMLParser.m */; };
+		3839FA551888914A005D146D /* HTMLPreprocessedInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 3839FA491888914A005D146D /* HTMLPreprocessedInputStream.m */; };
+		3839FA561888914A005D146D /* HTMLSelector.m in Sources */ = {isa = PBXBuildFile; fileRef = 3839FA4C1888914A005D146D /* HTMLSelector.m */; };
+		3839FA571888914A005D146D /* HTMLString.m in Sources */ = {isa = PBXBuildFile; fileRef = 3839FA4E1888914A005D146D /* HTMLString.m */; };
+		3839FA581888914A005D146D /* HTMLTokenizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3839FA501888914A005D146D /* HTMLTokenizer.m */; };
+		3896AD49188C5236004C082E /* NextBusTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3896AD48188C5236004C082E /* NextBusTableViewCell.m */; };
 		38A0D18A1887231000E21635 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38A0D1891887231000E21635 /* Foundation.framework */; };
 		38A0D18C1887231000E21635 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38A0D18B1887231000E21635 /* CoreGraphics.framework */; };
 		38A0D18E1887231000E21635 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38A0D18D1887231000E21635 /* UIKit.framework */; };
@@ -14,14 +24,14 @@
 		38A0D1961887231000E21635 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 38A0D1951887231000E21635 /* main.m */; };
 		38A0D19A1887231000E21635 /* FastBusBCNAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 38A0D1991887231000E21635 /* FastBusBCNAppDelegate.m */; };
 		38A0D19D1887231000E21635 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 38A0D19B1887231000E21635 /* Main.storyboard */; };
-		38A0D1A01887231000E21635 /* FastBusBCNFirstViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 38A0D19F1887231000E21635 /* FastBusBCNFirstViewController.m */; };
-		38A0D1A31887231000E21635 /* FastBusBCNSecondViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 38A0D1A21887231000E21635 /* FastBusBCNSecondViewController.m */; };
 		38A0D1A51887231000E21635 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 38A0D1A41887231000E21635 /* Images.xcassets */; };
 		38A0D1AC1887231100E21635 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38A0D1AB1887231100E21635 /* XCTest.framework */; };
 		38A0D1AD1887231100E21635 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38A0D1891887231000E21635 /* Foundation.framework */; };
 		38A0D1AE1887231100E21635 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38A0D18D1887231000E21635 /* UIKit.framework */; };
 		38A0D1B61887231100E21635 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 38A0D1B41887231100E21635 /* InfoPlist.strings */; };
 		38A0D1B81887231100E21635 /* FastBusBCNTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 38A0D1B71887231100E21635 /* FastBusBCNTests.m */; };
+		38A0D1D018873D2C00E21635 /* FavouriteBusStopsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 38A0D1CF18873D2C00E21635 /* FavouriteBusStopsTableViewController.m */; };
+		38A0D1D318874A3700E21635 /* NextBusesFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 38A0D1D218874A3700E21635 /* NextBusesFetcher.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,6 +45,29 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		382AF97C188B675B003161C5 /* BusStopViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BusStopViewController.h; sourceTree = "<group>"; };
+		382AF97D188B675B003161C5 /* BusStopViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BusStopViewController.m; sourceTree = "<group>"; };
+		3839FA3F1888914A005D146D /* HTMLAttribute.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HTMLAttribute.h; path = HTMLReader/Code/HTMLAttribute.h; sourceTree = "<group>"; };
+		3839FA401888914A005D146D /* HTMLAttribute.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HTMLAttribute.m; path = HTMLReader/Code/HTMLAttribute.m; sourceTree = "<group>"; };
+		3839FA411888914A005D146D /* HTMLDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HTMLDocument.h; path = HTMLReader/Code/HTMLDocument.h; sourceTree = "<group>"; };
+		3839FA421888914A005D146D /* HTMLDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HTMLDocument.m; path = HTMLReader/Code/HTMLDocument.m; sourceTree = "<group>"; };
+		3839FA431888914A005D146D /* HTMLMutability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HTMLMutability.h; path = HTMLReader/Code/HTMLMutability.h; sourceTree = "<group>"; };
+		3839FA441888914A005D146D /* HTMLNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HTMLNode.h; path = HTMLReader/Code/HTMLNode.h; sourceTree = "<group>"; };
+		3839FA451888914A005D146D /* HTMLNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HTMLNode.m; path = HTMLReader/Code/HTMLNode.m; sourceTree = "<group>"; };
+		3839FA461888914A005D146D /* HTMLParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HTMLParser.h; path = HTMLReader/Code/HTMLParser.h; sourceTree = "<group>"; };
+		3839FA471888914A005D146D /* HTMLParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HTMLParser.m; path = HTMLReader/Code/HTMLParser.m; sourceTree = "<group>"; };
+		3839FA481888914A005D146D /* HTMLPreprocessedInputStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HTMLPreprocessedInputStream.h; path = HTMLReader/Code/HTMLPreprocessedInputStream.h; sourceTree = "<group>"; };
+		3839FA491888914A005D146D /* HTMLPreprocessedInputStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HTMLPreprocessedInputStream.m; path = HTMLReader/Code/HTMLPreprocessedInputStream.m; sourceTree = "<group>"; };
+		3839FA4A1888914A005D146D /* HTMLReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HTMLReader.h; path = HTMLReader/Code/HTMLReader.h; sourceTree = "<group>"; };
+		3839FA4B1888914A005D146D /* HTMLSelector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HTMLSelector.h; path = HTMLReader/Code/HTMLSelector.h; sourceTree = "<group>"; };
+		3839FA4C1888914A005D146D /* HTMLSelector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HTMLSelector.m; path = HTMLReader/Code/HTMLSelector.m; sourceTree = "<group>"; };
+		3839FA4D1888914A005D146D /* HTMLString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HTMLString.h; path = HTMLReader/Code/HTMLString.h; sourceTree = "<group>"; };
+		3839FA4E1888914A005D146D /* HTMLString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HTMLString.m; path = HTMLReader/Code/HTMLString.m; sourceTree = "<group>"; };
+		3839FA4F1888914A005D146D /* HTMLTokenizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HTMLTokenizer.h; path = HTMLReader/Code/HTMLTokenizer.h; sourceTree = "<group>"; };
+		3839FA501888914A005D146D /* HTMLTokenizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HTMLTokenizer.m; path = HTMLReader/Code/HTMLTokenizer.m; sourceTree = "<group>"; };
+		3839FA591888BDD9005D146D /* NextBusesFetcherDataDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NextBusesFetcherDataDelegate.h; sourceTree = "<group>"; };
+		3896AD47188C5236004C082E /* NextBusTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NextBusTableViewCell.h; sourceTree = "<group>"; };
+		3896AD48188C5236004C082E /* NextBusTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NextBusTableViewCell.m; sourceTree = "<group>"; };
 		38A0D1861887231000E21635 /* FastBusBCN.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FastBusBCN.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		38A0D1891887231000E21635 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		38A0D18B1887231000E21635 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -46,16 +79,17 @@
 		38A0D1981887231000E21635 /* FastBusBCNAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FastBusBCNAppDelegate.h; sourceTree = "<group>"; };
 		38A0D1991887231000E21635 /* FastBusBCNAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FastBusBCNAppDelegate.m; sourceTree = "<group>"; };
 		38A0D19C1887231000E21635 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		38A0D19E1887231000E21635 /* FastBusBCNFirstViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FastBusBCNFirstViewController.h; sourceTree = "<group>"; };
-		38A0D19F1887231000E21635 /* FastBusBCNFirstViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FastBusBCNFirstViewController.m; sourceTree = "<group>"; };
-		38A0D1A11887231000E21635 /* FastBusBCNSecondViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FastBusBCNSecondViewController.h; sourceTree = "<group>"; };
-		38A0D1A21887231000E21635 /* FastBusBCNSecondViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FastBusBCNSecondViewController.m; sourceTree = "<group>"; };
 		38A0D1A41887231000E21635 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		38A0D1AA1887231100E21635 /* FastBusBCNTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FastBusBCNTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		38A0D1AB1887231100E21635 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		38A0D1B31887231100E21635 /* FastBusBCNTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "FastBusBCNTests-Info.plist"; sourceTree = "<group>"; };
 		38A0D1B51887231100E21635 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		38A0D1B71887231100E21635 /* FastBusBCNTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FastBusBCNTests.m; sourceTree = "<group>"; };
+		38A0D1CB1887382000E21635 /* libxml2.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.2.dylib; path = usr/lib/libxml2.2.dylib; sourceTree = SDKROOT; };
+		38A0D1CE18873D2C00E21635 /* FavouriteBusStopsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FavouriteBusStopsTableViewController.h; sourceTree = "<group>"; };
+		38A0D1CF18873D2C00E21635 /* FavouriteBusStopsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FavouriteBusStopsTableViewController.m; sourceTree = "<group>"; };
+		38A0D1D118874A3700E21635 /* NextBusesFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NextBusesFetcher.h; sourceTree = "<group>"; };
+		38A0D1D218874A3700E21635 /* NextBusesFetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NextBusesFetcher.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,6 +116,31 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3839FA3E18889117005D146D /* HTMLReader */ = {
+			isa = PBXGroup;
+			children = (
+				3839FA3F1888914A005D146D /* HTMLAttribute.h */,
+				3839FA401888914A005D146D /* HTMLAttribute.m */,
+				3839FA411888914A005D146D /* HTMLDocument.h */,
+				3839FA421888914A005D146D /* HTMLDocument.m */,
+				3839FA431888914A005D146D /* HTMLMutability.h */,
+				3839FA441888914A005D146D /* HTMLNode.h */,
+				3839FA451888914A005D146D /* HTMLNode.m */,
+				3839FA461888914A005D146D /* HTMLParser.h */,
+				3839FA471888914A005D146D /* HTMLParser.m */,
+				3839FA481888914A005D146D /* HTMLPreprocessedInputStream.h */,
+				3839FA491888914A005D146D /* HTMLPreprocessedInputStream.m */,
+				3839FA4A1888914A005D146D /* HTMLReader.h */,
+				3839FA4B1888914A005D146D /* HTMLSelector.h */,
+				3839FA4C1888914A005D146D /* HTMLSelector.m */,
+				3839FA4D1888914A005D146D /* HTMLString.h */,
+				3839FA4E1888914A005D146D /* HTMLString.m */,
+				3839FA4F1888914A005D146D /* HTMLTokenizer.h */,
+				3839FA501888914A005D146D /* HTMLTokenizer.m */,
+			);
+			name = HTMLReader;
+			sourceTree = "<group>";
+		};
 		38A0D17D1887231000E21635 = {
 			isa = PBXGroup;
 			children = (
@@ -104,6 +163,7 @@
 		38A0D1881887231000E21635 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				38A0D1CB1887382000E21635 /* libxml2.2.dylib */,
 				38A0D1891887231000E21635 /* Foundation.framework */,
 				38A0D18B1887231000E21635 /* CoreGraphics.framework */,
 				38A0D18D1887231000E21635 /* UIKit.framework */,
@@ -117,12 +177,11 @@
 			children = (
 				38A0D1981887231000E21635 /* FastBusBCNAppDelegate.h */,
 				38A0D1991887231000E21635 /* FastBusBCNAppDelegate.m */,
+				38A0D1D418874A6000E21635 /* Model */,
+				38A0D1CD1887394300E21635 /* ViewControllers */,
 				38A0D19B1887231000E21635 /* Main.storyboard */,
-				38A0D19E1887231000E21635 /* FastBusBCNFirstViewController.h */,
-				38A0D19F1887231000E21635 /* FastBusBCNFirstViewController.m */,
-				38A0D1A11887231000E21635 /* FastBusBCNSecondViewController.h */,
-				38A0D1A21887231000E21635 /* FastBusBCNSecondViewController.m */,
 				38A0D1A41887231000E21635 /* Images.xcassets */,
+				3839FA3E18889117005D146D /* HTMLReader */,
 				38A0D1901887231000E21635 /* Supporting Files */,
 			);
 			path = FastBusBCN;
@@ -155,6 +214,29 @@
 				38A0D1B41887231100E21635 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		38A0D1CD1887394300E21635 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				38A0D1CE18873D2C00E21635 /* FavouriteBusStopsTableViewController.h */,
+				38A0D1CF18873D2C00E21635 /* FavouriteBusStopsTableViewController.m */,
+				382AF97C188B675B003161C5 /* BusStopViewController.h */,
+				382AF97D188B675B003161C5 /* BusStopViewController.m */,
+				3896AD47188C5236004C082E /* NextBusTableViewCell.h */,
+				3896AD48188C5236004C082E /* NextBusTableViewCell.m */,
+			);
+			name = ViewControllers;
+			sourceTree = "<group>";
+		};
+		38A0D1D418874A6000E21635 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				38A0D1D118874A3700E21635 /* NextBusesFetcher.h */,
+				38A0D1D218874A3700E21635 /* NextBusesFetcher.m */,
+				3839FA591888BDD9005D146D /* NextBusesFetcherDataDelegate.h */,
+			);
+			name = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -255,10 +337,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3839FA571888914A005D146D /* HTMLString.m in Sources */,
+				3839FA531888914A005D146D /* HTMLNode.m in Sources */,
+				3839FA541888914A005D146D /* HTMLParser.m in Sources */,
+				38A0D1D018873D2C00E21635 /* FavouriteBusStopsTableViewController.m in Sources */,
+				38A0D1D318874A3700E21635 /* NextBusesFetcher.m in Sources */,
+				3839FA551888914A005D146D /* HTMLPreprocessedInputStream.m in Sources */,
+				382AF97E188B675B003161C5 /* BusStopViewController.m in Sources */,
 				38A0D1961887231000E21635 /* main.m in Sources */,
-				38A0D1A01887231000E21635 /* FastBusBCNFirstViewController.m in Sources */,
-				38A0D1A31887231000E21635 /* FastBusBCNSecondViewController.m in Sources */,
+				3839FA511888914A005D146D /* HTMLAttribute.m in Sources */,
+				3839FA561888914A005D146D /* HTMLSelector.m in Sources */,
 				38A0D19A1887231000E21635 /* FastBusBCNAppDelegate.m in Sources */,
+				3839FA581888914A005D146D /* HTMLTokenizer.m in Sources */,
+				3839FA521888914A005D146D /* HTMLDocument.m in Sources */,
+				3896AD49188C5236004C082E /* NextBusTableViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -341,6 +433,10 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+				);
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -374,6 +470,10 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+				);
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -467,6 +567,7 @@
 				38A0D1BD1887231100E21635 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		38A0D1BE1887231100E21635 /* Build configuration list for PBXNativeTarget "FastBusBCNTests" */ = {
 			isa = XCConfigurationList;
@@ -475,6 +576,7 @@
 				38A0D1C01887231100E21635 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
