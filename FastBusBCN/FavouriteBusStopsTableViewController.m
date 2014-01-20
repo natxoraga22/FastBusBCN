@@ -17,6 +17,8 @@
 
 @implementation FavouriteBusStopsTableViewController
 
+#pragma mark - ViewController Lifecycle
+
 - (id)initWithStyle:(UITableViewStyle)style
 {
     self = [super initWithStyle:style];
@@ -86,12 +88,13 @@
 
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
 {
-    NSMutableArray *favoriteBusStops = [[[NSUserDefaults standardUserDefaults] objectForKey:FAVORITE_BUS_STOPS_KEY] mutableCopy];
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSMutableArray *favoriteBusStops = [[userDefaults objectForKey:FAVORITE_BUS_STOPS_KEY] mutableCopy];
     NSDictionary *movingBusStop = [favoriteBusStops objectAtIndex:fromIndexPath.row];
     [favoriteBusStops removeObjectAtIndex:fromIndexPath.row];
     [favoriteBusStops insertObject:movingBusStop atIndex:toIndexPath.row];
-    [[NSUserDefaults standardUserDefaults] setObject:[favoriteBusStops copy] forKey:FAVORITE_BUS_STOPS_KEY];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    [userDefaults setObject:[favoriteBusStops copy] forKey:FAVORITE_BUS_STOPS_KEY];
+    [userDefaults synchronize];
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
@@ -102,10 +105,11 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        NSMutableArray *favoriteBusStops = [[[NSUserDefaults standardUserDefaults] objectForKey:FAVORITE_BUS_STOPS_KEY] mutableCopy];
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        NSMutableArray *favoriteBusStops = [[userDefaults objectForKey:FAVORITE_BUS_STOPS_KEY] mutableCopy];
         [favoriteBusStops removeObjectAtIndex:indexPath.row];
-        [[NSUserDefaults standardUserDefaults] setObject:[favoriteBusStops copy] forKey:FAVORITE_BUS_STOPS_KEY];
-        [[NSUserDefaults standardUserDefaults] synchronize];
+        [userDefaults setObject:[favoriteBusStops copy] forKey:FAVORITE_BUS_STOPS_KEY];
+        [userDefaults synchronize];
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     }
 }
@@ -119,6 +123,7 @@
         NSIndexPath *busStopIndexPath = [self.tableView indexPathForSelectedRow];
         NSArray *favoriteBusStops = [[NSUserDefaults standardUserDefaults] objectForKey:FAVORITE_BUS_STOPS_KEY];
         busStopVC.stopID = [[[favoriteBusStops objectAtIndex:busStopIndexPath.row] objectForKey:FAVORITE_BUS_STOP_ID_KEY] integerValue];
+        busStopVC.isFavorite = YES;
     }
 }
 

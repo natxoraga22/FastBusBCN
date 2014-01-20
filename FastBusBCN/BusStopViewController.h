@@ -19,5 +19,6 @@ extern NSString *const FAVORITE_BUS_STOP_NAME_KEY;
 extern NSString *const FAVORITE_BUS_STOP_CUSTOM_NAME_KEY;
 
 @property (nonatomic) NSInteger stopID;
+@property (nonatomic) BOOL isFavorite;
 
 @end

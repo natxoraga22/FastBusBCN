@@ -25,6 +25,8 @@ NSString *const FETCHED_NEXT_BUSES_KEY = @"FetchedNextBuses";
 NSString *const FETCHED_NEXT_BUS_LINE_KEY = @"FetchedNextBus_BusLine";
 NSString *const FETCHED_NEXT_BUS_TIME_KEY = @"FetchedNextBus_BusTime";
 
+#pragma mark - Fetching
+
 static NSString *const NEXT_BUSES_URL = @"http://www.ambmobilitat.cat/ambtempsbus?codi=";
 static NSString *const BUS_STOP_NAME_CSS_SELECTOR = @"li[data-role='list-divider'] div span:nth-child(3)";
 static NSString *const NEXT_BUSES_CSS_SELECTOR = @"div[id^=linia]";
@@ -54,6 +56,8 @@ static NSString *const NEXT_BUS_TIME_CSS_SELECTOR = @"div:nth-child(2) b span";
     self.nextBusesHTMLData = [NSMutableData data];
 }
 
+#pragma mark - Parsing
+
 - (void)parseObtainedHTMLData
 {
     NSString *nextBusesHTMLString = [[NSString alloc] initWithData:self.nextBusesHTMLData encoding:NSUTF8StringEncoding];
@@ -73,8 +77,24 @@ static NSString *const NEXT_BUS_TIME_CSS_SELECTOR = @"div:nth-child(2) b span";
         NSString *busLine = [nextBusNode innerHTML];
         HTMLElementNode *busTimeElement = (HTMLElementNode *)[nextBusNode.parentNode firstNodeMatchingSelector:NEXT_BUS_TIME_CSS_SELECTOR];
         NSInteger busTime = [self parseTime:[busTimeElement innerHTML]];
-        [nextBuses addObject:@{FETCHED_NEXT_BUS_LINE_KEY: busLine,
-                               FETCHED_NEXT_BUS_TIME_KEY: [NSNumber numberWithInteger:busTime]}];
+        
+        BOOL found = NO;
+        for (int i = 0; i < [nextBuses count]; i++) {
+            NSDictionary *nextBus = [nextBuses objectAtIndex:i];
+            // If we already have the line, add the time
+            if ([[nextBus objectForKey:FETCHED_NEXT_BUS_LINE_KEY] isEqualToString:busLine]) {
+                found = YES;
+                NSMutableDictionary *mutableNextBus = [nextBus mutableCopy];
+                NSArray *nextBusTime = [[mutableNextBus objectForKey:FETCHED_NEXT_BUS_TIME_KEY] arrayByAddingObject:@(busTime)];
+                [mutableNextBus setObject:nextBusTime forKey:FETCHED_NEXT_BUS_TIME_KEY];
+                [nextBuses replaceObjectAtIndex:i withObject:[mutableNextBus copy]];
+            }
+        }
+        // Otherwise, create a new line with the corresponding time
+        if (!found) {
+            [nextBuses addObject:@{FETCHED_NEXT_BUS_LINE_KEY: busLine,
+                                   FETCHED_NEXT_BUS_TIME_KEY: @[@(busTime)]}];
+        }
     }
     [busStopMutableInfo setObject:[nextBuses copy] forKey:FETCHED_NEXT_BUSES_KEY];
     
@@ -89,7 +109,7 @@ static NSString *const NEXT_BUS_TIME_CSS_SELECTOR = @"div:nth-child(2) b span";
     return [timeParsed integerValue];
 }
 
-#pragma mark - NSURLConnectionDataDelegate protocol
+#pragma mark - NSURLConnection Data Delegate
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
 {

@@ -9,6 +9,7 @@
 #import "BusStopViewController.h"
 #import "NextBusTableViewCell.h"
 #import "NextBusesFetcher.h"
+#import "UIColor+BusLinesColor.h"
 
 
 @interface BusStopViewController ()
@@ -27,6 +28,8 @@ NSString *const FAVORITE_BUS_STOP_ID_KEY = @"FavoriteBusStopID";
 NSString *const FAVORITE_BUS_STOP_NAME_KEY = @"FavoriteBusStopName";
 NSString *const FAVORITE_BUS_STOP_CUSTOM_NAME_KEY = @"FavoriteBusStopCustomName";
 
+#pragma mark - ViewController Lifecycle
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -41,25 +44,111 @@ NSString *const FAVORITE_BUS_STOP_CUSTOM_NAME_KEY = @"FavoriteBusStopCustomName"
     [super viewDidLoad];
     
     self.title = [NSString stringWithFormat:@"Parada %d", self.stopID];
-    //self.favoriteButton.ima
+    [self updateFavoriteButtonImage];
     
     self.nextBusesFetcher = [[NextBusesFetcher alloc] init];
     self.nextBusesFetcher.delegate = self;
     [self fetchNextBuses];
 }
 
+#pragma mark - Fetching
+
 - (void)fetchNextBuses
 {
     [self.nextBusesFetcher fetchStopNameAndNextBusesForStop:self.stopID];
-    //self.navigationItem.rightBarButtonItem = [[UIActivityIndicatorView alloc] init];
-}
     
+    // Disable the favorite button
+    self.favoriteButton.enabled = NO;
+    
+    // Put a UIActivityIndicatorView on the NavigationBar
+    UIActivityIndicatorView *activityIndicatorView = [[UIActivityIndicatorView alloc]
+                                                      initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    [activityIndicatorView startAnimating];
+    UIBarButtonItem *activityBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:activityIndicatorView];
+    self.navigationItem.rightBarButtonItem = activityBarButtonItem;
+}
+
+#pragma mark - Favorites management
+
+- (void)addToFavorites
+{
+    // Add favorite to NSUserDefaults
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSMutableArray *favoriteBusStops = [[userDefaults objectForKey:FAVORITE_BUS_STOPS_KEY] mutableCopy];
+    // TODO: ADD CUSTOM NAME
+    [favoriteBusStops addObject:@{FAVORITE_BUS_STOP_ID_KEY: @(self.stopID),
+                                  FAVORITE_BUS_STOP_NAME_KEY: [[self.nextBusesFetcher busStopInfo] objectForKey:FETCHED_BUS_STOP_NAME_KEY],
+                                  FAVORITE_BUS_STOP_CUSTOM_NAME_KEY: @""}];
+    [userDefaults setObject:[favoriteBusStops copy] forKey:FAVORITE_BUS_STOPS_KEY];
+    [userDefaults synchronize];
+}
+
+- (void)removeFromFavorites
+{
+    // Remove favorite from NSUserDefaults
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSMutableArray *favoriteBusStops = [[userDefaults objectForKey:FAVORITE_BUS_STOPS_KEY] mutableCopy];
+    
+    NSInteger index = -1;
+    for (int i = 0; i < [favoriteBusStops count]; i++) {
+        NSDictionary *favoriteBusStop = [favoriteBusStops objectAtIndex:i];
+        if ([[favoriteBusStop objectForKey:FAVORITE_BUS_STOP_ID_KEY] isEqualToNumber:@(self.stopID)]) {
+            index = i;
+        }
+    }
+    [favoriteBusStops removeObjectAtIndex:index];
+    [userDefaults setObject:[favoriteBusStops copy] forKey:FAVORITE_BUS_STOPS_KEY];
+    [userDefaults synchronize];
+}
+
+- (void)updateFavoriteButtonImage
+{
+    UIImage *favoriteButtonImage;
+    if (self.isFavorite) {
+        favoriteButtonImage = [[UIImage imageNamed:@"FavoriteIconFull.png"]
+                               imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    }
+    else {
+        favoriteButtonImage = [[UIImage imageNamed:@"FavoriteIconEmpty.png"]
+                               imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    }
+    [self.favoriteButton setImage:favoriteButtonImage forState:UIControlStateNormal];
+}
+
+#pragma mark - IBActions
+
+- (IBAction)refreshPressed:(UIBarButtonItem *)sender
+{
+    [self fetchNextBuses];
+}
+
+- (IBAction)favoriteButtonPressed:(UIButton *)sender
+{
+    if (self.isFavorite) {
+        self.isFavorite = NO;
+        [self removeFromFavorites];
+    }
+    else {
+        self.isFavorite = YES;
+        [self addToFavorites];
+    }
+    [self updateFavoriteButtonImage];
+}
+
 #pragma mark - NextBusesFetcher Data Delegate
 
 - (void)nextBusesFetcherDidFinishLoading:(NextBusesFetcher *)nextBusesFetcher
 {
     self.busStopNameLabel.text = [[self.nextBusesFetcher busStopInfo] objectForKey:FETCHED_BUS_STOP_NAME_KEY];
     [self.nextBusesTableView reloadData];
+    
+    // Enable the favorite button
+    self.favoriteButton.enabled = YES;
+    
+    // Replace the UIActivityIndicatorView with a refresh button
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh
+                                                                                           target:self
+                                                                                           action:@selector(refreshPressed:)];
 }
 
 #pragma mark - TableView Data Source
@@ -71,16 +160,57 @@ NSString *const FAVORITE_BUS_STOP_CUSTOM_NAME_KEY = @"FavoriteBusStopCustomName"
     return [nextBuses count];
 }
 
+static NSString *const IMMINENT_BUS_TIME = @"Inminente";
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"NextBusInfo";
     NextBusTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
     NSDictionary *nextBus = [[[self.nextBusesFetcher busStopInfo] objectForKey:FETCHED_NEXT_BUSES_KEY] objectAtIndex:indexPath.row];
+    
+    // Bus line
     cell.nextBusLineLabel.text = [nextBus objectForKey:FETCHED_NEXT_BUS_LINE_KEY];
-    cell.nextBusTimeLabel.text = [NSString stringWithFormat:@"%@", [nextBus objectForKey:FETCHED_NEXT_BUS_TIME_KEY]];
+    cell.nextBusLineLabel.backgroundColor = [self lineColorForLine:[nextBus objectForKey:FETCHED_NEXT_BUS_LINE_KEY]];
+    
+    // Bus time
+    NSString *busTimeString = @"";
+    BOOL first = YES;
+    for (NSNumber *time in [nextBus objectForKey:FETCHED_NEXT_BUS_TIME_KEY]) {
+        if (first) first = NO;
+        else busTimeString = [busTimeString stringByAppendingString:@", "];
+        NSString *timeString = @"";
+        if ([time integerValue] == 0) timeString = IMMINENT_BUS_TIME;
+        else timeString = [NSString stringWithFormat:@"%@ min", time];
+        busTimeString = [busTimeString stringByAppendingString:timeString];
+    }
+    cell.nextBusTimeLabel.text = busTimeString;
 
     return cell;
+}
+
+static NSString *const BAIXBUS_LINE_PREFIX = @"L";
+static NSString *const NITBUS_LINE_PREFIX = @"N";
+static NSString *const VERTICAL_BUS_LINE_PREFIX = @"V";
+static NSString *const HORITZONTAL_BUS_LINE_PREFIX = @"H";
+static NSString *const DIAGONAL_BUS_LINE_PREFIX = @"D";
+
+- (UIColor *)lineColorForLine:(NSString *)busLine
+{
+    UIColor *busLineColor = [UIColor defaultBusLineColor];
+    NSRange firstDigitRange = [busLine rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"1234567890"]];
+    NSString *prefix = @"";
+    if (firstDigitRange.location == NSNotFound) prefix = busLine;
+    else prefix = [busLine substringToIndex:firstDigitRange.location];
+    
+    // TODO: ADD COLORS
+    if ([prefix isEqualToString:BAIXBUS_LINE_PREFIX]) busLineColor = [UIColor baixBusLineColor];
+    else if ([prefix isEqualToString:NITBUS_LINE_PREFIX]) busLineColor = [UIColor nitBusLineColor];
+    else if ([prefix isEqualToString:VERTICAL_BUS_LINE_PREFIX]) busLineColor = [UIColor vBusLineColor];
+    else if ([prefix isEqualToString:HORITZONTAL_BUS_LINE_PREFIX]) busLineColor = [UIColor hBusLineColor];
+    else if ([prefix isEqualToString:DIAGONAL_BUS_LINE_PREFIX]) busLineColor = [UIColor dBusLineColor];
+    
+    return busLineColor;
 }
 
 @end

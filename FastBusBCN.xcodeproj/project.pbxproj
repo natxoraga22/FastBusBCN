@@ -16,6 +16,7 @@
 		3839FA561888914A005D146D /* HTMLSelector.m in Sources */ = {isa = PBXBuildFile; fileRef = 3839FA4C1888914A005D146D /* HTMLSelector.m */; };
 		3839FA571888914A005D146D /* HTMLString.m in Sources */ = {isa = PBXBuildFile; fileRef = 3839FA4E1888914A005D146D /* HTMLString.m */; };
 		3839FA581888914A005D146D /* HTMLTokenizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3839FA501888914A005D146D /* HTMLTokenizer.m */; };
+		387CFB52188DA42B00AAECC9 /* UIColor+BusLinesColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 387CFB51188DA42B00AAECC9 /* UIColor+BusLinesColor.m */; };
 		3896AD49188C5236004C082E /* NextBusTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3896AD48188C5236004C082E /* NextBusTableViewCell.m */; };
 		38A0D18A1887231000E21635 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38A0D1891887231000E21635 /* Foundation.framework */; };
 		38A0D18C1887231000E21635 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38A0D18B1887231000E21635 /* CoreGraphics.framework */; };
@@ -66,6 +67,8 @@
 		3839FA4F1888914A005D146D /* HTMLTokenizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HTMLTokenizer.h; path = HTMLReader/Code/HTMLTokenizer.h; sourceTree = "<group>"; };
 		3839FA501888914A005D146D /* HTMLTokenizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HTMLTokenizer.m; path = HTMLReader/Code/HTMLTokenizer.m; sourceTree = "<group>"; };
 		3839FA591888BDD9005D146D /* NextBusesFetcherDataDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NextBusesFetcherDataDelegate.h; sourceTree = "<group>"; };
+		387CFB50188DA42B00AAECC9 /* UIColor+BusLinesColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+BusLinesColor.h"; sourceTree = "<group>"; };
+		387CFB51188DA42B00AAECC9 /* UIColor+BusLinesColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+BusLinesColor.m"; sourceTree = "<group>"; };
 		3896AD47188C5236004C082E /* NextBusTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NextBusTableViewCell.h; sourceTree = "<group>"; };
 		3896AD48188C5236004C082E /* NextBusTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NextBusTableViewCell.m; sourceTree = "<group>"; };
 		38A0D1861887231000E21635 /* FastBusBCN.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FastBusBCN.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -139,6 +142,17 @@
 				3839FA501888914A005D146D /* HTMLTokenizer.m */,
 			);
 			name = HTMLReader;
+			sourceTree = "<group>";
+		};
+		387CFB4F188DA3F400AAECC9 /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				3896AD47188C5236004C082E /* NextBusTableViewCell.h */,
+				3896AD48188C5236004C082E /* NextBusTableViewCell.m */,
+				387CFB50188DA42B00AAECC9 /* UIColor+BusLinesColor.h */,
+				387CFB51188DA42B00AAECC9 /* UIColor+BusLinesColor.m */,
+			);
+			name = Utility;
 			sourceTree = "<group>";
 		};
 		38A0D17D1887231000E21635 = {
@@ -223,8 +237,7 @@
 				38A0D1CF18873D2C00E21635 /* FavouriteBusStopsTableViewController.m */,
 				382AF97C188B675B003161C5 /* BusStopViewController.h */,
 				382AF97D188B675B003161C5 /* BusStopViewController.m */,
-				3896AD47188C5236004C082E /* NextBusTableViewCell.h */,
-				3896AD48188C5236004C082E /* NextBusTableViewCell.m */,
+				387CFB4F188DA3F400AAECC9 /* Utility */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -351,6 +364,7 @@
 				3839FA581888914A005D146D /* HTMLTokenizer.m in Sources */,
 				3839FA521888914A005D146D /* HTMLDocument.m in Sources */,
 				3896AD49188C5236004C082E /* NextBusTableViewCell.m in Sources */,
+				387CFB52188DA42B00AAECC9 /* UIColor+BusLinesColor.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
