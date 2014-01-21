@@ -16,6 +16,7 @@
 @property (weak, nonatomic) IBOutlet UITableView *nextBusesTableView;
 @property (weak, nonatomic) IBOutlet UILabel *busStopNameLabel;
 @property (weak, nonatomic) IBOutlet UIButton *favoriteButton;
+@property (weak, nonatomic) IBOutlet UISearchBar *busStopSearchBar;
 @property (strong, nonatomic) NextBusesFetcher *nextBusesFetcher;
 @end
 
@@ -39,19 +40,74 @@ NSString *const FAVORITE_BUS_STOP_CUSTOM_NAME_KEY = @"FavoriteBusStopCustomName"
     return self;
 }
 
+static NSInteger const DEFAULT_TOOLBAR_HEIGHT = 44;
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    self.title = [NSString stringWithFormat:@"Parada %d", self.stopID];
+    // Favorite button
     [self updateFavoriteButtonImage];
     
+    // Search bar
+    self.busStopSearchBar.delegate = self;
+    CGRect keyboardToolbarRect = CGRectMake(0, 0, self.view.bounds.size.width, DEFAULT_TOOLBAR_HEIGHT);
+    UIToolbar *keyboardToolbar = [[UIToolbar alloc] initWithFrame:keyboardToolbarRect];
+    UIBarButtonItem *spaceBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+                                                                                                target:nil
+                                                                                                action:nil];
+    UIBarButtonItem *searchBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Buscar"
+                                                                            style:UIBarButtonItemStyleDone
+                                                                           target:self
+                                                                           action:@selector(searchButtonPressed:)];
+    [keyboardToolbar setItems:@[spaceBarButtonItem, searchBarButtonItem]];
+    self.busStopSearchBar.inputAccessoryView = keyboardToolbar;
+    
+    // Next buses fetching
     self.nextBusesFetcher = [[NextBusesFetcher alloc] init];
     self.nextBusesFetcher.delegate = self;
     [self fetchNextBuses];
 }
 
+#pragma mark - Setters
+
+- (void)setStopID:(NSInteger)stopID
+{
+    if (_stopID != stopID) {
+        _stopID = stopID;
+        self.title = [NSString stringWithFormat:@"Parada %d", self.stopID];
+        [self updateIsFavorite];
+    }
+}
+
+- (void)setIsFavorite:(BOOL)isFavorite
+{
+    if (_isFavorite != isFavorite) {
+        _isFavorite = isFavorite;
+        [self updateFavoriteButtonImage];
+    }
+}
+
+- (void)updateIsFavorite
+{
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSArray *favoriteBusStops = [userDefaults objectForKey:FAVORITE_BUS_STOPS_KEY];
+    BOOL found = NO;
+    for (NSDictionary *favoriteBusStop in favoriteBusStops) {
+        if ([[favoriteBusStop objectForKey:FAVORITE_BUS_STOP_ID_KEY] isEqualToNumber:@(self.stopID)]) {
+            found = YES;
+            self.isFavorite = YES;
+        }
+    }
+    if (!found) self.isFavorite = NO;
+}
+
 #pragma mark - Fetching
+
+- (IBAction)refreshPressed:(UIBarButtonItem *)sender
+{
+    [self fetchNextBuses];
+}
 
 - (void)fetchNextBuses
 {
@@ -69,6 +125,18 @@ NSString *const FAVORITE_BUS_STOP_CUSTOM_NAME_KEY = @"FavoriteBusStopCustomName"
 }
 
 #pragma mark - Favorites management
+
+- (IBAction)favoriteButtonPressed:(UIButton *)sender
+{
+    if (self.isFavorite) {
+        self.isFavorite = NO;
+        [self removeFromFavorites];
+    }
+    else {
+        self.isFavorite = YES;
+        [self addToFavorites];
+    }
+}
 
 - (void)addToFavorites
 {
@@ -115,24 +183,17 @@ NSString *const FAVORITE_BUS_STOP_CUSTOM_NAME_KEY = @"FavoriteBusStopCustomName"
     [self.favoriteButton setImage:favoriteButtonImage forState:UIControlStateNormal];
 }
 
-#pragma mark - IBActions
+#pragma mark - Search management
 
-- (IBAction)refreshPressed:(UIBarButtonItem *)sender
+- (IBAction)searchButtonPressed:(UIBarButtonItem *)sender
 {
+    self.stopID = [self.busStopSearchBar.text integerValue];
+
+    // "Cancel" the search
+    self.busStopSearchBar.text = @"";
+    [self.view endEditing:YES];
+    
     [self fetchNextBuses];
-}
-
-- (IBAction)favoriteButtonPressed:(UIButton *)sender
-{
-    if (self.isFavorite) {
-        self.isFavorite = NO;
-        [self removeFromFavorites];
-    }
-    else {
-        self.isFavorite = YES;
-        [self addToFavorites];
-    }
-    [self updateFavoriteButtonImage];
 }
 
 #pragma mark - NextBusesFetcher Data Delegate
@@ -211,6 +272,14 @@ static NSString *const DIAGONAL_BUS_LINE_PREFIX = @"D";
     else if ([prefix isEqualToString:DIAGONAL_BUS_LINE_PREFIX]) busLineColor = [UIColor dBusLineColor];
     
     return busLineColor;
+}
+
+#pragma mark - UISearchBar Delegate
+
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
+{
+    self.busStopSearchBar.text = @"";
+    [self.view endEditing:YES];
 }
 
 @end

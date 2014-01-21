@@ -123,7 +123,6 @@
         NSIndexPath *busStopIndexPath = [self.tableView indexPathForSelectedRow];
         NSArray *favoriteBusStops = [[NSUserDefaults standardUserDefaults] objectForKey:FAVORITE_BUS_STOPS_KEY];
         busStopVC.stopID = [[[favoriteBusStops objectAtIndex:busStopIndexPath.row] objectForKey:FAVORITE_BUS_STOP_ID_KEY] integerValue];
-        busStopVC.isFavorite = YES;
     }
 }
 
