@@ -10,6 +10,7 @@
 #import "NextBusTableViewCell.h"
 #import "NextBusesFetcher.h"
 #import "UIColor+BusLinesColor.h"
+#import "UIColor+iOS7Colors.h"
 
 
 @interface BusStopViewController ()
@@ -18,6 +19,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *favoriteButton;
 @property (weak, nonatomic) IBOutlet UISearchBar *busStopSearchBar;
 @property (strong, nonatomic) NextBusesFetcher *nextBusesFetcher;
+@property (nonatomic) BOOL isFavorite;
+@property (nonatomic) BOOL tableViewIsEmpty;
 @end
 
 
@@ -30,15 +33,6 @@ NSString *const FAVORITE_BUS_STOP_NAME_KEY = @"FavoriteBusStopName";
 NSString *const FAVORITE_BUS_STOP_CUSTOM_NAME_KEY = @"FavoriteBusStopCustomName";
 
 #pragma mark - ViewController Lifecycle
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
 
 static NSInteger const DEFAULT_TOOLBAR_HEIGHT = 44;
 
@@ -66,7 +60,8 @@ static NSInteger const DEFAULT_TOOLBAR_HEIGHT = 44;
     // Next buses fetching
     self.nextBusesFetcher = [[NextBusesFetcher alloc] init];
     self.nextBusesFetcher.delegate = self;
-    [self fetchNextBuses];
+    if (self.stopID == -1) [self.busStopSearchBar becomeFirstResponder];
+    else [self fetchNextBuses];
 }
 
 #pragma mark - Setters
@@ -171,16 +166,8 @@ static NSInteger const DEFAULT_TOOLBAR_HEIGHT = 44;
 
 - (void)updateFavoriteButtonImage
 {
-    UIImage *favoriteButtonImage;
-    if (self.isFavorite) {
-        favoriteButtonImage = [[UIImage imageNamed:@"FavoriteIconFull.png"]
-                               imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    }
-    else {
-        favoriteButtonImage = [[UIImage imageNamed:@"FavoriteIconEmpty.png"]
-                               imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    }
-    [self.favoriteButton setImage:favoriteButtonImage forState:UIControlStateNormal];
+    if (self.isFavorite) [self.favoriteButton setTitle:@"★" forState:UIControlStateNormal];
+    else [self.favoriteButton setTitle:@"☆" forState:UIControlStateNormal];
 }
 
 #pragma mark - Search management
@@ -198,13 +185,24 @@ static NSInteger const DEFAULT_TOOLBAR_HEIGHT = 44;
 
 #pragma mark - NextBusesFetcher Data Delegate
 
+static NSString *const WRONG_STOP_ERROR_MESSAGE = @"Parada equivocada";
+
 - (void)nextBusesFetcherDidFinishLoading:(NextBusesFetcher *)nextBusesFetcher
 {
-    self.busStopNameLabel.text = [[self.nextBusesFetcher busStopInfo] objectForKey:FETCHED_BUS_STOP_NAME_KEY];
+    NSString *busStopName = [[self.nextBusesFetcher busStopInfo] objectForKey:FETCHED_BUS_STOP_NAME_KEY];
+    // Bus stop not found
+    if ([busStopName isEqualToString:@""]) {
+        self.busStopNameLabel.text = WRONG_STOP_ERROR_MESSAGE;
+        self.busStopNameLabel.textColor = [UIColor redColor];
+    }
+    // Bus stop found
+    else {
+        self.busStopNameLabel.text = busStopName;
+        self.busStopNameLabel.textColor = [UIColor blackColor];
+        // Enable the favorite button
+        self.favoriteButton.enabled = YES;
+    }
     [self.nextBusesTableView reloadData];
-    
-    // Enable the favorite button
-    self.favoriteButton.enabled = YES;
     
     // Replace the UIActivityIndicatorView with a refresh button
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh
@@ -217,17 +215,32 @@ static NSInteger const DEFAULT_TOOLBAR_HEIGHT = 44;
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     NSArray *nextBuses = [[self.nextBusesFetcher busStopInfo] objectForKey:FETCHED_NEXT_BUSES_KEY];
-    if (nextBuses == nil) return 0;
-    return [nextBuses count];
+    NSInteger numberOfRows = 0;
+    if (nextBuses != nil) numberOfRows = [nextBuses count];
+    
+    // Empty UITableView?
+    if (numberOfRows == 0) {
+        self.tableViewIsEmpty = YES;
+        numberOfRows = 1;   // Row used for showing an empty table message
+    }
+    else self.tableViewIsEmpty = NO;
+    
+    return numberOfRows;
 }
 
+static NSString *const NEXT_BUS_INFO_CELL_ID = @"NextBusInfo";
+static NSString *const NEXT_BUS_NOT_FOUND_CELL_ID = @"NextBusNotFound";
 static NSString *const IMMINENT_BUS_TIME = @"Inminente";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"NextBusInfo";
-    NextBusTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    // Empty table
+    if (self.tableViewIsEmpty) {
+        NextBusTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:NEXT_BUS_NOT_FOUND_CELL_ID forIndexPath:indexPath];
+        return cell;
+    }
     
+    NextBusTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:NEXT_BUS_INFO_CELL_ID forIndexPath:indexPath];
     NSDictionary *nextBus = [[[self.nextBusesFetcher busStopInfo] objectForKey:FETCHED_NEXT_BUSES_KEY] objectAtIndex:indexPath.row];
     
     // Bus line

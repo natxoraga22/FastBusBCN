@@ -16,6 +16,7 @@
 		3839FA561888914A005D146D /* HTMLSelector.m in Sources */ = {isa = PBXBuildFile; fileRef = 3839FA4C1888914A005D146D /* HTMLSelector.m */; };
 		3839FA571888914A005D146D /* HTMLString.m in Sources */ = {isa = PBXBuildFile; fileRef = 3839FA4E1888914A005D146D /* HTMLString.m */; };
 		3839FA581888914A005D146D /* HTMLTokenizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3839FA501888914A005D146D /* HTMLTokenizer.m */; };
+		387CE798188F4EBA006C5771 /* UIColor+iOS7Colors.m in Sources */ = {isa = PBXBuildFile; fileRef = 387CE797188F4EBA006C5771 /* UIColor+iOS7Colors.m */; };
 		387CFB52188DA42B00AAECC9 /* UIColor+BusLinesColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 387CFB51188DA42B00AAECC9 /* UIColor+BusLinesColor.m */; };
 		3896AD49188C5236004C082E /* NextBusTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3896AD48188C5236004C082E /* NextBusTableViewCell.m */; };
 		38A0D18A1887231000E21635 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38A0D1891887231000E21635 /* Foundation.framework */; };
@@ -31,7 +32,7 @@
 		38A0D1AE1887231100E21635 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38A0D18D1887231000E21635 /* UIKit.framework */; };
 		38A0D1B61887231100E21635 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 38A0D1B41887231100E21635 /* InfoPlist.strings */; };
 		38A0D1B81887231100E21635 /* FastBusBCNTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 38A0D1B71887231100E21635 /* FastBusBCNTests.m */; };
-		38A0D1D018873D2C00E21635 /* FavouriteBusStopsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 38A0D1CF18873D2C00E21635 /* FavouriteBusStopsTableViewController.m */; };
+		38A0D1D018873D2C00E21635 /* FavoriteBusStopsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 38A0D1CF18873D2C00E21635 /* FavoriteBusStopsTableViewController.m */; };
 		38A0D1D318874A3700E21635 /* NextBusesFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 38A0D1D218874A3700E21635 /* NextBusesFetcher.m */; };
 /* End PBXBuildFile section */
 
@@ -67,6 +68,8 @@
 		3839FA4F1888914A005D146D /* HTMLTokenizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HTMLTokenizer.h; path = HTMLReader/Code/HTMLTokenizer.h; sourceTree = "<group>"; };
 		3839FA501888914A005D146D /* HTMLTokenizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HTMLTokenizer.m; path = HTMLReader/Code/HTMLTokenizer.m; sourceTree = "<group>"; };
 		3839FA591888BDD9005D146D /* NextBusesFetcherDataDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NextBusesFetcherDataDelegate.h; sourceTree = "<group>"; };
+		387CE796188F4EBA006C5771 /* UIColor+iOS7Colors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+iOS7Colors.h"; sourceTree = "<group>"; };
+		387CE797188F4EBA006C5771 /* UIColor+iOS7Colors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+iOS7Colors.m"; sourceTree = "<group>"; };
 		387CFB50188DA42B00AAECC9 /* UIColor+BusLinesColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+BusLinesColor.h"; sourceTree = "<group>"; };
 		387CFB51188DA42B00AAECC9 /* UIColor+BusLinesColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+BusLinesColor.m"; sourceTree = "<group>"; };
 		3896AD47188C5236004C082E /* NextBusTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NextBusTableViewCell.h; sourceTree = "<group>"; };
@@ -89,8 +92,8 @@
 		38A0D1B51887231100E21635 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		38A0D1B71887231100E21635 /* FastBusBCNTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FastBusBCNTests.m; sourceTree = "<group>"; };
 		38A0D1CB1887382000E21635 /* libxml2.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.2.dylib; path = usr/lib/libxml2.2.dylib; sourceTree = SDKROOT; };
-		38A0D1CE18873D2C00E21635 /* FavouriteBusStopsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FavouriteBusStopsTableViewController.h; sourceTree = "<group>"; };
-		38A0D1CF18873D2C00E21635 /* FavouriteBusStopsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FavouriteBusStopsTableViewController.m; sourceTree = "<group>"; };
+		38A0D1CE18873D2C00E21635 /* FavoriteBusStopsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FavoriteBusStopsTableViewController.h; sourceTree = "<group>"; };
+		38A0D1CF18873D2C00E21635 /* FavoriteBusStopsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FavoriteBusStopsTableViewController.m; sourceTree = "<group>"; };
 		38A0D1D118874A3700E21635 /* NextBusesFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NextBusesFetcher.h; sourceTree = "<group>"; };
 		38A0D1D218874A3700E21635 /* NextBusesFetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NextBusesFetcher.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -151,6 +154,8 @@
 				3896AD48188C5236004C082E /* NextBusTableViewCell.m */,
 				387CFB50188DA42B00AAECC9 /* UIColor+BusLinesColor.h */,
 				387CFB51188DA42B00AAECC9 /* UIColor+BusLinesColor.m */,
+				387CE796188F4EBA006C5771 /* UIColor+iOS7Colors.h */,
+				387CE797188F4EBA006C5771 /* UIColor+iOS7Colors.m */,
 			);
 			name = Utility;
 			sourceTree = "<group>";
@@ -233,8 +238,8 @@
 		38A0D1CD1887394300E21635 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				38A0D1CE18873D2C00E21635 /* FavouriteBusStopsTableViewController.h */,
-				38A0D1CF18873D2C00E21635 /* FavouriteBusStopsTableViewController.m */,
+				38A0D1CE18873D2C00E21635 /* FavoriteBusStopsTableViewController.h */,
+				38A0D1CF18873D2C00E21635 /* FavoriteBusStopsTableViewController.m */,
 				382AF97C188B675B003161C5 /* BusStopViewController.h */,
 				382AF97D188B675B003161C5 /* BusStopViewController.m */,
 				387CFB4F188DA3F400AAECC9 /* Utility */,
@@ -353,7 +358,7 @@
 				3839FA571888914A005D146D /* HTMLString.m in Sources */,
 				3839FA531888914A005D146D /* HTMLNode.m in Sources */,
 				3839FA541888914A005D146D /* HTMLParser.m in Sources */,
-				38A0D1D018873D2C00E21635 /* FavouriteBusStopsTableViewController.m in Sources */,
+				38A0D1D018873D2C00E21635 /* FavoriteBusStopsTableViewController.m in Sources */,
 				38A0D1D318874A3700E21635 /* NextBusesFetcher.m in Sources */,
 				3839FA551888914A005D146D /* HTMLPreprocessedInputStream.m in Sources */,
 				382AF97E188B675B003161C5 /* BusStopViewController.m in Sources */,
@@ -361,6 +366,7 @@
 				3839FA511888914A005D146D /* HTMLAttribute.m in Sources */,
 				3839FA561888914A005D146D /* HTMLSelector.m in Sources */,
 				38A0D19A1887231000E21635 /* FastBusBCNAppDelegate.m in Sources */,
+				387CE798188F4EBA006C5771 /* UIColor+iOS7Colors.m in Sources */,
 				3839FA581888914A005D146D /* HTMLTokenizer.m in Sources */,
 				3839FA521888914A005D146D /* HTMLDocument.m in Sources */,
 				3896AD49188C5236004C082E /* NextBusTableViewCell.m in Sources */,

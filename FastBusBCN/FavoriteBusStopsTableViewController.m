@@ -6,43 +6,24 @@
 //  Copyright (c) 2014 RagaSoft. All rights reserved.
 //
 
-#import "FavouriteBusStopsTableViewController.h"
+#import "FavoriteBusStopsTableViewController.h"
 #import "BusStopViewController.h"
 
 
-@interface FavouriteBusStopsTableViewController ()
+@interface FavoriteBusStopsTableViewController ()
 
 @end
 
 
-@implementation FavouriteBusStopsTableViewController
+@implementation FavoriteBusStopsTableViewController
 
 #pragma mark - ViewController Lifecycle
-
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    self = [super initWithStyle:style];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    // TEST
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    [userDefaults setObject:@[@{FAVORITE_BUS_STOP_ID_KEY: @941,
-                                FAVORITE_BUS_STOP_NAME_KEY: @"Gran Via - Mandoni",
-                                FAVORITE_BUS_STOP_CUSTOM_NAME_KEY: @"Mandoni --> Pl.Espanya"},
-                              @{FAVORITE_BUS_STOP_ID_KEY: @108,
-                                FAVORITE_BUS_STOP_NAME_KEY: @"Pl. Espanya - FGC",
-                                FAVORITE_BUS_STOP_CUSTOM_NAME_KEY: @""}]
-                     forKey:FAVORITE_BUS_STOPS_KEY];
-    [userDefaults synchronize];
-    
+    // Edit button
     self.navigationItem.leftBarButtonItem = self.editButtonItem;
 }
 
@@ -50,7 +31,7 @@
 {
     [super viewWillAppear:animated];
 
-    // Reload the data everytime we are going to appear on screen
+    // Reload the data every time we are going to appear on screen
     [self.tableView reloadData];
 }
 
@@ -63,24 +44,32 @@
     return [favoriteBusStops count];
 }
 
+static NSString *const FAVORITE_BUS_STOP_CELL_ID = @"FavoriteBusStop";
+static NSString *const BUS_STOP_STRING = @"Parada";
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"FavoriteBusStop";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:FAVORITE_BUS_STOP_CELL_ID forIndexPath:indexPath];
     
-    NSDictionary *favoriteBusStop = [[[NSUserDefaults standardUserDefaults] objectForKey:FAVORITE_BUS_STOPS_KEY] objectAtIndex:indexPath.row];
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSDictionary *favoriteBusStop = [[userDefaults objectForKey:FAVORITE_BUS_STOPS_KEY] objectAtIndex:indexPath.row];
     if ([[favoriteBusStop objectForKey:FAVORITE_BUS_STOP_CUSTOM_NAME_KEY] isEqualToString:@""]) {
+        // No custom name --> Title = Stop name, Subtitle = Stop ID
         cell.textLabel.text = [favoriteBusStop objectForKey:FAVORITE_BUS_STOP_NAME_KEY];
-        cell.detailTextLabel.text = [NSString stringWithFormat:@"Parada %@", [favoriteBusStop objectForKey:FAVORITE_BUS_STOP_ID_KEY]];
+        cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ %@", BUS_STOP_STRING,
+                                                                         [favoriteBusStop objectForKey:FAVORITE_BUS_STOP_ID_KEY]];
     }
     else {
+        // Custom name --> Title = Custom name, Subtitle = Stop ID & Stop name
         cell.textLabel.text = [favoriteBusStop objectForKey:FAVORITE_BUS_STOP_CUSTOM_NAME_KEY];
-        cell.detailTextLabel.text = [NSString stringWithFormat:@"Parada %@: %@", [favoriteBusStop objectForKey:FAVORITE_BUS_STOP_ID_KEY],
-                                                                                 [favoriteBusStop objectForKey:FAVORITE_BUS_STOP_NAME_KEY]];
+        cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ %@: %@", BUS_STOP_STRING,
+                                                                             [favoriteBusStop objectForKey:FAVORITE_BUS_STOP_ID_KEY],
+                                                                             [favoriteBusStop objectForKey:FAVORITE_BUS_STOP_NAME_KEY]];
     }
     return cell;
 }
 
+// Rearranging the UITableView
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return YES;
@@ -91,12 +80,16 @@
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSMutableArray *favoriteBusStops = [[userDefaults objectForKey:FAVORITE_BUS_STOPS_KEY] mutableCopy];
     NSDictionary *movingBusStop = [favoriteBusStops objectAtIndex:fromIndexPath.row];
+    
+    // Remove the bus stop from the old index and insert it to the new index
     [favoriteBusStops removeObjectAtIndex:fromIndexPath.row];
     [favoriteBusStops insertObject:movingBusStop atIndex:toIndexPath.row];
+    
     [userDefaults setObject:[favoriteBusStops copy] forKey:FAVORITE_BUS_STOPS_KEY];
     [userDefaults synchronize];
 }
 
+// Deleting rows from the UITableView
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return YES;
@@ -110,19 +103,30 @@
         [favoriteBusStops removeObjectAtIndex:indexPath.row];
         [userDefaults setObject:[favoriteBusStops copy] forKey:FAVORITE_BUS_STOPS_KEY];
         [userDefaults synchronize];
+        
+        // UI deleting
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     }
 }
 
 #pragma mark - Navigation
 
+static NSString *const SHOW_NEXT_BUSES_SEGUE_ID = @"ShowNextBuses";
+static NSString *const SHOW_SEARCH_BUS_STOP_SEGUE_ID = @"ShowSearchBusStop";
+
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    if ([segue.identifier isEqualToString:@"ShowNextBuses"]) {
+    // Segue from a UITableView row
+    if ([segue.identifier isEqualToString:SHOW_NEXT_BUSES_SEGUE_ID]) {
         BusStopViewController *busStopVC = [segue destinationViewController];
         NSIndexPath *busStopIndexPath = [self.tableView indexPathForSelectedRow];
         NSArray *favoriteBusStops = [[NSUserDefaults standardUserDefaults] objectForKey:FAVORITE_BUS_STOPS_KEY];
         busStopVC.stopID = [[[favoriteBusStops objectAtIndex:busStopIndexPath.row] objectForKey:FAVORITE_BUS_STOP_ID_KEY] integerValue];
+    }
+    // Segue from a search UIBarButtonItem
+    else if ([segue.identifier isEqualToString:SHOW_SEARCH_BUS_STOP_SEGUE_ID]) {
+        BusStopViewController *busStopVC = [segue destinationViewController];
+        busStopVC.stopID = -1;
     }
 }
 

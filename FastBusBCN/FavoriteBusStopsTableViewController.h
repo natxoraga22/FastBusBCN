@@ -9,6 +9,6 @@
 #import <UIKit/UIKit.h>
 
 
-@interface FavouriteBusStopsTableViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate>
+@interface FavoriteBusStopsTableViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate>
 
 @end

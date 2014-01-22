@@ -28,9 +28,6 @@ NSString *const FETCHED_NEXT_BUS_TIME_KEY = @"FetchedNextBus_BusTime";
 #pragma mark - Fetching
 
 static NSString *const NEXT_BUSES_URL = @"http://www.ambmobilitat.cat/ambtempsbus?codi=";
-static NSString *const BUS_STOP_NAME_CSS_SELECTOR = @"li[data-role='list-divider'] div span:nth-child(3)";
-static NSString *const NEXT_BUSES_CSS_SELECTOR = @"div[id^=linia]";
-static NSString *const NEXT_BUS_TIME_CSS_SELECTOR = @"div:nth-child(2) b span";
 
 - (void)fetchStopNameAndNextBusesForStop:(NSInteger)stopID
 {    
@@ -57,6 +54,10 @@ static NSString *const NEXT_BUS_TIME_CSS_SELECTOR = @"div:nth-child(2) b span";
 }
 
 #pragma mark - Parsing
+
+static NSString *const BUS_STOP_NAME_CSS_SELECTOR = @"li[data-role='list-divider'] div span:nth-child(3)";
+static NSString *const NEXT_BUSES_CSS_SELECTOR = @"div[id^=linia]";
+static NSString *const NEXT_BUS_TIME_CSS_SELECTOR = @"div:nth-child(2) b span";
 
 - (void)parseObtainedHTMLData
 {
