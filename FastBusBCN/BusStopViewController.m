@@ -10,7 +10,6 @@
 #import "NextBusTableViewCell.h"
 #import "NextBusesFetcher.h"
 #import "UIColor+BusLinesColor.h"
-#import "UIColor+iOS7Colors.h"
 
 
 @interface BusStopViewController ()
@@ -35,6 +34,7 @@ NSString *const FAVORITE_BUS_STOP_CUSTOM_NAME_KEY = @"FavoriteBusStopCustomName"
 #pragma mark - ViewController Lifecycle
 
 static NSInteger const DEFAULT_TOOLBAR_HEIGHT = 44;
+static NSString *const SEARCH_STRING = @"Buscar";
 
 - (void)viewDidLoad
 {
@@ -48,29 +48,36 @@ static NSInteger const DEFAULT_TOOLBAR_HEIGHT = 44;
     CGRect keyboardToolbarRect = CGRectMake(0, 0, self.view.bounds.size.width, DEFAULT_TOOLBAR_HEIGHT);
     UIToolbar *keyboardToolbar = [[UIToolbar alloc] initWithFrame:keyboardToolbarRect];
     UIBarButtonItem *spaceBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
-                                                                                                target:nil
-                                                                                                action:nil];
-    UIBarButtonItem *searchBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Buscar"
+                                                                                        target:nil
+                                                                                        action:nil];
+    UIBarButtonItem *searchBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:SEARCH_STRING
                                                                             style:UIBarButtonItemStyleDone
                                                                            target:self
                                                                            action:@selector(searchButtonPressed:)];
     [keyboardToolbar setItems:@[spaceBarButtonItem, searchBarButtonItem]];
     self.busStopSearchBar.inputAccessoryView = keyboardToolbar;
     
-    // Next buses fetching
+    // Next buses fetcher
     self.nextBusesFetcher = [[NextBusesFetcher alloc] init];
     self.nextBusesFetcher.delegate = self;
-    if (self.stopID == -1) [self.busStopSearchBar becomeFirstResponder];
+    
+    if (self.stopID == -1) {
+        [self.busStopSearchBar becomeFirstResponder];
+        self.favoriteButton.enabled = NO;
+    }
     else [self fetchNextBuses];
 }
 
 #pragma mark - Setters
 
+static NSString *const BUS_STOP_STRING = @"Parada";
+
 - (void)setStopID:(NSInteger)stopID
 {
     if (_stopID != stopID) {
         _stopID = stopID;
-        self.title = [NSString stringWithFormat:@"Parada %d", self.stopID];
+        if (stopID == -1) self.title = SEARCH_STRING;
+        else self.title = [NSString stringWithFormat:@"%@ %d", BUS_STOP_STRING, self.stopID];
         [self updateIsFavorite];
     }
 }
@@ -164,10 +171,13 @@ static NSInteger const DEFAULT_TOOLBAR_HEIGHT = 44;
     [userDefaults synchronize];
 }
 
+static NSString *const FAVORITE_BUTTON_ACTIVATED_TITLE = @"★";
+static NSString *const FAVORITE_BUTTON_DEACTIVATED_TITLE = @"☆";
+
 - (void)updateFavoriteButtonImage
 {
-    if (self.isFavorite) [self.favoriteButton setTitle:@"★" forState:UIControlStateNormal];
-    else [self.favoriteButton setTitle:@"☆" forState:UIControlStateNormal];
+    if (self.isFavorite) [self.favoriteButton setTitle:FAVORITE_BUTTON_ACTIVATED_TITLE forState:UIControlStateNormal];
+    else [self.favoriteButton setTitle:FAVORITE_BUTTON_DEACTIVATED_TITLE forState:UIControlStateNormal];
 }
 
 #pragma mark - Search management
@@ -177,10 +187,15 @@ static NSInteger const DEFAULT_TOOLBAR_HEIGHT = 44;
     self.stopID = [self.busStopSearchBar.text integerValue];
 
     // "Cancel" the search
-    self.busStopSearchBar.text = @"";
-    [self.view endEditing:YES];
+    [self cancelSearch];
     
     [self fetchNextBuses];
+}
+
+- (void)cancelSearch
+{
+    self.busStopSearchBar.text = @"";
+    [self.view endEditing:YES];
 }
 
 #pragma mark - NextBusesFetcher Data Delegate
@@ -208,6 +223,7 @@ static NSString *const WRONG_STOP_ERROR_MESSAGE = @"Parada equivocada";
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh
                                                                                            target:self
                                                                                            action:@selector(refreshPressed:)];
+    self.navigationItem.rightBarButtonItem.enabled = YES;
 }
 
 #pragma mark - TableView Data Source
@@ -231,12 +247,13 @@ static NSString *const WRONG_STOP_ERROR_MESSAGE = @"Parada equivocada";
 static NSString *const NEXT_BUS_INFO_CELL_ID = @"NextBusInfo";
 static NSString *const NEXT_BUS_NOT_FOUND_CELL_ID = @"NextBusNotFound";
 static NSString *const IMMINENT_BUS_TIME = @"Inminente";
+static NSString *const BUS_TIME_STRING = @"min";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // Empty table
     if (self.tableViewIsEmpty) {
-        NextBusTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:NEXT_BUS_NOT_FOUND_CELL_ID forIndexPath:indexPath];
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:NEXT_BUS_NOT_FOUND_CELL_ID forIndexPath:indexPath];
         return cell;
     }
     
@@ -252,11 +269,9 @@ static NSString *const IMMINENT_BUS_TIME = @"Inminente";
     BOOL first = YES;
     for (NSNumber *time in [nextBus objectForKey:FETCHED_NEXT_BUS_TIME_KEY]) {
         if (first) first = NO;
-        else busTimeString = [busTimeString stringByAppendingString:@", "];
-        NSString *timeString = @"";
-        if ([time integerValue] == 0) timeString = IMMINENT_BUS_TIME;
-        else timeString = [NSString stringWithFormat:@"%@ min", time];
-        busTimeString = [busTimeString stringByAppendingString:timeString];
+        else busTimeString = [busTimeString stringByAppendingString:@", "]; // Comma separator between times
+        if ([time integerValue] == 0) busTimeString = [busTimeString stringByAppendingString:IMMINENT_BUS_TIME];
+        else busTimeString = [busTimeString stringByAppendingString:[NSString stringWithFormat:@"%@ %@", time, BUS_TIME_STRING]];
     }
     cell.nextBusTimeLabel.text = busTimeString;
 
@@ -271,13 +286,13 @@ static NSString *const DIAGONAL_BUS_LINE_PREFIX = @"D";
 
 - (UIColor *)lineColorForLine:(NSString *)busLine
 {
-    UIColor *busLineColor = [UIColor defaultBusLineColor];
     NSRange firstDigitRange = [busLine rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"1234567890"]];
     NSString *prefix = @"";
     if (firstDigitRange.location == NSNotFound) prefix = busLine;
     else prefix = [busLine substringToIndex:firstDigitRange.location];
     
     // TODO: ADD COLORS
+    UIColor *busLineColor = [UIColor defaultBusLineColor];
     if ([prefix isEqualToString:BAIXBUS_LINE_PREFIX]) busLineColor = [UIColor baixBusLineColor];
     else if ([prefix isEqualToString:NITBUS_LINE_PREFIX]) busLineColor = [UIColor nitBusLineColor];
     else if ([prefix isEqualToString:VERTICAL_BUS_LINE_PREFIX]) busLineColor = [UIColor vBusLineColor];
@@ -291,8 +306,7 @@ static NSString *const DIAGONAL_BUS_LINE_PREFIX = @"D";
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
-    self.busStopSearchBar.text = @"";
-    [self.view endEditing:YES];
+    [self cancelSearch];
 }
 
 @end

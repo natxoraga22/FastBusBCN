@@ -41,14 +41,15 @@
 {
     NSArray *favoriteBusStops = [[NSUserDefaults standardUserDefaults] objectForKey:FAVORITE_BUS_STOPS_KEY];
     if (favoriteBusStops == nil) return 0;
-    return [favoriteBusStops count];
+    else return [favoriteBusStops count];
 }
 
 static NSString *const FAVORITE_BUS_STOP_CELL_ID = @"FavoriteBusStop";
+static NSString *const NO_FAVORITES_CELL_ID = @"NoFavorites";
 static NSString *const BUS_STOP_STRING = @"Parada";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+{    
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:FAVORITE_BUS_STOP_CELL_ID forIndexPath:indexPath];
     
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];

@@ -108,7 +108,7 @@
                                             <outlet property="nextBusTimeLabel" destination="SsI-73-Reh" id="S5A-Bf-cy9"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NextBusNotFound" textLabel="ApQ-2C-BqX" style="IBUITableViewCellStyleDefault" id="dPk-vQ-w0p" customClass="NextBusTableViewCell">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NextBusNotFound" textLabel="ApQ-2C-BqX" style="IBUITableViewCellStyleDefault" id="dPk-vQ-w0p">
                                         <rect key="frame" x="0.0" y="66" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="dPk-vQ-w0p" id="Jpf-U3-jWG">
@@ -157,7 +157,7 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="geD-qJ-rdr">
-                        <barButtonItem key="rightBarButtonItem" systemItem="refresh" id="1vv-yX-XJ1">
+                        <barButtonItem key="rightBarButtonItem" enabled="NO" systemItem="refresh" id="1vv-yX-XJ1">
                             <connections>
                                 <action selector="refreshPressed:" destination="Fno-yN-utB" id="Klv-30-I9j"/>
                             </connections>
