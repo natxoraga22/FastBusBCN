@@ -16,12 +16,12 @@
 @interface NextBusesFetcher : NSObject <NSURLConnectionDataDelegate>
 
 // Keys used in order to acces the next buses dictionary
-extern NSString *const FETCHED_BUS_STOP_NAME_KEY;
 extern NSString *const FETCHED_NEXT_BUSES_KEY;
 extern NSString *const FETCHED_NEXT_BUS_LINE_KEY;
 extern NSString *const FETCHED_NEXT_BUS_TIME_KEY;
 
 @property (strong, nonatomic, readonly) NSDictionary *busStopInfo;
+@property (nonatomic, readonly) BOOL busStopFound;
 @property (weak, nonatomic) id<NextBusesFetcherDataDelegate> delegate;
 
 - (void)fetchStopNameAndNextBusesForStop:(NSInteger)stopID;

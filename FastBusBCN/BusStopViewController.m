@@ -147,7 +147,7 @@ static NSString *const BUS_STOP_STRING = @"Parada";
     NSMutableArray *favoriteBusStops = [[userDefaults objectForKey:FAVORITE_BUS_STOPS_KEY] mutableCopy];
     // TODO: ADD CUSTOM NAME
     [favoriteBusStops addObject:@{FAVORITE_BUS_STOP_ID_KEY: @(self.stopID),
-                                  FAVORITE_BUS_STOP_NAME_KEY: [[self.nextBusesFetcher busStopInfo] objectForKey:FETCHED_BUS_STOP_NAME_KEY],
+                                  //FAVORITE_BUS_STOP_NAME_KEY: [[self.nextBusesFetcher busStopInfo] objectForKey:FETCHED_BUS_STOP_NAME_KEY],
                                   FAVORITE_BUS_STOP_CUSTOM_NAME_KEY: @""}];
     [userDefaults setObject:[favoriteBusStops copy] forKey:FAVORITE_BUS_STOPS_KEY];
     [userDefaults synchronize];
@@ -204,7 +204,7 @@ static NSString *const WRONG_STOP_ERROR_MESSAGE = @"Parada equivocada";
 
 - (void)nextBusesFetcherDidFinishLoading:(NextBusesFetcher *)nextBusesFetcher
 {
-    NSString *busStopName = [[self.nextBusesFetcher busStopInfo] objectForKey:FETCHED_BUS_STOP_NAME_KEY];
+    NSString *busStopName = @""; //[[self.nextBusesFetcher busStopInfo] objectForKey:FETCHED_BUS_STOP_NAME_KEY];
     // Bus stop not found
     if ([busStopName isEqualToString:@""]) {
         self.busStopNameLabel.text = WRONG_STOP_ERROR_MESSAGE;
