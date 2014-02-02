@@ -88,14 +88,14 @@ static NSString *const NEXT_BUS_TIME_CSS_SELECTOR = @"div b span";
             
             BOOL found = NO;
             for (int i = 0; i < [nextBuses count]; i++) {
-                NSDictionary *nextBus = [nextBuses objectAtIndex:i];
+                NSDictionary *nextBus = nextBuses[i];
                 // If we already have the line, add the time
-                if ([[nextBus objectForKey:FETCHED_NEXT_BUS_LINE_KEY] isEqualToString:busLine]) {
+                if ([nextBus[FETCHED_NEXT_BUS_LINE_KEY] isEqualToString:busLine]) {
                     found = YES;
                     NSMutableDictionary *mutableNextBus = [nextBus mutableCopy];
-                    NSArray *nextBusTime = [[mutableNextBus objectForKey:FETCHED_NEXT_BUS_TIME_KEY] arrayByAddingObject:@(busTime)];
-                    [mutableNextBus setObject:nextBusTime forKey:FETCHED_NEXT_BUS_TIME_KEY];
-                    [nextBuses replaceObjectAtIndex:i withObject:[mutableNextBus copy]];
+                    NSArray *nextBusTime = [mutableNextBus[FETCHED_NEXT_BUS_TIME_KEY] arrayByAddingObject:@(busTime)];
+                    mutableNextBus[FETCHED_NEXT_BUS_TIME_KEY] = nextBusTime;
+                    nextBuses[i] = [mutableNextBus copy];
                 }
             }
             // Otherwise, create a new line with the corresponding time
@@ -104,7 +104,7 @@ static NSString *const NEXT_BUS_TIME_CSS_SELECTOR = @"div b span";
                                        FETCHED_NEXT_BUS_TIME_KEY: @[@(busTime)]}];
             }
         }
-        [busStopMutableInfo setObject:[nextBuses copy] forKey:FETCHED_NEXT_BUSES_KEY];
+        busStopMutableInfo[FETCHED_NEXT_BUSES_KEY] = [nextBuses copy];
 
         self.busStopInfo = [busStopMutableInfo copy];
     }
@@ -112,7 +112,7 @@ static NSString *const NEXT_BUS_TIME_CSS_SELECTOR = @"div b span";
 
 - (NSString *)parseLine:(NSString *)line
 {
-    return [[line componentsSeparatedByString:@" "] objectAtIndex:1];
+    return [line componentsSeparatedByString:@" "][1];
 }
 
 - (NSUInteger)parseTime:(NSString *)time

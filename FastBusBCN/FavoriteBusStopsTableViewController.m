@@ -10,11 +10,6 @@
 #import "BusStopViewController.h"
 
 
-@interface FavoriteBusStopsTableViewController ()
-
-@end
-
-
 @implementation FavoriteBusStopsTableViewController
 
 #pragma mark - ViewController Lifecycle
@@ -32,6 +27,7 @@
     [super viewWillAppear:animated];
 
     // Reload the data every time we are going to appear on screen
+    // because our data can be modified by other view controllers
     [self.tableView reloadData];
 }
 
@@ -45,7 +41,6 @@
 }
 
 static NSString *const FAVORITE_BUS_STOP_CELL_ID = @"FavoriteBusStop";
-static NSString *const NO_FAVORITES_CELL_ID = @"NoFavorites";
 static NSString *const BUS_STOP_STRING = @"Parada";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -53,20 +48,12 @@ static NSString *const BUS_STOP_STRING = @"Parada";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:FAVORITE_BUS_STOP_CELL_ID forIndexPath:indexPath];
     
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSDictionary *favoriteBusStop = [[userDefaults objectForKey:FAVORITE_BUS_STOPS_KEY] objectAtIndex:indexPath.row];
-    if ([[favoriteBusStop objectForKey:FAVORITE_BUS_STOP_CUSTOM_NAME_KEY] isEqualToString:@""]) {
-        // No custom name --> Title = Stop name, Subtitle = Stop ID
-        cell.textLabel.text = [favoriteBusStop objectForKey:FAVORITE_BUS_STOP_NAME_KEY];
-        cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ %@", BUS_STOP_STRING,
-                                                                         [favoriteBusStop objectForKey:FAVORITE_BUS_STOP_ID_KEY]];
-    }
-    else {
-        // Custom name --> Title = Custom name, Subtitle = Stop ID & Stop name
-        cell.textLabel.text = [favoriteBusStop objectForKey:FAVORITE_BUS_STOP_CUSTOM_NAME_KEY];
-        cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ %@: %@", BUS_STOP_STRING,
-                                                                             [favoriteBusStop objectForKey:FAVORITE_BUS_STOP_ID_KEY],
-                                                                             [favoriteBusStop objectForKey:FAVORITE_BUS_STOP_NAME_KEY]];
-    }
+    NSDictionary *favoriteBusStop = [userDefaults objectForKey:FAVORITE_BUS_STOPS_KEY][indexPath.row];
+    
+    // Title --> Name, Subtitle --> ID
+    cell.textLabel.text = favoriteBusStop[FAVORITE_BUS_STOP_CUSTOM_NAME_KEY];
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ %@", BUS_STOP_STRING, favoriteBusStop[FAVORITE_BUS_STOP_ID_KEY]];
+    
     return cell;
 }
 
@@ -80,7 +67,7 @@ static NSString *const BUS_STOP_STRING = @"Parada";
 {
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSMutableArray *favoriteBusStops = [[userDefaults objectForKey:FAVORITE_BUS_STOPS_KEY] mutableCopy];
-    NSDictionary *movingBusStop = [favoriteBusStops objectAtIndex:fromIndexPath.row];
+    NSDictionary *movingBusStop = favoriteBusStops[fromIndexPath.row];
     
     // Remove the bus stop from the old index and insert it to the new index
     [favoriteBusStops removeObjectAtIndex:fromIndexPath.row];
@@ -122,7 +109,7 @@ static NSString *const SHOW_SEARCH_BUS_STOP_SEGUE_ID = @"ShowSearchBusStop";
         BusStopViewController *busStopVC = [segue destinationViewController];
         NSIndexPath *busStopIndexPath = [self.tableView indexPathForSelectedRow];
         NSArray *favoriteBusStops = [[NSUserDefaults standardUserDefaults] objectForKey:FAVORITE_BUS_STOPS_KEY];
-        busStopVC.stopID = [[[favoriteBusStops objectAtIndex:busStopIndexPath.row] objectForKey:FAVORITE_BUS_STOP_ID_KEY] integerValue];
+        busStopVC.stopID = [favoriteBusStops[busStopIndexPath.row][FAVORITE_BUS_STOP_ID_KEY] integerValue];
     }
     // Segue from a search UIBarButtonItem
     else if ([segue.identifier isEqualToString:SHOW_SEARCH_BUS_STOP_SEGUE_ID]) {

@@ -28,12 +28,11 @@
 // Keys used in order to acces the favorite bus stop dictionary
 NSString *const FAVORITE_BUS_STOPS_KEY = @"FavoriteBusStops";
 NSString *const FAVORITE_BUS_STOP_ID_KEY = @"FavoriteBusStopID";
-NSString *const FAVORITE_BUS_STOP_NAME_KEY = @"FavoriteBusStopName";
 NSString *const FAVORITE_BUS_STOP_CUSTOM_NAME_KEY = @"FavoriteBusStopCustomName";
 
 #pragma mark - ViewController Lifecycle
 
-static NSInteger const DEFAULT_TOOLBAR_HEIGHT = 44;
+static const NSInteger DEFAULT_TOOLBAR_HEIGHT = 44;
 static NSString *const SEARCH_STRING = @"Buscar";
 
 - (void)viewDidLoad
@@ -57,10 +56,7 @@ static NSString *const SEARCH_STRING = @"Buscar";
     [keyboardToolbar setItems:@[spaceBarButtonItem, searchBarButtonItem]];
     self.busStopSearchBar.inputAccessoryView = keyboardToolbar;
     
-    // Next buses fetcher
-    self.nextBusesFetcher = [[NextBusesFetcher alloc] init];
-    self.nextBusesFetcher.delegate = self;
-    
+    // Conditional setup
     if (self.stopID == -1) {
         [self.busStopSearchBar becomeFirstResponder];
         self.favoriteButton.enabled = NO;
@@ -68,7 +64,16 @@ static NSString *const SEARCH_STRING = @"Buscar";
     else [self fetchNextBuses];
 }
 
-#pragma mark - Setters
+#pragma mark - Getters & Setters
+
+- (NextBusesFetcher *)nextBusesFetcher
+{
+    if (!_nextBusesFetcher) {
+        _nextBusesFetcher = [[NextBusesFetcher alloc] init];
+        _nextBusesFetcher.delegate = self;
+    }
+    return _nextBusesFetcher;
+}
 
 static NSString *const BUS_STOP_STRING = @"Parada";
 
@@ -96,7 +101,7 @@ static NSString *const BUS_STOP_STRING = @"Parada";
     NSArray *favoriteBusStops = [userDefaults objectForKey:FAVORITE_BUS_STOPS_KEY];
     BOOL found = NO;
     for (NSDictionary *favoriteBusStop in favoriteBusStops) {
-        if ([[favoriteBusStop objectForKey:FAVORITE_BUS_STOP_ID_KEY] isEqualToNumber:@(self.stopID)]) {
+        if ([favoriteBusStop[FAVORITE_BUS_STOP_ID_KEY] isEqualToNumber:@(self.stopID)]) {
             found = YES;
             self.isFavorite = YES;
         }
@@ -140,17 +145,19 @@ static NSString *const BUS_STOP_STRING = @"Parada";
     }
 }
 
+static NSString *const CUSTOM_NAME_ALERT_VIEW_TITLE = @"Añadir favorito";
+static NSString *const CUSTOM_NAME_ALERT_VIEW_MESSAGE = @"Elige un nombre para la parada. Este nombre aparecerá en la lista de favoritos.";
+static NSString *const CUSTOM_NAME_ALERT_VIEW_CANCEL_BUTTON_TITLE = @"Aceptar";
+
 - (void)addToFavorites
 {
-    // Add favorite to NSUserDefaults
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSMutableArray *favoriteBusStops = [[userDefaults objectForKey:FAVORITE_BUS_STOPS_KEY] mutableCopy];
-    // TODO: ADD CUSTOM NAME
-    [favoriteBusStops addObject:@{FAVORITE_BUS_STOP_ID_KEY: @(self.stopID),
-                                  //FAVORITE_BUS_STOP_NAME_KEY: [[self.nextBusesFetcher busStopInfo] objectForKey:FETCHED_BUS_STOP_NAME_KEY],
-                                  FAVORITE_BUS_STOP_CUSTOM_NAME_KEY: @""}];
-    [userDefaults setObject:[favoriteBusStops copy] forKey:FAVORITE_BUS_STOPS_KEY];
-    [userDefaults synchronize];
+    UIAlertView *customNameAlert = [[UIAlertView alloc] initWithTitle:CUSTOM_NAME_ALERT_VIEW_TITLE
+                                                              message:CUSTOM_NAME_ALERT_VIEW_MESSAGE
+                                                             delegate:self
+                                                    cancelButtonTitle:CUSTOM_NAME_ALERT_VIEW_CANCEL_BUTTON_TITLE
+                                                    otherButtonTitles:nil];
+    customNameAlert.alertViewStyle = UIAlertViewStylePlainTextInput;
+    [customNameAlert show];
 }
 
 - (void)removeFromFavorites
@@ -161,8 +168,8 @@ static NSString *const BUS_STOP_STRING = @"Parada";
     
     NSInteger index = -1;
     for (int i = 0; i < [favoriteBusStops count]; i++) {
-        NSDictionary *favoriteBusStop = [favoriteBusStops objectAtIndex:i];
-        if ([[favoriteBusStop objectForKey:FAVORITE_BUS_STOP_ID_KEY] isEqualToNumber:@(self.stopID)]) {
+        NSDictionary *favoriteBusStop = favoriteBusStops[i];
+        if ([favoriteBusStop[FAVORITE_BUS_STOP_ID_KEY] isEqualToNumber:@(self.stopID)]) {
             index = i;
         }
     }
@@ -204,15 +211,16 @@ static NSString *const WRONG_STOP_ERROR_MESSAGE = @"Parada equivocada";
 
 - (void)nextBusesFetcherDidFinishLoading:(NextBusesFetcher *)nextBusesFetcher
 {
-    NSString *busStopName = @""; //[[self.nextBusesFetcher busStopInfo] objectForKey:FETCHED_BUS_STOP_NAME_KEY];
+    //NSString *busStopName = self.nextBusesFetcher.busStopInfo[FETCHED_BUS_STOP_CUSTOM_NAME_KEY];
     // Bus stop not found
-    if ([busStopName isEqualToString:@""]) {
+    if (!self.nextBusesFetcher.busStopFound) {
         self.busStopNameLabel.text = WRONG_STOP_ERROR_MESSAGE;
         self.busStopNameLabel.textColor = [UIColor redColor];
     }
     // Bus stop found
     else {
-        self.busStopNameLabel.text = busStopName;
+        // TODO: Solve that
+        //self.busStopNameLabel.text = busStopName;
         self.busStopNameLabel.textColor = [UIColor blackColor];
         // Enable the favorite button
         self.favoriteButton.enabled = YES;
@@ -230,7 +238,7 @@ static NSString *const WRONG_STOP_ERROR_MESSAGE = @"Parada equivocada";
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSArray *nextBuses = [[self.nextBusesFetcher busStopInfo] objectForKey:FETCHED_NEXT_BUSES_KEY];
+    NSArray *nextBuses = [self.nextBusesFetcher busStopInfo][FETCHED_NEXT_BUSES_KEY];
     NSInteger numberOfRows = 0;
     if (nextBuses != nil) numberOfRows = [nextBuses count];
     
@@ -258,18 +266,18 @@ static NSString *const BUS_TIME_STRING = @"min";
     }
     
     NextBusTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:NEXT_BUS_INFO_CELL_ID forIndexPath:indexPath];
-    NSDictionary *nextBus = [[[self.nextBusesFetcher busStopInfo] objectForKey:FETCHED_NEXT_BUSES_KEY] objectAtIndex:indexPath.row];
+    NSDictionary *nextBus = [self.nextBusesFetcher busStopInfo][FETCHED_NEXT_BUSES_KEY][indexPath.row];
     
     // Bus line
-    cell.nextBusLineLabel.text = [nextBus objectForKey:FETCHED_NEXT_BUS_LINE_KEY];
-    cell.nextBusLineLabel.backgroundColor = [self lineColorForLine:[nextBus objectForKey:FETCHED_NEXT_BUS_LINE_KEY]];
+    cell.nextBusLineLabel.text = nextBus[FETCHED_NEXT_BUS_LINE_KEY];
+    cell.nextBusLineLabel.backgroundColor = [self lineColorForLine:nextBus[FETCHED_NEXT_BUS_LINE_KEY]];
     
     // Bus time
     NSString *busTimeString = @"";
     BOOL first = YES;
-    for (NSNumber *time in [nextBus objectForKey:FETCHED_NEXT_BUS_TIME_KEY]) {
+    for (NSNumber *time in nextBus[FETCHED_NEXT_BUS_TIME_KEY]) {
         if (first) first = NO;
-        else busTimeString = [busTimeString stringByAppendingString:@", "]; // Comma separator between times
+        else busTimeString = [busTimeString stringByAppendingString:@", "]; // Coma separator between times
         if ([time integerValue] == 0) busTimeString = [busTimeString stringByAppendingString:IMMINENT_BUS_TIME];
         else busTimeString = [busTimeString stringByAppendingString:[NSString stringWithFormat:@"%@ %@", time, BUS_TIME_STRING]];
     }
@@ -307,6 +315,19 @@ static NSString *const DIAGONAL_BUS_LINE_PREFIX = @"D";
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
     [self cancelSearch];
+}
+
+#pragma mark - UIAlertView Delegate
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    // Add favorite to NSUserDefaults
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSMutableArray *favoriteBusStops = [[userDefaults objectForKey:FAVORITE_BUS_STOPS_KEY] mutableCopy];
+    [favoriteBusStops addObject:@{FAVORITE_BUS_STOP_ID_KEY: @(self.stopID),
+                                  FAVORITE_BUS_STOP_CUSTOM_NAME_KEY: [alertView textFieldAtIndex:0].text}];
+    [userDefaults setObject:[favoriteBusStops copy] forKey:FAVORITE_BUS_STOPS_KEY];
+    [userDefaults synchronize];
 }
 
 @end

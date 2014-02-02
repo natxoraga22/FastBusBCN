@@ -10,12 +10,11 @@
 #import "NextBusesFetcherDataDelegate.h"
 
 
-@interface BusStopViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, NextBusesFetcherDataDelegate>
+@interface BusStopViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, NextBusesFetcherDataDelegate, UIAlertViewDelegate>
 
 // Keys used in order to acces the favorite bus stops dictionary
 extern NSString *const FAVORITE_BUS_STOPS_KEY;
 extern NSString *const FAVORITE_BUS_STOP_ID_KEY;
-extern NSString *const FAVORITE_BUS_STOP_NAME_KEY;
 extern NSString *const FAVORITE_BUS_STOP_CUSTOM_NAME_KEY;
 
 @property (nonatomic) NSInteger stopID;

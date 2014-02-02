@@ -29,11 +29,23 @@
     return [UIColor colorWithRed:0.0/255.0 green:90.0/255.0 blue:195.0/255.0 alpha:1.0];
 }
 
-+ (UIColor *)aeroBusLineColor {return nil;}
++ (UIColor *)aeroBusLineColor
+{
+    // TODO
+    return [self defaultBusLineColor];
+}
 
-+ (UIColor *)ciutatjusticiaBusLineColor {return nil;}
++ (UIColor *)ciutatjusticiaBusLineColor
+{
+    // TODO
+    return [self defaultBusLineColor];
+}
 
-+ (UIColor *)turisticBusLineColor {return nil;}
++ (UIColor *)turisticBusLineColor
+{
+    // TODO
+    return [self defaultBusLineColor];
+}
 
 #pragma mark - New Barcelona city lines
 
@@ -54,24 +66,64 @@
 
 #pragma mark - Barcelona suburbs
 
-+ (UIColor *)badalonaBusLineColor {return nil;}
++ (UIColor *)badalonaBusLineColor
+{
+    // TODO
+    return [self defaultBusLineColor];
+}
 
-+ (UIColor *)castelldefelsBusLineColor {return nil;}
++ (UIColor *)castelldefelsBusLineColor
+{
+    // TODO
+    return [self defaultBusLineColor];
+}
 
-+ (UIColor *)espluguesBusLineColor {return nil;}
++ (UIColor *)espluguesBusLineColor
+{
+    // TODO
+    return [self defaultBusLineColor];
+}
 
-+ (UIColor *)gavaBusLineColor {return nil;}
++ (UIColor *)gavaBusLineColor
+{
+    // TODO
+    return [self defaultBusLineColor];
+}
 
-+ (UIColor *)santjustesvernBusLineColor {return nil;}
++ (UIColor *)santjustesvernBusLineColor
+{
+    // TODO
+    return [self defaultBusLineColor];
+}
 
-+ (UIColor *)hospitaletBusLineColor {return nil;}
++ (UIColor *)hospitaletBusLineColor
+{
+    // TODO
+    return [self defaultBusLineColor];
+}
 
-+ (UIColor *)pratBusLineColor {return nil;}
++ (UIColor *)pratBusLineColor
+{
+    // TODO
+    return [self defaultBusLineColor];
+}
 
-+ (UIColor *)santboiBusLineColor {return nil;}
++ (UIColor *)santboiBusLineColor
+{
+    // TODO
+    return [self defaultBusLineColor];
+}
 
-+ (UIColor *)santfeliuBusLineColor {return nil;}
++ (UIColor *)santfeliuBusLineColor
+{
+    // TODO
+    return [self defaultBusLineColor];
+}
 
-+ (UIColor *)viladecansBusLineColor {return nil;}
++ (UIColor *)viladecansBusLineColor
+{
+    // TODO
+    return [self defaultBusLineColor];
+}
 
 @end
