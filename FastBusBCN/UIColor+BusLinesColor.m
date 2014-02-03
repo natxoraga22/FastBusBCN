@@ -9,7 +9,7 @@
 #import "UIColor+BusLinesColor.h"
 
 
-// TODO: FINISH IMPLEMENTATION
+// TODO: Finish implementation
 @implementation UIColor (BusLinesColor)
 
 #pragma mark - Barcelona city

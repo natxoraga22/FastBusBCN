@@ -174,9 +174,12 @@ static NSString *const FAILED_CONNECTION_LOCALIZED_ID = @"CONNECTION_FAILED";
         self.busStopNameLabel.text = NSLocalizedString(WRONG_STOP_LOCALIZED_ERROR_MESSAGE_ID, @"");
     }
     // Bus stop found
-    else self.favoriteButton.enabled = YES;
+    else {
+        self.favoriteButton.enabled = YES;
+        // TODO: Test! Try to fail a connection and refresh later without failing
+        [self updateUI];    // Necessary if we refresh from a failed connection (in order to remove the error message)
+    }
     
-    [self updateUI];    // Necessary if we refresh from a failed connection
     [self.nextBusesTableView reloadData];
     
     // Replace the UIActivityIndicatorView with a refresh button
@@ -358,7 +361,7 @@ static NSString *const DIAGONAL_BUS_LINE_PREFIX = @"D";
     if (firstDigitRange.location == NSNotFound) prefix = busLine;
     else prefix = [busLine substringToIndex:firstDigitRange.location];
     
-    // TODO: ADD COLORS
+    // TODO: Add colors
     UIColor *busLineColor = [UIColor defaultBusLineColor];
     if ([prefix isEqualToString:BAIXBUS_LINE_PREFIX]) busLineColor = [UIColor baixBusLineColor];
     else if ([prefix isEqualToString:NITBUS_LINE_PREFIX]) busLineColor = [UIColor nitBusLineColor];
