@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 RagaSoft. All rights reserved.
 //
 
+#import <iAd/iAd.h>
 #import "FavoriteBusStopsTableViewController.h"
 #import "BusStopViewController.h"
 
@@ -17,6 +18,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    ADBannerView *iAd = [[ADBannerView alloc] initWithAdType:ADAdTypeBanner];
+    [self.view addSubview:iAd];
     
     // Edit button
     self.navigationItem.leftBarButtonItem = self.editButtonItem;
