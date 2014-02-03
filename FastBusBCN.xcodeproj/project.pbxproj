@@ -27,14 +27,14 @@
 		38A0D1D018873D2C00E21635 /* FavoriteBusStopsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 38A0D1CF18873D2C00E21635 /* FavoriteBusStopsTableViewController.m */; };
 		38A0D1D318874A3700E21635 /* NextBusesFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 38A0D1D218874A3700E21635 /* NextBusesFetcher.m */; };
 		38A470AE189FFFCD0079DB85 /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38A470AD189FFFCD0079DB85 /* iAd.framework */; };
-		38A470C118A001570079DB85 /* HTMLAttribute.m in Sources */ = {isa = PBXBuildFile; fileRef = 38A470B018A001570079DB85 /* HTMLAttribute.m */; };
-		38A470C218A001570079DB85 /* HTMLDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 38A470B218A001570079DB85 /* HTMLDocument.m */; };
-		38A470C318A001570079DB85 /* HTMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 38A470B518A001570079DB85 /* HTMLNode.m */; };
-		38A470C418A001570079DB85 /* HTMLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 38A470B718A001570079DB85 /* HTMLParser.m */; };
-		38A470C518A001570079DB85 /* HTMLPreprocessedInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 38A470B918A001570079DB85 /* HTMLPreprocessedInputStream.m */; };
-		38A470C618A001570079DB85 /* HTMLSelector.m in Sources */ = {isa = PBXBuildFile; fileRef = 38A470BC18A001570079DB85 /* HTMLSelector.m */; };
-		38A470C718A001570079DB85 /* HTMLString.m in Sources */ = {isa = PBXBuildFile; fileRef = 38A470BE18A001570079DB85 /* HTMLString.m */; };
-		38A470C818A001570079DB85 /* HTMLTokenizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 38A470C018A001570079DB85 /* HTMLTokenizer.m */; };
+		38BAD11918A00CEE009A1BB6 /* HTMLAttribute.m in Sources */ = {isa = PBXBuildFile; fileRef = 38BAD10818A00CEE009A1BB6 /* HTMLAttribute.m */; };
+		38BAD11A18A00CEE009A1BB6 /* HTMLDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 38BAD10A18A00CEE009A1BB6 /* HTMLDocument.m */; };
+		38BAD11B18A00CEE009A1BB6 /* HTMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 38BAD10D18A00CEE009A1BB6 /* HTMLNode.m */; };
+		38BAD11C18A00CEE009A1BB6 /* HTMLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 38BAD10F18A00CEE009A1BB6 /* HTMLParser.m */; };
+		38BAD11D18A00CEE009A1BB6 /* HTMLPreprocessedInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 38BAD11118A00CEE009A1BB6 /* HTMLPreprocessedInputStream.m */; };
+		38BAD11E18A00CEE009A1BB6 /* HTMLSelector.m in Sources */ = {isa = PBXBuildFile; fileRef = 38BAD11418A00CEE009A1BB6 /* HTMLSelector.m */; };
+		38BAD11F18A00CEE009A1BB6 /* HTMLString.m in Sources */ = {isa = PBXBuildFile; fileRef = 38BAD11618A00CEE009A1BB6 /* HTMLString.m */; };
+		38BAD12018A00CEE009A1BB6 /* HTMLTokenizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 38BAD11818A00CEE009A1BB6 /* HTMLTokenizer.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -87,24 +87,24 @@
 		38A0D1D118874A3700E21635 /* NextBusesFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NextBusesFetcher.h; sourceTree = "<group>"; };
 		38A0D1D218874A3700E21635 /* NextBusesFetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NextBusesFetcher.m; sourceTree = "<group>"; };
 		38A470AD189FFFCD0079DB85 /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
-		38A470AF18A001560079DB85 /* HTMLAttribute.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HTMLAttribute.h; path = HTMLReader/Code/HTMLAttribute.h; sourceTree = SOURCE_ROOT; };
-		38A470B018A001570079DB85 /* HTMLAttribute.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HTMLAttribute.m; path = HTMLReader/Code/HTMLAttribute.m; sourceTree = SOURCE_ROOT; };
-		38A470B118A001570079DB85 /* HTMLDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HTMLDocument.h; path = HTMLReader/Code/HTMLDocument.h; sourceTree = SOURCE_ROOT; };
-		38A470B218A001570079DB85 /* HTMLDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HTMLDocument.m; path = HTMLReader/Code/HTMLDocument.m; sourceTree = SOURCE_ROOT; };
-		38A470B318A001570079DB85 /* HTMLMutability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HTMLMutability.h; path = HTMLReader/Code/HTMLMutability.h; sourceTree = SOURCE_ROOT; };
-		38A470B418A001570079DB85 /* HTMLNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HTMLNode.h; path = HTMLReader/Code/HTMLNode.h; sourceTree = SOURCE_ROOT; };
-		38A470B518A001570079DB85 /* HTMLNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HTMLNode.m; path = HTMLReader/Code/HTMLNode.m; sourceTree = SOURCE_ROOT; };
-		38A470B618A001570079DB85 /* HTMLParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HTMLParser.h; path = HTMLReader/Code/HTMLParser.h; sourceTree = SOURCE_ROOT; };
-		38A470B718A001570079DB85 /* HTMLParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HTMLParser.m; path = HTMLReader/Code/HTMLParser.m; sourceTree = SOURCE_ROOT; };
-		38A470B818A001570079DB85 /* HTMLPreprocessedInputStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HTMLPreprocessedInputStream.h; path = HTMLReader/Code/HTMLPreprocessedInputStream.h; sourceTree = SOURCE_ROOT; };
-		38A470B918A001570079DB85 /* HTMLPreprocessedInputStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HTMLPreprocessedInputStream.m; path = HTMLReader/Code/HTMLPreprocessedInputStream.m; sourceTree = SOURCE_ROOT; };
-		38A470BA18A001570079DB85 /* HTMLReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HTMLReader.h; path = HTMLReader/Code/HTMLReader.h; sourceTree = SOURCE_ROOT; };
-		38A470BB18A001570079DB85 /* HTMLSelector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HTMLSelector.h; path = HTMLReader/Code/HTMLSelector.h; sourceTree = SOURCE_ROOT; };
-		38A470BC18A001570079DB85 /* HTMLSelector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HTMLSelector.m; path = HTMLReader/Code/HTMLSelector.m; sourceTree = SOURCE_ROOT; };
-		38A470BD18A001570079DB85 /* HTMLString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HTMLString.h; path = HTMLReader/Code/HTMLString.h; sourceTree = SOURCE_ROOT; };
-		38A470BE18A001570079DB85 /* HTMLString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HTMLString.m; path = HTMLReader/Code/HTMLString.m; sourceTree = SOURCE_ROOT; };
-		38A470BF18A001570079DB85 /* HTMLTokenizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HTMLTokenizer.h; path = HTMLReader/Code/HTMLTokenizer.h; sourceTree = SOURCE_ROOT; };
-		38A470C018A001570079DB85 /* HTMLTokenizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HTMLTokenizer.m; path = HTMLReader/Code/HTMLTokenizer.m; sourceTree = SOURCE_ROOT; };
+		38BAD10718A00CEE009A1BB6 /* HTMLAttribute.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HTMLAttribute.h; path = HTMLReader/Code/HTMLAttribute.h; sourceTree = SOURCE_ROOT; };
+		38BAD10818A00CEE009A1BB6 /* HTMLAttribute.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HTMLAttribute.m; path = HTMLReader/Code/HTMLAttribute.m; sourceTree = SOURCE_ROOT; };
+		38BAD10918A00CEE009A1BB6 /* HTMLDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HTMLDocument.h; path = HTMLReader/Code/HTMLDocument.h; sourceTree = SOURCE_ROOT; };
+		38BAD10A18A00CEE009A1BB6 /* HTMLDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HTMLDocument.m; path = HTMLReader/Code/HTMLDocument.m; sourceTree = SOURCE_ROOT; };
+		38BAD10B18A00CEE009A1BB6 /* HTMLMutability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HTMLMutability.h; path = HTMLReader/Code/HTMLMutability.h; sourceTree = SOURCE_ROOT; };
+		38BAD10C18A00CEE009A1BB6 /* HTMLNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HTMLNode.h; path = HTMLReader/Code/HTMLNode.h; sourceTree = SOURCE_ROOT; };
+		38BAD10D18A00CEE009A1BB6 /* HTMLNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HTMLNode.m; path = HTMLReader/Code/HTMLNode.m; sourceTree = SOURCE_ROOT; };
+		38BAD10E18A00CEE009A1BB6 /* HTMLParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HTMLParser.h; path = HTMLReader/Code/HTMLParser.h; sourceTree = SOURCE_ROOT; };
+		38BAD10F18A00CEE009A1BB6 /* HTMLParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HTMLParser.m; path = HTMLReader/Code/HTMLParser.m; sourceTree = SOURCE_ROOT; };
+		38BAD11018A00CEE009A1BB6 /* HTMLPreprocessedInputStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HTMLPreprocessedInputStream.h; path = HTMLReader/Code/HTMLPreprocessedInputStream.h; sourceTree = SOURCE_ROOT; };
+		38BAD11118A00CEE009A1BB6 /* HTMLPreprocessedInputStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HTMLPreprocessedInputStream.m; path = HTMLReader/Code/HTMLPreprocessedInputStream.m; sourceTree = SOURCE_ROOT; };
+		38BAD11218A00CEE009A1BB6 /* HTMLReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HTMLReader.h; path = HTMLReader/Code/HTMLReader.h; sourceTree = SOURCE_ROOT; };
+		38BAD11318A00CEE009A1BB6 /* HTMLSelector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HTMLSelector.h; path = HTMLReader/Code/HTMLSelector.h; sourceTree = SOURCE_ROOT; };
+		38BAD11418A00CEE009A1BB6 /* HTMLSelector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HTMLSelector.m; path = HTMLReader/Code/HTMLSelector.m; sourceTree = SOURCE_ROOT; };
+		38BAD11518A00CEE009A1BB6 /* HTMLString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HTMLString.h; path = HTMLReader/Code/HTMLString.h; sourceTree = SOURCE_ROOT; };
+		38BAD11618A00CEE009A1BB6 /* HTMLString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HTMLString.m; path = HTMLReader/Code/HTMLString.m; sourceTree = SOURCE_ROOT; };
+		38BAD11718A00CEE009A1BB6 /* HTMLTokenizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HTMLTokenizer.h; path = HTMLReader/Code/HTMLTokenizer.h; sourceTree = SOURCE_ROOT; };
+		38BAD11818A00CEE009A1BB6 /* HTMLTokenizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HTMLTokenizer.m; path = HTMLReader/Code/HTMLTokenizer.m; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -132,31 +132,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		3839FA3E18889117005D146D /* HTMLReader */ = {
-			isa = PBXGroup;
-			children = (
-				38A470AF18A001560079DB85 /* HTMLAttribute.h */,
-				38A470B018A001570079DB85 /* HTMLAttribute.m */,
-				38A470B118A001570079DB85 /* HTMLDocument.h */,
-				38A470B218A001570079DB85 /* HTMLDocument.m */,
-				38A470B318A001570079DB85 /* HTMLMutability.h */,
-				38A470B418A001570079DB85 /* HTMLNode.h */,
-				38A470B518A001570079DB85 /* HTMLNode.m */,
-				38A470B618A001570079DB85 /* HTMLParser.h */,
-				38A470B718A001570079DB85 /* HTMLParser.m */,
-				38A470B818A001570079DB85 /* HTMLPreprocessedInputStream.h */,
-				38A470B918A001570079DB85 /* HTMLPreprocessedInputStream.m */,
-				38A470BA18A001570079DB85 /* HTMLReader.h */,
-				38A470BB18A001570079DB85 /* HTMLSelector.h */,
-				38A470BC18A001570079DB85 /* HTMLSelector.m */,
-				38A470BD18A001570079DB85 /* HTMLString.h */,
-				38A470BE18A001570079DB85 /* HTMLString.m */,
-				38A470BF18A001570079DB85 /* HTMLTokenizer.h */,
-				38A470C018A001570079DB85 /* HTMLTokenizer.m */,
-			);
-			name = HTMLReader;
-			sourceTree = "<group>";
-		};
 		387CFB4F188DA3F400AAECC9 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
@@ -209,7 +184,7 @@
 				38A0D1D418874A6000E21635 /* Model */,
 				38A0D1CD1887394300E21635 /* ViewControllers */,
 				38A0D1A41887231000E21635 /* Images.xcassets */,
-				3839FA3E18889117005D146D /* HTMLReader */,
+				38BAD10618A00CDF009A1BB6 /* HTMLReader */,
 				38A0D1901887231000E21635 /* Supporting Files */,
 			);
 			path = FastBusBCN;
@@ -264,6 +239,31 @@
 				3839FA591888BDD9005D146D /* NextBusesFetcherDataDelegate.h */,
 			);
 			name = Model;
+			sourceTree = "<group>";
+		};
+		38BAD10618A00CDF009A1BB6 /* HTMLReader */ = {
+			isa = PBXGroup;
+			children = (
+				38BAD10718A00CEE009A1BB6 /* HTMLAttribute.h */,
+				38BAD10818A00CEE009A1BB6 /* HTMLAttribute.m */,
+				38BAD10918A00CEE009A1BB6 /* HTMLDocument.h */,
+				38BAD10A18A00CEE009A1BB6 /* HTMLDocument.m */,
+				38BAD10B18A00CEE009A1BB6 /* HTMLMutability.h */,
+				38BAD10C18A00CEE009A1BB6 /* HTMLNode.h */,
+				38BAD10D18A00CEE009A1BB6 /* HTMLNode.m */,
+				38BAD10E18A00CEE009A1BB6 /* HTMLParser.h */,
+				38BAD10F18A00CEE009A1BB6 /* HTMLParser.m */,
+				38BAD11018A00CEE009A1BB6 /* HTMLPreprocessedInputStream.h */,
+				38BAD11118A00CEE009A1BB6 /* HTMLPreprocessedInputStream.m */,
+				38BAD11218A00CEE009A1BB6 /* HTMLReader.h */,
+				38BAD11318A00CEE009A1BB6 /* HTMLSelector.h */,
+				38BAD11418A00CEE009A1BB6 /* HTMLSelector.m */,
+				38BAD11518A00CEE009A1BB6 /* HTMLString.h */,
+				38BAD11618A00CEE009A1BB6 /* HTMLString.m */,
+				38BAD11718A00CEE009A1BB6 /* HTMLTokenizer.h */,
+				38BAD11818A00CEE009A1BB6 /* HTMLTokenizer.m */,
+			);
+			name = HTMLReader;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -367,19 +367,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				38A470C118A001570079DB85 /* HTMLAttribute.m in Sources */,
-				38A470C218A001570079DB85 /* HTMLDocument.m in Sources */,
+				38BAD11B18A00CEE009A1BB6 /* HTMLNode.m in Sources */,
+				38BAD11C18A00CEE009A1BB6 /* HTMLParser.m in Sources */,
 				38A0D1D018873D2C00E21635 /* FavoriteBusStopsTableViewController.m in Sources */,
-				38A470C418A001570079DB85 /* HTMLParser.m in Sources */,
 				38A0D1D318874A3700E21635 /* NextBusesFetcher.m in Sources */,
+				38BAD11E18A00CEE009A1BB6 /* HTMLSelector.m in Sources */,
+				38BAD11D18A00CEE009A1BB6 /* HTMLPreprocessedInputStream.m in Sources */,
+				38BAD11A18A00CEE009A1BB6 /* HTMLDocument.m in Sources */,
+				38BAD12018A00CEE009A1BB6 /* HTMLTokenizer.m in Sources */,
 				382AF97E188B675B003161C5 /* BusStopViewController.m in Sources */,
+				38BAD11918A00CEE009A1BB6 /* HTMLAttribute.m in Sources */,
 				38A0D1961887231000E21635 /* main.m in Sources */,
-				38A470C718A001570079DB85 /* HTMLString.m in Sources */,
-				38A470C818A001570079DB85 /* HTMLTokenizer.m in Sources */,
 				38A0D19A1887231000E21635 /* FastBusBCNAppDelegate.m in Sources */,
-				38A470C318A001570079DB85 /* HTMLNode.m in Sources */,
-				38A470C618A001570079DB85 /* HTMLSelector.m in Sources */,
-				38A470C518A001570079DB85 /* HTMLPreprocessedInputStream.m in Sources */,
+				38BAD11F18A00CEE009A1BB6 /* HTMLString.m in Sources */,
 				3896AD49188C5236004C082E /* NextBusTableViewCell.m in Sources */,
 				387CFB52188DA42B00AAECC9 /* UIColor+BusLinesColor.m in Sources */,
 			);
