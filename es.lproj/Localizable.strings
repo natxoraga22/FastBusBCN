@@ -9,9 +9,12 @@
 "BUS_STOP" = "Parada";
 "BUS_STOP_ID" = "Código";
 "SEARCH" = "Buscar";
-"WRONG_STOP" = "Parada equivocada";
 "IMMINENT_BUS" = "Inminente";
 "BUS_TIME" = "min";
+
+// Errors
+"WRONG_STOP" = "Parada equivocada";
+"CONNECTION_FAILED" = "La conexión ha fallado";
 
 // Custom name alert view
 "CUSTOM_NAME_ALERT_VIEW_TITLE" = "Añadir favorito";

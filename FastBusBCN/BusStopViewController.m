@@ -164,18 +164,32 @@ static NSString *const FAVORITE_BUTTON_DEACTIVATED_TITLE = @"☆";
 #pragma mark - NextBusesFetcher Data Delegate
 
 static NSString *const WRONG_STOP_LOCALIZED_ERROR_MESSAGE_ID = @"WRONG_STOP";
+static NSString *const FAILED_CONNECTION_LOCALIZED_ID = @"CONNECTION_FAILED";
 
 - (void)nextBusesFetcherDidFinishLoading:(NextBusesFetcher *)nextBusesFetcher
 {
     // Bus stop not found
     if (!self.nextBusesFetcher.busStopFound) {
-        self.busStopNameLabel.text = NSLocalizedString(WRONG_STOP_LOCALIZED_ERROR_MESSAGE_ID, @"");
         self.busStopNameLabel.textColor = [UIColor redColor];
+        self.busStopNameLabel.text = NSLocalizedString(WRONG_STOP_LOCALIZED_ERROR_MESSAGE_ID, @"");
     }
     // Bus stop found
     else self.favoriteButton.enabled = YES;
     
+    [self updateUI];    // Necessary if we refresh from a failed connection
     [self.nextBusesTableView reloadData];
+    
+    // Replace the UIActivityIndicatorView with a refresh button
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh
+                                                                                           target:self
+                                                                                           action:@selector(refreshPressed:)];
+    self.navigationItem.rightBarButtonItem.enabled = YES;
+}
+
+- (void)nextBusesFetcherDidFail:(NextBusesFetcher *)nextBusesFetcher
+{
+    self.busStopNameLabel.textColor = [UIColor redColor];
+    self.busStopNameLabel.text = NSLocalizedString(FAILED_CONNECTION_LOCALIZED_ID, @"");
     
     // Replace the UIActivityIndicatorView with a refresh button
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh

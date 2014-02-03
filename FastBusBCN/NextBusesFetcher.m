@@ -142,6 +142,9 @@ static NSString *const NEXT_BUS_TIME_CSS_SELECTOR = @"div b span";
 {
     NSLog(@"NextBusesFetcher - URL Connection Failed");
     self.currentConnection = nil;
+    
+    // Notify our delegate
+    [self.delegate nextBusesFetcherDidFail:self];
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection

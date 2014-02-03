@@ -15,6 +15,8 @@
 
 @protocol NextBusesFetcherDataDelegate <NSObject>
 
+@optional
 - (void)nextBusesFetcherDidFinishLoading:(NextBusesFetcher *)nextBusesFetcher;
+- (void)nextBusesFetcherDidFail:(NextBusesFetcher *)nextBusesFetcher;
 
 @end
