@@ -41,7 +41,7 @@
 }
 
 static NSString *const FAVORITE_BUS_STOP_CELL_ID = @"FavoriteBusStop";
-static NSString *const BUS_STOP_STRING = @"Parada";
+static NSString *const BUS_STOP_LOCALIZED_STRING_ID = @"BUS_STOP";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {    
@@ -52,7 +52,8 @@ static NSString *const BUS_STOP_STRING = @"Parada";
     
     // Title --> Name, Subtitle --> ID
     cell.textLabel.text = favoriteBusStop[FAVORITE_BUS_STOP_CUSTOM_NAME_KEY];
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ %@", BUS_STOP_STRING, favoriteBusStop[FAVORITE_BUS_STOP_ID_KEY]];
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(BUS_STOP_LOCALIZED_STRING_ID, @""),
+                                                                     favoriteBusStop[FAVORITE_BUS_STOP_ID_KEY]];
     
     return cell;
 }

@@ -33,7 +33,8 @@ NSString *const FAVORITE_BUS_STOP_CUSTOM_NAME_KEY = @"FavoriteBusStopCustomName"
 #pragma mark - ViewController Lifecycle
 
 static const NSInteger DEFAULT_TOOLBAR_HEIGHT = 44;
-static NSString *const SEARCH_STRING = @"Buscar";
+static NSString *const SEARCH_LOCALIZED_STRING_ID = @"SEARCH";
+static NSString *const BUS_STOP_LOCALIZED_ID_ID = @"BUS_STOP_ID";
 
 - (void)viewDidLoad
 {
@@ -44,12 +45,13 @@ static NSString *const SEARCH_STRING = @"Buscar";
     
     // Search bar
     self.busStopSearchBar.delegate = self;
+    self.busStopSearchBar.placeholder = NSLocalizedString(BUS_STOP_LOCALIZED_ID_ID, @"");
     CGRect keyboardToolbarRect = CGRectMake(0, 0, self.view.bounds.size.width, DEFAULT_TOOLBAR_HEIGHT);
     UIToolbar *keyboardToolbar = [[UIToolbar alloc] initWithFrame:keyboardToolbarRect];
     UIBarButtonItem *spaceBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
                                                                                         target:nil
                                                                                         action:nil];
-    UIBarButtonItem *searchBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:SEARCH_STRING
+    UIBarButtonItem *searchBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(SEARCH_LOCALIZED_STRING_ID, @"")
                                                                             style:UIBarButtonItemStyleDone
                                                                            target:self
                                                                            action:@selector(searchButtonPressed:)];
@@ -108,15 +110,16 @@ static NSString *const SEARCH_STRING = @"Buscar";
 
 #pragma mark - UI
 
-static NSString *const BUS_STOP_STRING = @"Parada";
+static NSString *const BUS_STOP_LOCALIZED_STRING_ID = @"BUS_STOP";
 static NSString *const FAVORITE_BUTTON_ACTIVATED_TITLE = @"★";
 static NSString *const FAVORITE_BUTTON_DEACTIVATED_TITLE = @"☆";
 
 - (void)updateUI
 {
     // ViewController title
-    if (self.stopID == -1) self.title = SEARCH_STRING;
-    else self.title = [NSString stringWithFormat:@"%@ %d", BUS_STOP_STRING, self.stopID];
+    if (self.stopID == -1) self.title = NSLocalizedString(SEARCH_LOCALIZED_STRING_ID, @"");
+    else self.title = [NSString stringWithFormat:@"%@ %d", NSLocalizedString(BUS_STOP_LOCALIZED_STRING_ID, @""),
+                                                           self.stopID];
     
     // BusStop title
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
@@ -160,13 +163,13 @@ static NSString *const FAVORITE_BUTTON_DEACTIVATED_TITLE = @"☆";
 
 #pragma mark - NextBusesFetcher Data Delegate
 
-static NSString *const WRONG_STOP_ERROR_MESSAGE = @"Parada equivocada";
+static NSString *const WRONG_STOP_LOCALIZED_ERROR_MESSAGE_ID = @"WRONG_STOP";
 
 - (void)nextBusesFetcherDidFinishLoading:(NextBusesFetcher *)nextBusesFetcher
 {
     // Bus stop not found
     if (!self.nextBusesFetcher.busStopFound) {
-        self.busStopNameLabel.text = WRONG_STOP_ERROR_MESSAGE;
+        self.busStopNameLabel.text = NSLocalizedString(WRONG_STOP_LOCALIZED_ERROR_MESSAGE_ID, @"");
         self.busStopNameLabel.textColor = [UIColor redColor];
     }
     // Bus stop found
@@ -189,18 +192,18 @@ static NSString *const WRONG_STOP_ERROR_MESSAGE = @"Parada equivocada";
     else [self addToFavorites];
 }
 
-static NSString *const CUSTOM_NAME_ALERT_VIEW_TITLE = @"Añadir favorito";
-static NSString *const CUSTOM_NAME_ALERT_VIEW_MESSAGE = @"Elige un nombre para la parada. Este nombre aparecerá en la lista de favoritos.";
-static NSString *const CUSTOM_NAME_ALERT_VIEW_CANCEL_BUTTON_TITLE = @"Cancelar";
-static NSString *const CUSTOM_NAME_ALERT_VIEW_ACCEPT_BUTTON_TITLE = @"Aceptar";
+static NSString *const ALERT_VIEW_LOCALIZED_TITLE_ID = @"CUSTOM_NAME_ALERT_VIEW_TITLE";
+static NSString *const ALERT_VIEW_LOCALIZED_MESSAGE_ID = @"CUSTOM_NAME_ALERT_VIEW_MESSAGE";
+static NSString *const ALERT_VIEW_CANCEL_BUTTON_LOCALIZED_TITLE_ID = @"CUSTOM_NAME_ALERT_VIEW_CANCEL_BUTTON_TITLE";
+static NSString *const ALERT_VIEW_ACCEPT_BUTTON_LOCALIZED_TITLE_ID = @"CUSTOM_NAME_ALERT_VIEW_ACCEPT_BUTTON_TITLE";
 
 - (void)addToFavorites
 {
-    UIAlertView *customNameAlert = [[UIAlertView alloc] initWithTitle:CUSTOM_NAME_ALERT_VIEW_TITLE
-                                                              message:CUSTOM_NAME_ALERT_VIEW_MESSAGE
+    UIAlertView *customNameAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(ALERT_VIEW_LOCALIZED_TITLE_ID, @"")
+                                                              message:NSLocalizedString(ALERT_VIEW_LOCALIZED_MESSAGE_ID, @"")
                                                              delegate:self
-                                                    cancelButtonTitle:CUSTOM_NAME_ALERT_VIEW_CANCEL_BUTTON_TITLE
-                                                    otherButtonTitles:CUSTOM_NAME_ALERT_VIEW_ACCEPT_BUTTON_TITLE, nil];
+                                                    cancelButtonTitle:NSLocalizedString(ALERT_VIEW_CANCEL_BUTTON_LOCALIZED_TITLE_ID, @"")
+                                                    otherButtonTitles:NSLocalizedString(ALERT_VIEW_ACCEPT_BUTTON_LOCALIZED_TITLE_ID, @""), nil];
     customNameAlert.alertViewStyle = UIAlertViewStylePlainTextInput;
     [customNameAlert textFieldAtIndex:0].text = self.busStopNameLabel.text;
     [customNameAlert show];
@@ -289,8 +292,8 @@ static NSString *const CUSTOM_NAME_ALERT_VIEW_ACCEPT_BUTTON_TITLE = @"Aceptar";
 
 static NSString *const NEXT_BUS_INFO_CELL_ID = @"NextBusInfo";
 static NSString *const NEXT_BUS_NOT_FOUND_CELL_ID = @"NextBusNotFound";
-static NSString *const IMMINENT_BUS_TIME = @"Inminente";
-static NSString *const BUS_TIME_STRING = @"min";
+static NSString *const IMMINENT_BUS_LOCALIZED_TIME_ID = @"IMMINENT_BUS";
+static NSString *const BUS_LOCALIZED_TIME_ID = @"BUS_TIME";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -315,8 +318,13 @@ static NSString *const BUS_TIME_STRING = @"min";
         if (first) first = NO;
         else busTimeString = [busTimeString stringByAppendingString:@", "];
         // Time itself
-        if ([time integerValue] == 0) busTimeString = [busTimeString stringByAppendingString:IMMINENT_BUS_TIME];
-        else busTimeString = [busTimeString stringByAppendingString:[NSString stringWithFormat:@"%@ %@", time, BUS_TIME_STRING]];
+        if ([time integerValue] == 0) {
+            busTimeString = [busTimeString stringByAppendingString:NSLocalizedString(IMMINENT_BUS_LOCALIZED_TIME_ID, @"")];
+        }
+        else {
+            NSString *newTime = [NSString stringWithFormat:@"%@ %@", time, NSLocalizedString(BUS_LOCALIZED_TIME_ID, @"")];
+            busTimeString = [busTimeString stringByAppendingString:newTime];
+        }
     }
     cell.nextBusTimeLabel.text = busTimeString;
 

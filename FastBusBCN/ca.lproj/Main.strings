@@ -6,7 +6,7 @@
 "ApQ-2C-BqX.text" = "No s'han trobat autobusos";
 
 /* Class = "IBUILabel"; text = "Parada 941"; ObjectID = "FY2-Y8-k70"; */
-"FY2-Y8-k70.text" = "Aturada 941";
+"FY2-Y8-k70.text" = "Parada 941";
 
 /* Class = "IBUISearchBar"; placeholder = "Código"; ObjectID = "QXs-ea-4dF"; */
 "QXs-ea-4dF.placeholder" = "Codi";

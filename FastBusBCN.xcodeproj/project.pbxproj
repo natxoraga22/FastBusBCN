@@ -17,6 +17,7 @@
 		3839FA571888914A005D146D /* HTMLString.m in Sources */ = {isa = PBXBuildFile; fileRef = 3839FA4E1888914A005D146D /* HTMLString.m */; };
 		3839FA581888914A005D146D /* HTMLTokenizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3839FA501888914A005D146D /* HTMLTokenizer.m */; };
 		387CFB52188DA42B00AAECC9 /* UIColor+BusLinesColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 387CFB51188DA42B00AAECC9 /* UIColor+BusLinesColor.m */; };
+		3886C87A189F38140026C865 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3886C87C189F38140026C865 /* Localizable.strings */; };
 		3896AD49188C5236004C082E /* NextBusTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3896AD48188C5236004C082E /* NextBusTableViewCell.m */; };
 		38A0D18A1887231000E21635 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38A0D1891887231000E21635 /* Foundation.framework */; };
 		38A0D18C1887231000E21635 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38A0D18B1887231000E21635 /* CoreGraphics.framework */; };
@@ -77,6 +78,9 @@
 		3886C874189F31B70026C865 /* ca */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ca; path = ca.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		3886C875189F31B70026C865 /* ca */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ca; path = ca.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		3886C877189F31F50026C865 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Main.strings; sourceTree = "<group>"; };
+		3886C87D189F38170026C865 /* en */ = {isa = PBXFileReference; lastKnownFileType = file; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		3886C87E189F38180026C865 /* es */ = {isa = PBXFileReference; lastKnownFileType = file; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
+		3886C87F189F38190026C865 /* ca */ = {isa = PBXFileReference; lastKnownFileType = file; name = ca; path = ca.lproj/Localizable.strings; sourceTree = "<group>"; };
 		3896AD47188C5236004C082E /* NextBusTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NextBusTableViewCell.h; sourceTree = "<group>"; };
 		3896AD48188C5236004C082E /* NextBusTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NextBusTableViewCell.m; sourceTree = "<group>"; };
 		38A0D1861887231000E21635 /* FastBusBCN.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FastBusBCN.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -195,6 +199,7 @@
 			isa = PBXGroup;
 			children = (
 				38A0D19B1887231000E21635 /* Main.storyboard */,
+				3886C87C189F38140026C865 /* Localizable.strings */,
 				38A0D1981887231000E21635 /* FastBusBCNAppDelegate.h */,
 				38A0D1991887231000E21635 /* FastBusBCNAppDelegate.m */,
 				38A0D1D418874A6000E21635 /* Model */,
@@ -337,6 +342,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				38A0D1A51887231000E21635 /* Images.xcassets in Resources */,
+				3886C87A189F38140026C865 /* Localizable.strings in Resources */,
 				38A0D1941887231000E21635 /* InfoPlist.strings in Resources */,
 				38A0D19D1887231000E21635 /* Main.storyboard in Resources */,
 			);
@@ -394,6 +400,17 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		3886C87C189F38140026C865 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				3886C87D189F38170026C865 /* en */,
+				3886C87E189F38180026C865 /* es */,
+				3886C87F189F38190026C865 /* ca */,
+			);
+			name = Localizable.strings;
+			path = ..;
+			sourceTree = "<group>";
+		};
 		38A0D1921887231000E21635 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (

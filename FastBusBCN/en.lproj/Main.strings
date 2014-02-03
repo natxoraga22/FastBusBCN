@@ -3,10 +3,10 @@
 "3c8-eM-Sfa.normalTitle" = "★";
 
 /* Class = "IBUILabel"; text = "No se han encontrado autobuses"; ObjectID = "ApQ-2C-BqX"; */
-"ApQ-2C-BqX.text" = "No se han encontrado autobuses";
+"ApQ-2C-BqX.text" = "No buses found";
 
 /* Class = "IBUILabel"; text = "Parada 941"; ObjectID = "FY2-Y8-k70"; */
-"FY2-Y8-k70.text" = "Stop 941";
+"FY2-Y8-k70.text" = "Bus stop 941";
 
 /* Class = "IBUISearchBar"; placeholder = "Código"; ObjectID = "QXs-ea-4dF"; */
 "QXs-ea-4dF.placeholder" = "Stop ID";
