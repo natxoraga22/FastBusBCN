@@ -39,8 +39,8 @@ static NSString *const SEARCH_STRING = @"Buscar";
 {
     [super viewDidLoad];
     
-    // Favorite button
-    [self updateFavoriteButtonImage];
+    // Update UI
+    [self updateUI];
     
     // Search bar
     self.busStopSearchBar.delegate = self;
@@ -75,15 +75,12 @@ static NSString *const SEARCH_STRING = @"Buscar";
     return _nextBusesFetcher;
 }
 
-static NSString *const BUS_STOP_STRING = @"Parada";
-
 - (void)setStopID:(NSInteger)stopID
 {
     if (_stopID != stopID) {
         _stopID = stopID;
-        if (stopID == -1) self.title = SEARCH_STRING;
-        else self.title = [NSString stringWithFormat:@"%@ %d", BUS_STOP_STRING, self.stopID];
         [self updateIsFavorite];
+        [self updateUI];
     }
 }
 
@@ -91,7 +88,7 @@ static NSString *const BUS_STOP_STRING = @"Parada";
 {
     if (_isFavorite != isFavorite) {
         _isFavorite = isFavorite;
-        [self updateFavoriteButtonImage];
+        [self updateUI];
     }
 }
 
@@ -107,6 +104,36 @@ static NSString *const BUS_STOP_STRING = @"Parada";
         }
     }
     if (!found) self.isFavorite = NO;
+}
+
+#pragma mark - UI
+
+static NSString *const BUS_STOP_STRING = @"Parada";
+static NSString *const FAVORITE_BUTTON_ACTIVATED_TITLE = @"★";
+static NSString *const FAVORITE_BUTTON_DEACTIVATED_TITLE = @"☆";
+
+- (void)updateUI
+{
+    // ViewController title
+    if (self.stopID == -1) self.title = SEARCH_STRING;
+    else self.title = [NSString stringWithFormat:@"%@ %d", BUS_STOP_STRING, self.stopID];
+    
+    // BusStop title
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSArray *favoriteBusStops = [userDefaults objectForKey:FAVORITE_BUS_STOPS_KEY];
+    BOOL found = NO;
+    for (NSDictionary *favoriteBusStop in favoriteBusStops) {
+        if ([favoriteBusStop[FAVORITE_BUS_STOP_ID_KEY] isEqualToNumber:@(self.stopID)]) {
+            found = YES;
+            self.busStopNameLabel.textColor = [UIColor blackColor];
+            self.busStopNameLabel.text = favoriteBusStop[FAVORITE_BUS_STOP_CUSTOM_NAME_KEY];
+        }
+    }
+    if (!found) self.busStopNameLabel.text = @"";
+    
+    // Favorite button
+    if (self.isFavorite) [self.favoriteButton setTitle:FAVORITE_BUTTON_ACTIVATED_TITLE forState:UIControlStateNormal];
+    else [self.favoriteButton setTitle:FAVORITE_BUTTON_DEACTIVATED_TITLE forState:UIControlStateNormal];
 }
 
 #pragma mark - Fetching
@@ -131,23 +158,41 @@ static NSString *const BUS_STOP_STRING = @"Parada";
     self.navigationItem.rightBarButtonItem = activityBarButtonItem;
 }
 
+#pragma mark - NextBusesFetcher Data Delegate
+
+static NSString *const WRONG_STOP_ERROR_MESSAGE = @"Parada equivocada";
+
+- (void)nextBusesFetcherDidFinishLoading:(NextBusesFetcher *)nextBusesFetcher
+{
+    // Bus stop not found
+    if (!self.nextBusesFetcher.busStopFound) {
+        self.busStopNameLabel.text = WRONG_STOP_ERROR_MESSAGE;
+        self.busStopNameLabel.textColor = [UIColor redColor];
+    }
+    // Bus stop found
+    else self.favoriteButton.enabled = YES;
+    
+    [self.nextBusesTableView reloadData];
+    
+    // Replace the UIActivityIndicatorView with a refresh button
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh
+                                                                                           target:self
+                                                                                           action:@selector(refreshPressed:)];
+    self.navigationItem.rightBarButtonItem.enabled = YES;
+}
+
 #pragma mark - Favorites management
 
 - (IBAction)favoriteButtonPressed:(UIButton *)sender
 {
-    if (self.isFavorite) {
-        self.isFavorite = NO;
-        [self removeFromFavorites];
-    }
-    else {
-        self.isFavorite = YES;
-        [self addToFavorites];
-    }
+    if (self.isFavorite) [self removeFromFavorites];
+    else [self addToFavorites];
 }
 
 static NSString *const CUSTOM_NAME_ALERT_VIEW_TITLE = @"Añadir favorito";
 static NSString *const CUSTOM_NAME_ALERT_VIEW_MESSAGE = @"Elige un nombre para la parada. Este nombre aparecerá en la lista de favoritos.";
-static NSString *const CUSTOM_NAME_ALERT_VIEW_CANCEL_BUTTON_TITLE = @"Aceptar";
+static NSString *const CUSTOM_NAME_ALERT_VIEW_CANCEL_BUTTON_TITLE = @"Cancelar";
+static NSString *const CUSTOM_NAME_ALERT_VIEW_ACCEPT_BUTTON_TITLE = @"Aceptar";
 
 - (void)addToFavorites
 {
@@ -155,13 +200,15 @@ static NSString *const CUSTOM_NAME_ALERT_VIEW_CANCEL_BUTTON_TITLE = @"Aceptar";
                                                               message:CUSTOM_NAME_ALERT_VIEW_MESSAGE
                                                              delegate:self
                                                     cancelButtonTitle:CUSTOM_NAME_ALERT_VIEW_CANCEL_BUTTON_TITLE
-                                                    otherButtonTitles:nil];
+                                                    otherButtonTitles:CUSTOM_NAME_ALERT_VIEW_ACCEPT_BUTTON_TITLE, nil];
     customNameAlert.alertViewStyle = UIAlertViewStylePlainTextInput;
     [customNameAlert show];
 }
 
 - (void)removeFromFavorites
 {
+    self.isFavorite = NO;
+    
     // Remove favorite from NSUserDefaults
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSMutableArray *favoriteBusStops = [[userDefaults objectForKey:FAVORITE_BUS_STOPS_KEY] mutableCopy];
@@ -178,13 +225,22 @@ static NSString *const CUSTOM_NAME_ALERT_VIEW_CANCEL_BUTTON_TITLE = @"Aceptar";
     [userDefaults synchronize];
 }
 
-static NSString *const FAVORITE_BUTTON_ACTIVATED_TITLE = @"★";
-static NSString *const FAVORITE_BUTTON_DEACTIVATED_TITLE = @"☆";
+#pragma mark - UIAlertView Delegate
 
-- (void)updateFavoriteButtonImage
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if (self.isFavorite) [self.favoriteButton setTitle:FAVORITE_BUTTON_ACTIVATED_TITLE forState:UIControlStateNormal];
-    else [self.favoriteButton setTitle:FAVORITE_BUTTON_DEACTIVATED_TITLE forState:UIControlStateNormal];
+    // Accept button
+    if (buttonIndex == 1) {
+        // Add favorite to NSUserDefaults with the custom name
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        NSMutableArray *favoriteBusStops = [[userDefaults objectForKey:FAVORITE_BUS_STOPS_KEY] mutableCopy];
+        [favoriteBusStops addObject:@{FAVORITE_BUS_STOP_ID_KEY: @(self.stopID),
+                                      FAVORITE_BUS_STOP_CUSTOM_NAME_KEY: [alertView textFieldAtIndex:0].text}];
+        [userDefaults setObject:[favoriteBusStops copy] forKey:FAVORITE_BUS_STOPS_KEY];
+        [userDefaults synchronize];
+        
+        self.isFavorite = YES;
+    }
 }
 
 #pragma mark - Search management
@@ -205,33 +261,11 @@ static NSString *const FAVORITE_BUTTON_DEACTIVATED_TITLE = @"☆";
     [self.view endEditing:YES];
 }
 
-#pragma mark - NextBusesFetcher Data Delegate
+#pragma mark - UISearchBar Delegate
 
-static NSString *const WRONG_STOP_ERROR_MESSAGE = @"Parada equivocada";
-
-- (void)nextBusesFetcherDidFinishLoading:(NextBusesFetcher *)nextBusesFetcher
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
-    //NSString *busStopName = self.nextBusesFetcher.busStopInfo[FETCHED_BUS_STOP_CUSTOM_NAME_KEY];
-    // Bus stop not found
-    if (!self.nextBusesFetcher.busStopFound) {
-        self.busStopNameLabel.text = WRONG_STOP_ERROR_MESSAGE;
-        self.busStopNameLabel.textColor = [UIColor redColor];
-    }
-    // Bus stop found
-    else {
-        // TODO: Solve that
-        //self.busStopNameLabel.text = busStopName;
-        self.busStopNameLabel.textColor = [UIColor blackColor];
-        // Enable the favorite button
-        self.favoriteButton.enabled = YES;
-    }
-    [self.nextBusesTableView reloadData];
-    
-    // Replace the UIActivityIndicatorView with a refresh button
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh
-                                                                                           target:self
-                                                                                           action:@selector(refreshPressed:)];
-    self.navigationItem.rightBarButtonItem.enabled = YES;
+    [self cancelSearch];
 }
 
 #pragma mark - TableView Data Source
@@ -276,8 +310,10 @@ static NSString *const BUS_TIME_STRING = @"min";
     NSString *busTimeString = @"";
     BOOL first = YES;
     for (NSNumber *time in nextBus[FETCHED_NEXT_BUS_TIME_KEY]) {
+        // Comma separator between times
         if (first) first = NO;
-        else busTimeString = [busTimeString stringByAppendingString:@", "]; // Coma separator between times
+        else busTimeString = [busTimeString stringByAppendingString:@", "];
+        // Time itself
         if ([time integerValue] == 0) busTimeString = [busTimeString stringByAppendingString:IMMINENT_BUS_TIME];
         else busTimeString = [busTimeString stringByAppendingString:[NSString stringWithFormat:@"%@ %@", time, BUS_TIME_STRING]];
     }
@@ -308,26 +344,6 @@ static NSString *const DIAGONAL_BUS_LINE_PREFIX = @"D";
     else if ([prefix isEqualToString:DIAGONAL_BUS_LINE_PREFIX]) busLineColor = [UIColor dBusLineColor];
     
     return busLineColor;
-}
-
-#pragma mark - UISearchBar Delegate
-
-- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
-{
-    [self cancelSearch];
-}
-
-#pragma mark - UIAlertView Delegate
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    // Add favorite to NSUserDefaults
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSMutableArray *favoriteBusStops = [[userDefaults objectForKey:FAVORITE_BUS_STOPS_KEY] mutableCopy];
-    [favoriteBusStops addObject:@{FAVORITE_BUS_STOP_ID_KEY: @(self.stopID),
-                                  FAVORITE_BUS_STOP_CUSTOM_NAME_KEY: [alertView textFieldAtIndex:0].text}];
-    [userDefaults setObject:[favoriteBusStops copy] forKey:FAVORITE_BUS_STOPS_KEY];
-    [userDefaults synchronize];
 }
 
 @end
