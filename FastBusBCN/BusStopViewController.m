@@ -39,7 +39,10 @@ static NSString *const BUS_STOP_LOCALIZED_ID_ID = @"BUS_STOP_ID";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-        
+    
+    // iAd
+    self.canDisplayBannerAds = YES;
+    
     // Update UI
     [self updateUI];
     

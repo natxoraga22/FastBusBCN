@@ -18,6 +18,9 @@
 {
     [super viewDidLoad];
     
+    // iAd
+    self.canDisplayBannerAds = YES;
+    
     // Edit button
     self.navigationItem.leftBarButtonItem = self.editButtonItem;
 }
