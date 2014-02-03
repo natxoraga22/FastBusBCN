@@ -1,0 +1,24 @@
+
+/* Class = "IBUIButton"; normalTitle = "★"; ObjectID = "3c8-eM-Sfa"; */
+"3c8-eM-Sfa.normalTitle" = "★";
+
+/* Class = "IBUILabel"; text = "No se han encontrado autobuses"; ObjectID = "ApQ-2C-BqX"; */
+"ApQ-2C-BqX.text" = "No se han encontrado autobuses";
+
+/* Class = "IBUILabel"; text = "Parada 941"; ObjectID = "FY2-Y8-k70"; */
+"FY2-Y8-k70.text" = "Parada 941";
+
+/* Class = "IBUISearchBar"; placeholder = "Código"; ObjectID = "QXs-ea-4dF"; */
+"QXs-ea-4dF.placeholder" = "Código";
+
+/* Class = "IBUILabel"; text = "5 minutos"; ObjectID = "SsI-73-Reh"; */
+"SsI-73-Reh.text" = "5 minutos";
+
+/* Class = "IBUINavigationItem"; title = "Favoritos"; ObjectID = "Thp-mJ-CAd"; */
+"Thp-mJ-CAd.title" = "Favoritos";
+
+/* Class = "IBUILabel"; text = "46"; ObjectID = "Y1u-Ys-kvp"; */
+"Y1u-Ys-kvp.text" = "46";
+
+/* Class = "IBUILabel"; text = "Gran Via - Mandoni"; ObjectID = "fx1-dV-BYH"; */
+"fx1-dV-BYH.text" = "Gran Via - Mandoni";

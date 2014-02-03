@@ -202,6 +202,7 @@ static NSString *const CUSTOM_NAME_ALERT_VIEW_ACCEPT_BUTTON_TITLE = @"Aceptar";
                                                     cancelButtonTitle:CUSTOM_NAME_ALERT_VIEW_CANCEL_BUTTON_TITLE
                                                     otherButtonTitles:CUSTOM_NAME_ALERT_VIEW_ACCEPT_BUTTON_TITLE, nil];
     customNameAlert.alertViewStyle = UIAlertViewStylePlainTextInput;
+    [customNameAlert textFieldAtIndex:0].text = self.busStopNameLabel.text;
     [customNameAlert show];
 }
 

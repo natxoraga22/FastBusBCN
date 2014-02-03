@@ -69,6 +69,14 @@
 		3839FA591888BDD9005D146D /* NextBusesFetcherDataDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NextBusesFetcherDataDelegate.h; sourceTree = "<group>"; };
 		387CFB50188DA42B00AAECC9 /* UIColor+BusLinesColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+BusLinesColor.h"; sourceTree = "<group>"; };
 		387CFB51188DA42B00AAECC9 /* UIColor+BusLinesColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+BusLinesColor.m"; sourceTree = "<group>"; };
+		3886C86E189F305D0026C865 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		3886C870189F315A0026C865 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Main.strings; sourceTree = "<group>"; };
+		3886C871189F315A0026C865 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		3886C872189F315A0026C865 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		3886C873189F31B70026C865 /* ca */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ca; path = ca.lproj/Main.strings; sourceTree = "<group>"; };
+		3886C874189F31B70026C865 /* ca */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ca; path = ca.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		3886C875189F31B70026C865 /* ca */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ca; path = ca.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		3886C877189F31F50026C865 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Main.strings; sourceTree = "<group>"; };
 		3896AD47188C5236004C082E /* NextBusTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NextBusTableViewCell.h; sourceTree = "<group>"; };
 		3896AD48188C5236004C082E /* NextBusTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NextBusTableViewCell.m; sourceTree = "<group>"; };
 		38A0D1861887231000E21635 /* FastBusBCN.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FastBusBCN.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -76,7 +84,6 @@
 		38A0D18B1887231000E21635 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		38A0D18D1887231000E21635 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		38A0D1911887231000E21635 /* FastBusBCN-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "FastBusBCN-Info.plist"; sourceTree = "<group>"; };
-		38A0D1931887231000E21635 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		38A0D1951887231000E21635 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		38A0D1971887231000E21635 /* FastBusBCN-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FastBusBCN-Prefix.pch"; sourceTree = "<group>"; };
 		38A0D1981887231000E21635 /* FastBusBCNAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FastBusBCNAppDelegate.h; sourceTree = "<group>"; };
@@ -88,7 +95,6 @@
 		38A0D1B31887231100E21635 /* FastBusBCNTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "FastBusBCNTests-Info.plist"; sourceTree = "<group>"; };
 		38A0D1B51887231100E21635 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		38A0D1B71887231100E21635 /* FastBusBCNTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FastBusBCNTests.m; sourceTree = "<group>"; };
-		38A0D1CB1887382000E21635 /* libxml2.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.2.dylib; path = usr/lib/libxml2.2.dylib; sourceTree = SDKROOT; };
 		38A0D1CE18873D2C00E21635 /* FavoriteBusStopsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FavoriteBusStopsTableViewController.h; sourceTree = "<group>"; };
 		38A0D1CF18873D2C00E21635 /* FavoriteBusStopsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FavoriteBusStopsTableViewController.m; sourceTree = "<group>"; };
 		38A0D1D118874A3700E21635 /* NextBusesFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NextBusesFetcher.h; sourceTree = "<group>"; };
@@ -177,7 +183,6 @@
 		38A0D1881887231000E21635 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				38A0D1CB1887382000E21635 /* libxml2.2.dylib */,
 				38A0D1891887231000E21635 /* Foundation.framework */,
 				38A0D18B1887231000E21635 /* CoreGraphics.framework */,
 				38A0D18D1887231000E21635 /* UIKit.framework */,
@@ -189,11 +194,11 @@
 		38A0D18F1887231000E21635 /* FastBusBCN */ = {
 			isa = PBXGroup;
 			children = (
+				38A0D19B1887231000E21635 /* Main.storyboard */,
 				38A0D1981887231000E21635 /* FastBusBCNAppDelegate.h */,
 				38A0D1991887231000E21635 /* FastBusBCNAppDelegate.m */,
 				38A0D1D418874A6000E21635 /* Model */,
 				38A0D1CD1887394300E21635 /* ViewControllers */,
-				38A0D19B1887231000E21635 /* Main.storyboard */,
 				38A0D1A41887231000E21635 /* Images.xcassets */,
 				3839FA3E18889117005D146D /* HTMLReader */,
 				38A0D1901887231000E21635 /* Supporting Files */,
@@ -312,6 +317,8 @@
 			knownRegions = (
 				en,
 				Base,
+				es,
+				ca,
 			);
 			mainGroup = 38A0D17D1887231000E21635;
 			productRefGroup = 38A0D1871887231000E21635 /* Products */;
@@ -390,7 +397,9 @@
 		38A0D1921887231000E21635 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				38A0D1931887231000E21635 /* en */,
+				3886C86E189F305D0026C865 /* en */,
+				3886C871189F315A0026C865 /* es */,
+				3886C874189F31B70026C865 /* ca */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -399,6 +408,9 @@
 			isa = PBXVariantGroup;
 			children = (
 				38A0D19C1887231000E21635 /* Base */,
+				3886C870189F315A0026C865 /* es */,
+				3886C873189F31B70026C865 /* ca */,
+				3886C877189F31F50026C865 /* en */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -407,6 +419,8 @@
 			isa = PBXVariantGroup;
 			children = (
 				38A0D1B51887231100E21635 /* en */,
+				3886C872189F315A0026C865 /* es */,
+				3886C875189F31B70026C865 /* ca */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";

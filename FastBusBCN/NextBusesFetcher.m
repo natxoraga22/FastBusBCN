@@ -108,6 +108,7 @@ static NSString *const NEXT_BUS_TIME_CSS_SELECTOR = @"div b span";
 
         self.busStopInfo = [busStopMutableInfo copy];
     }
+    else self.busStopInfo = nil;
 }
 
 - (NSString *)parseLine:(NSString *)line
