@@ -70,7 +70,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <searchBar contentMode="redraw" placeholder="Código" showsCancelButton="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QXs-ea-4dF">
+                            <searchBar contentMode="redraw" placeholder="Código" translatesAutoresizingMaskIntoConstraints="NO" id="QXs-ea-4dF">
                                 <rect key="frame" x="0.0" y="64" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="numberPad"/>

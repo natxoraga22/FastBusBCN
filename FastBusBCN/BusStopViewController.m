@@ -282,10 +282,16 @@ static NSString *const ALERT_VIEW_ACCEPT_BUTTON_LOCALIZED_TITLE_ID = @"CUSTOM_NA
 - (void)cancelSearch
 {
     self.busStopSearchBar.text = @"";
+    self.busStopSearchBar.showsCancelButton = NO;
     [self.view endEditing:YES];
 }
 
 #pragma mark - UISearchBar Delegate
+
+- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
+{
+    self.busStopSearchBar.showsCancelButton = YES;
+}
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
