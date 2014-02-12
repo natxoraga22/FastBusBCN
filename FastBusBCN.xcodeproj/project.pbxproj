@@ -314,6 +314,9 @@
 				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = RagaSoft;
 				TargetAttributes = {
+					38A0D1851887231000E21635 = {
+						DevelopmentTeam = XZSJN7HDJ6;
+					};
 					38A0D1A91887231100E21635 = {
 						TestTargetID = 38A0D1851887231000E21635;
 					};
@@ -412,7 +415,6 @@
 				3886C87F189F38190026C865 /* ca */,
 			);
 			name = Localizable.strings;
-			path = ..;
 			sourceTree = "<group>";
 		};
 		38A0D1921887231000E21635 /* InfoPlist.strings */ = {
@@ -534,10 +536,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "FastBusBCN/FastBusBCN-Prefix.pch";
 				INFOPLIST_FILE = "FastBusBCN/FastBusBCN-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -547,10 +552,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "FastBusBCN/FastBusBCN-Prefix.pch";
 				INFOPLIST_FILE = "FastBusBCN/FastBusBCN-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

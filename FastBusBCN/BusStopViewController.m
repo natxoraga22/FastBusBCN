@@ -258,6 +258,7 @@ static NSString *const ALERT_VIEW_ACCEPT_BUTTON_LOCALIZED_TITLE_ID = @"CUSTOM_NA
         // Add favorite to NSUserDefaults with the custom name
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
         NSMutableArray *favoriteBusStops = [[userDefaults objectForKey:FAVORITE_BUS_STOPS_KEY] mutableCopy];
+        if (!favoriteBusStops) favoriteBusStops = [[NSMutableArray alloc] init];
         [favoriteBusStops addObject:@{FAVORITE_BUS_STOP_ID_KEY: @(self.stopID),
                                       FAVORITE_BUS_STOP_CUSTOM_NAME_KEY: [alertView textFieldAtIndex:0].text}];
         [userDefaults setObject:[favoriteBusStops copy] forKey:FAVORITE_BUS_STOPS_KEY];
