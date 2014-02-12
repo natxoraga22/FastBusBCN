@@ -1,0 +1,23 @@
+/* 
+  Localizable.strings
+  FastBusBCN
+
+  Created by Natxo Raga on 03/02/14.
+  Copyright (c) 2014 RagaSoft. All rights reserved.
+*/
+
+"BUS_STOP" = "Parada";
+"BUS_STOP_ID" = "Código";
+"SEARCH" = "Buscar";
+"IMMINENT_BUS" = "Inminente";
+"BUS_TIME" = "min";
+
+// Errors
+"WRONG_STOP" = "Parada equivocada";
+"CONNECTION_FAILED" = "La conexión ha fallado";
+
+// Custom name alert view
+"CUSTOM_NAME_ALERT_VIEW_TITLE" = "Añadir favorito";
+"CUSTOM_NAME_ALERT_VIEW_MESSAGE" = "Elige un nombre para la parada. Este nombre aparecerá en la lista de favoritos.";
+"CUSTOM_NAME_ALERT_VIEW_CANCEL_BUTTON_TITLE" = "Cancelar";
+"CUSTOM_NAME_ALERT_VIEW_ACCEPT_BUTTON_TITLE" = "Aceptar";
