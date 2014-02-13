@@ -11,6 +11,7 @@
 "SEARCH" = "Buscar";
 "IMMINENT_BUS" = "Imminent";
 "BUS_TIME" = "min";
+"ADD_FAVORITE" = "Afegir a favorits →";
 
 // Errors
 "WRONG_STOP" = "Parada equivocada";

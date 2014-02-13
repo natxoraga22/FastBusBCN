@@ -114,6 +114,7 @@ static NSString *const BUS_STOP_LOCALIZED_ID_ID = @"BUS_STOP_ID";
 #pragma mark - UI
 
 static NSString *const BUS_STOP_LOCALIZED_STRING_ID = @"BUS_STOP";
+static NSString *const ADD_FAVORITE_LOCALIZED_STRING_ID = @"ADD_FAVORITE";
 static NSString *const FAVORITE_BUTTON_ACTIVATED_TITLE = @"★";
 static NSString *const FAVORITE_BUTTON_DEACTIVATED_TITLE = @"☆";
 
@@ -131,11 +132,16 @@ static NSString *const FAVORITE_BUTTON_DEACTIVATED_TITLE = @"☆";
     for (NSDictionary *favoriteBusStop in favoriteBusStops) {
         if ([favoriteBusStop[FAVORITE_BUS_STOP_ID_KEY] isEqualToNumber:@(self.stopID)]) {
             found = YES;
+            self.busStopNameLabel.textAlignment = NSTextAlignmentLeft;
             self.busStopNameLabel.textColor = [UIColor blackColor];
             self.busStopNameLabel.text = favoriteBusStop[FAVORITE_BUS_STOP_CUSTOM_NAME_KEY];
         }
     }
-    if (!found) self.busStopNameLabel.text = @"";
+    if (!found) {
+        self.busStopNameLabel.textAlignment = NSTextAlignmentRight;
+        self.busStopNameLabel.textColor = [UIColor blackColor];
+        self.busStopNameLabel.text = NSLocalizedString(ADD_FAVORITE_LOCALIZED_STRING_ID, @"");
+    }
     
     // Favorite button
     if (self.isFavorite) [self.favoriteButton setTitle:FAVORITE_BUTTON_ACTIVATED_TITLE forState:UIControlStateNormal];
@@ -173,6 +179,7 @@ static NSString *const FAILED_CONNECTION_LOCALIZED_ID = @"CONNECTION_FAILED";
 {
     // Bus stop not found
     if (!self.nextBusesFetcher.busStopFound) {
+        self.busStopNameLabel.textAlignment = NSTextAlignmentLeft;
         self.busStopNameLabel.textColor = [UIColor redColor];
         self.busStopNameLabel.text = NSLocalizedString(WRONG_STOP_LOCALIZED_ERROR_MESSAGE_ID, @"");
     }
@@ -194,6 +201,7 @@ static NSString *const FAILED_CONNECTION_LOCALIZED_ID = @"CONNECTION_FAILED";
 
 - (void)nextBusesFetcherDidFail:(NextBusesFetcher *)nextBusesFetcher
 {
+    self.busStopNameLabel.textAlignment = NSTextAlignmentLeft;
     self.busStopNameLabel.textColor = [UIColor redColor];
     self.busStopNameLabel.text = NSLocalizedString(FAILED_CONNECTION_LOCALIZED_ID, @"");
     

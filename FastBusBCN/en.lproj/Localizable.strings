@@ -11,6 +11,7 @@
 "SEARCH" = "Search";
 "IMMINENT_BUS" = "Imminent";
 "BUS_TIME" = "min";
+"ADD_FAVORITE" = "Add to favorites →";
 
 // Errors
 "WRONG_STOP" = "Wrong bus stop";
