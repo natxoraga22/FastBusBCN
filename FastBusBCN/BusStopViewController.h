@@ -18,6 +18,7 @@ extern NSString *const FAVORITE_BUS_STOPS_KEY;
 extern NSString *const FAVORITE_BUS_STOP_ID_KEY;
 extern NSString *const FAVORITE_BUS_STOP_CUSTOM_NAME_KEY;
 
+/// Bus stop identifier
 @property (nonatomic) NSInteger stopID;
 
 @end

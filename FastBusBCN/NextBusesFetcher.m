@@ -32,7 +32,7 @@ static NSString *const NEXT_BUSES_URL = @"http://www.ambmobilitat.cat/ambtempsbu
 - (void)fetchStopNameAndNextBusesForStop:(NSInteger)stopID
 {    
     // Create the HTML call string
-    NSString *nextBusesFetchingString = [NSString stringWithFormat:@"%@%d", NEXT_BUSES_URL, stopID];
+    NSString *nextBusesFetchingString = [NSString stringWithFormat:@"%@%ld", NEXT_BUSES_URL, (long)stopID];
 
     // Create the URL to make the call
     NSURL *nextBusesFetchingURL = [NSURL URLWithString:nextBusesFetchingString];

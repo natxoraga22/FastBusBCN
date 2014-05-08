@@ -132,6 +132,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		38768E76190D801A00A28903 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				3839FA591888BDD9005D146D /* NextBusesFetcherDataDelegate.h */,
+			);
+			name = Protocols;
+			sourceTree = "<group>";
+		};
 		387CFB4F188DA3F400AAECC9 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
@@ -181,6 +189,7 @@
 				3886C87C189F38140026C865 /* Localizable.strings */,
 				38A0D1981887231000E21635 /* FastBusBCNAppDelegate.h */,
 				38A0D1991887231000E21635 /* FastBusBCNAppDelegate.m */,
+				38768E76190D801A00A28903 /* Protocols */,
 				38A0D1D418874A6000E21635 /* Model */,
 				38A0D1CD1887394300E21635 /* ViewControllers */,
 				38A0D1A41887231000E21635 /* Images.xcassets */,
@@ -236,7 +245,6 @@
 			children = (
 				38A0D1D118874A3700E21635 /* NextBusesFetcher.h */,
 				38A0D1D218874A3700E21635 /* NextBusesFetcher.m */,
-				3839FA591888BDD9005D146D /* NextBusesFetcherDataDelegate.h */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -536,6 +544,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -552,6 +561,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;

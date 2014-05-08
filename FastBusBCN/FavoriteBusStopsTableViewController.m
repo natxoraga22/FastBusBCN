@@ -54,10 +54,17 @@ static NSString *const BUS_STOP_LOCALIZED_STRING_ID = @"BUS_STOP";
     NSDictionary *favoriteBusStop = [userDefaults objectForKey:FAVORITE_BUS_STOPS_KEY][indexPath.row];
     
     // Title --> Name, Subtitle --> ID
-    cell.textLabel.text = favoriteBusStop[FAVORITE_BUS_STOP_CUSTOM_NAME_KEY];
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(BUS_STOP_LOCALIZED_STRING_ID, @""),
-                                                                     favoriteBusStop[FAVORITE_BUS_STOP_ID_KEY]];
-    
+    if (![favoriteBusStop[FAVORITE_BUS_STOP_CUSTOM_NAME_KEY] isEqualToString:@""]) {
+        cell.textLabel.text = favoriteBusStop[FAVORITE_BUS_STOP_CUSTOM_NAME_KEY];
+        cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(BUS_STOP_LOCALIZED_STRING_ID, @""),
+                                                                         favoriteBusStop[FAVORITE_BUS_STOP_ID_KEY]];
+    }
+    // Title --> ID, no Subtitle
+    else {
+        cell.textLabel.text = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(BUS_STOP_LOCALIZED_STRING_ID, @""),
+                                                                   favoriteBusStop[FAVORITE_BUS_STOP_ID_KEY]];
+        cell.detailTextLabel.text = @"";
+    }
     return cell;
 }
 
@@ -108,16 +115,16 @@ static NSString *const SHOW_SEARCH_BUS_STOP_SEGUE_ID = @"ShowSearchBusStop";
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
+    BusStopViewController *busStopVC = [segue destinationViewController];
+    
     // Segue from a UITableView row
     if ([segue.identifier isEqualToString:SHOW_NEXT_BUSES_SEGUE_ID]) {
-        BusStopViewController *busStopVC = [segue destinationViewController];
         NSIndexPath *busStopIndexPath = [self.tableView indexPathForSelectedRow];
         NSArray *favoriteBusStops = [[NSUserDefaults standardUserDefaults] objectForKey:FAVORITE_BUS_STOPS_KEY];
         busStopVC.stopID = [favoriteBusStops[busStopIndexPath.row][FAVORITE_BUS_STOP_ID_KEY] integerValue];
     }
     // Segue from a search UIBarButtonItem
     else if ([segue.identifier isEqualToString:SHOW_SEARCH_BUS_STOP_SEGUE_ID]) {
-        BusStopViewController *busStopVC = [segue destinationViewController];
         busStopVC.stopID = -1;
     }
 }

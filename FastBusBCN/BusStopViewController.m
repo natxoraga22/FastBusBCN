@@ -122,8 +122,8 @@ static NSString *const FAVORITE_BUTTON_DEACTIVATED_TITLE = @"☆";
 {
     // ViewController title
     if (self.stopID == -1) self.title = NSLocalizedString(SEARCH_LOCALIZED_STRING_ID, @"");
-    else self.title = [NSString stringWithFormat:@"%@ %d", NSLocalizedString(BUS_STOP_LOCALIZED_STRING_ID, @""),
-                                                           self.stopID];
+    else self.title = [NSString stringWithFormat:@"%@ %ld", NSLocalizedString(BUS_STOP_LOCALIZED_STRING_ID, @""),
+                                                           (long)self.stopID];
     
     // BusStop title
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
@@ -217,7 +217,7 @@ static NSString *const FAILED_CONNECTION_LOCALIZED_ID = @"CONNECTION_FAILED";
 - (IBAction)favoriteButtonPressed:(UIButton *)sender
 {
     if (self.isFavorite) [self removeFromFavorites];
-    else [self addToFavorites];
+    else [self askFavoriteCustomName];
 }
 
 static NSString *const ALERT_VIEW_LOCALIZED_TITLE_ID = @"CUSTOM_NAME_ALERT_VIEW_TITLE";
@@ -225,16 +225,32 @@ static NSString *const ALERT_VIEW_LOCALIZED_MESSAGE_ID = @"CUSTOM_NAME_ALERT_VIE
 static NSString *const ALERT_VIEW_CANCEL_BUTTON_LOCALIZED_TITLE_ID = @"CUSTOM_NAME_ALERT_VIEW_CANCEL_BUTTON_TITLE";
 static NSString *const ALERT_VIEW_ACCEPT_BUTTON_LOCALIZED_TITLE_ID = @"CUSTOM_NAME_ALERT_VIEW_ACCEPT_BUTTON_TITLE";
 
-- (void)addToFavorites
+- (void)askFavoriteCustomName
 {
     UIAlertView *customNameAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(ALERT_VIEW_LOCALIZED_TITLE_ID, @"")
                                                               message:NSLocalizedString(ALERT_VIEW_LOCALIZED_MESSAGE_ID, @"")
                                                              delegate:self
                                                     cancelButtonTitle:NSLocalizedString(ALERT_VIEW_CANCEL_BUTTON_LOCALIZED_TITLE_ID, @"")
                                                     otherButtonTitles:NSLocalizedString(ALERT_VIEW_ACCEPT_BUTTON_LOCALIZED_TITLE_ID, @""), nil];
+    
     customNameAlert.alertViewStyle = UIAlertViewStylePlainTextInput;
-    [customNameAlert textFieldAtIndex:0].text = self.busStopNameLabel.text;
+    if (![self.busStopNameLabel.text isEqualToString:NSLocalizedString(ADD_FAVORITE_LOCALIZED_STRING_ID, @"")]) {
+        [customNameAlert textFieldAtIndex:0].text = self.busStopNameLabel.text;
+    }
     [customNameAlert show];
+}
+
+- (void)addToFavoritesWithCustomName:(NSString *)customName
+{
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSMutableArray *favoriteBusStops = [[userDefaults objectForKey:FAVORITE_BUS_STOPS_KEY] mutableCopy];
+    if (!favoriteBusStops) favoriteBusStops = [[NSMutableArray alloc] init];
+    [favoriteBusStops addObject:@{FAVORITE_BUS_STOP_ID_KEY: @(self.stopID),
+                                  FAVORITE_BUS_STOP_CUSTOM_NAME_KEY: customName}];
+    [userDefaults setObject:[favoriteBusStops copy] forKey:FAVORITE_BUS_STOPS_KEY];
+    [userDefaults synchronize];
+    
+    self.isFavorite = YES;
 }
 
 - (void)removeFromFavorites
@@ -264,15 +280,7 @@ static NSString *const ALERT_VIEW_ACCEPT_BUTTON_LOCALIZED_TITLE_ID = @"CUSTOM_NA
     // Accept button
     if (buttonIndex == 1) {
         // Add favorite to NSUserDefaults with the custom name
-        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-        NSMutableArray *favoriteBusStops = [[userDefaults objectForKey:FAVORITE_BUS_STOPS_KEY] mutableCopy];
-        if (!favoriteBusStops) favoriteBusStops = [[NSMutableArray alloc] init];
-        [favoriteBusStops addObject:@{FAVORITE_BUS_STOP_ID_KEY: @(self.stopID),
-                                      FAVORITE_BUS_STOP_CUSTOM_NAME_KEY: [alertView textFieldAtIndex:0].text}];
-        [userDefaults setObject:[favoriteBusStops copy] forKey:FAVORITE_BUS_STOPS_KEY];
-        [userDefaults synchronize];
-        
-        self.isFavorite = YES;
+        [self addToFavoritesWithCustomName:[alertView textFieldAtIndex:0].text];
     }
 }
 
