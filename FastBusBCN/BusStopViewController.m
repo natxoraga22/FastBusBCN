@@ -18,7 +18,9 @@
 @property (weak, nonatomic) IBOutlet UILabel *busStopNameLabel;
 @property (weak, nonatomic) IBOutlet UIButton *favoriteButton;
 @property (weak, nonatomic) IBOutlet UISearchBar *busStopSearchBar;
+@property (weak, nonatomic) IBOutlet UIRefreshControl *nextBusesRefreshControl;
 @property (strong, nonatomic) NextBusesFetcher *nextBusesFetcher;
+@property (nonatomic) BOOL viewLoaded;
 @property (nonatomic) BOOL tableViewIsEmpty;
 @end
 
@@ -40,18 +42,25 @@ static NSString *const BUS_STOP_LOCALIZED_ID = @"BUS_STOP_ID";
         self.canDisplayBannerAds = YES;
     }
     
-    // Update UI
-    [self updateUI];
-    
     // Search bar
     [self setupSearch];
+    
+    // Pull to refresh
+    [self setupPullToRefresh];
+    
+    // Update UI
+    [self updateUI];
     
     // Conditional setup
     if (self.stopID == -1) {
         [self.busStopSearchBar becomeFirstResponder];
         self.favoriteButton.enabled = NO;
     }
-    else [self fetchNextBuses];
+    else {
+        [self fetchNextBuses];
+    }
+    
+    self.viewLoaded = YES;
 }
 
 - (void)setupSearch
@@ -70,6 +79,14 @@ static NSString *const BUS_STOP_LOCALIZED_ID = @"BUS_STOP_ID";
                                                                            action:@selector(searchButtonPressed:)];
     [keyboardToolbar setItems:@[spaceBarButtonItem, searchBarButtonItem]];
     self.busStopSearchBar.inputAccessoryView = keyboardToolbar;
+}
+
+- (void)setupPullToRefresh
+{
+    UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
+    [refreshControl addTarget:self action:@selector(refreshTriggered) forControlEvents:UIControlEventValueChanged];
+    [self.nextBusesTableView addSubview:refreshControl];
+    self.nextBusesRefreshControl = refreshControl;
 }
 
 #pragma mark - Getters & Setters
@@ -127,31 +144,28 @@ static NSString *const FAVORITE_BUTTON_DEACTIVATED_TITLE = @"☆";
 
 #pragma mark - Fetching
 
-- (IBAction)refreshPressed:(UIBarButtonItem *)sender
+- (void)refreshTriggered
 {
     [self fetchNextBuses];
 }
 
 - (void)fetchNextBuses
 {
-    [self.nextBusesFetcher fetchStopNameAndNextBusesForStop:self.stopID];
+    // Activate the network activity indicators
+    [self.nextBusesRefreshControl beginRefreshing];
+    [self.nextBusesTableView setContentOffset:CGPointMake(0, -self.nextBusesRefreshControl.frame.size.height) animated:YES];
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     
     // Disable the favorite button
     self.favoriteButton.enabled = NO;
     
-    // Put a UIActivityIndicatorView on the NavigationBar and activate the network activity indicator
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-    UIActivityIndicatorView *activityIndicatorView = [[UIActivityIndicatorView alloc]
-                                                      initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    [activityIndicatorView startAnimating];
-    UIBarButtonItem *activityBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:activityIndicatorView];
-    self.navigationItem.rightBarButtonItem = activityBarButtonItem;
+    [self.nextBusesFetcher fetchStopNameAndNextBusesForStop:self.stopID];
 }
 
 #pragma mark - NextBusesFetcher Data Delegate
 
-static NSString *const WRONG_STOP_LOCALIZED_ERROR_MESSAGE_ID = @"WRONG_STOP";
-static NSString *const FAILED_CONNECTION_LOCALIZED_ID = @"CONNECTION_FAILED";
+static NSString *const WRONG_STOP_LOCALIZED_ERROR_MESSAGE = @"WRONG_STOP";
+static NSString *const FAILED_CONNECTION_LOCALIZED_STRING = @"CONNECTION_FAILED";
 
 - (void)nextBusesFetcherDidFinishLoading:(NextBusesFetcher *)nextBusesFetcher
 {
@@ -159,7 +173,7 @@ static NSString *const FAILED_CONNECTION_LOCALIZED_ID = @"CONNECTION_FAILED";
     if (!self.nextBusesFetcher.busStopFound) {
         self.busStopNameLabel.textAlignment = NSTextAlignmentLeft;
         self.busStopNameLabel.textColor = [UIColor redColor];
-        self.busStopNameLabel.text = NSLocalizedString(WRONG_STOP_LOCALIZED_ERROR_MESSAGE_ID, @"");
+        self.busStopNameLabel.text = NSLocalizedString(WRONG_STOP_LOCALIZED_ERROR_MESSAGE, @"");
     }
     // Bus stop found
     else {
@@ -170,7 +184,7 @@ static NSString *const FAILED_CONNECTION_LOCALIZED_ID = @"CONNECTION_FAILED";
     
     [self.nextBusesTableView reloadData];
     
-    // Replace the UIActivityIndicatorView with a refresh button
+    // Deactivate the network activity indicators
     [self stopShowingNetworkActivityIndicators];
 }
 
@@ -178,19 +192,17 @@ static NSString *const FAILED_CONNECTION_LOCALIZED_ID = @"CONNECTION_FAILED";
 {
     self.busStopNameLabel.textAlignment = NSTextAlignmentLeft;
     self.busStopNameLabel.textColor = [UIColor redColor];
-    self.busStopNameLabel.text = NSLocalizedString(FAILED_CONNECTION_LOCALIZED_ID, @"");
+    self.busStopNameLabel.text = NSLocalizedString(FAILED_CONNECTION_LOCALIZED_STRING, @"");
     
-    // Replace the UIActivityIndicatorView with a refresh button
+    // Deactivate the network activity indicators
     [self stopShowingNetworkActivityIndicators];
 }
 
 - (void)stopShowingNetworkActivityIndicators
 {
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh
-                                                                                           target:self
-                                                                                           action:@selector(refreshPressed:)];
-    self.navigationItem.rightBarButtonItem.enabled = YES;
+    [self.nextBusesRefreshControl endRefreshing];
+    [self.nextBusesTableView setContentOffset:CGPointMake(0, 0) animated:YES];
 }
 
 #pragma mark - Favorites management
@@ -201,18 +213,18 @@ static NSString *const FAILED_CONNECTION_LOCALIZED_ID = @"CONNECTION_FAILED";
     else [self askFavoriteCustomName];
 }
 
-static NSString *const ALERT_VIEW_LOCALIZED_TITLE_ID = @"NEW_FAVORITE_ALERT_VIEW_TITLE";
-static NSString *const ALERT_VIEW_LOCALIZED_MESSAGE_ID = @"NEW_FAVORITE_ALERT_VIEW_MESSAGE";
-static NSString *const ALERT_VIEW_CANCEL_BUTTON_LOCALIZED_TITLE_ID = @"NEW_FAVORITE_ALERT_VIEW_CANCEL_BUTTON_TITLE";
-static NSString *const ALERT_VIEW_ACCEPT_BUTTON_LOCALIZED_TITLE_ID = @"NEW_FAVORITE_ALERT_VIEW_ACCEPT_BUTTON_TITLE";
+static NSString *const ALERT_VIEW_LOCALIZED_TITLE = @"NEW_FAVORITE_ALERT_VIEW_TITLE";
+static NSString *const ALERT_VIEW_LOCALIZED_MESSAGE = @"NEW_FAVORITE_ALERT_VIEW_MESSAGE";
+static NSString *const ALERT_VIEW_CANCEL_BUTTON_LOCALIZED_TITLE = @"NEW_FAVORITE_ALERT_VIEW_CANCEL_BUTTON_TITLE";
+static NSString *const ALERT_VIEW_ACCEPT_BUTTON_LOCALIZED_TITLE = @"NEW_FAVORITE_ALERT_VIEW_ACCEPT_BUTTON_TITLE";
 
 - (void)askFavoriteCustomName
 {
-    UIAlertView *customNameAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(ALERT_VIEW_LOCALIZED_TITLE_ID, @"")
-                                                              message:NSLocalizedString(ALERT_VIEW_LOCALIZED_MESSAGE_ID, @"")
+    UIAlertView *customNameAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(ALERT_VIEW_LOCALIZED_TITLE, @"")
+                                                              message:NSLocalizedString(ALERT_VIEW_LOCALIZED_MESSAGE, @"")
                                                              delegate:self
-                                                    cancelButtonTitle:NSLocalizedString(ALERT_VIEW_CANCEL_BUTTON_LOCALIZED_TITLE_ID, @"")
-                                                    otherButtonTitles:NSLocalizedString(ALERT_VIEW_ACCEPT_BUTTON_LOCALIZED_TITLE_ID, @""), nil];
+                                                    cancelButtonTitle:NSLocalizedString(ALERT_VIEW_CANCEL_BUTTON_LOCALIZED_TITLE, @"")
+                                                    otherButtonTitles:NSLocalizedString(ALERT_VIEW_ACCEPT_BUTTON_LOCALIZED_TITLE, @""), nil];
     
     customNameAlert.alertViewStyle = UIAlertViewStylePlainTextInput;
     [customNameAlert show];
@@ -279,8 +291,8 @@ static NSString *const ALERT_VIEW_ACCEPT_BUTTON_LOCALIZED_TITLE_ID = @"NEW_FAVOR
     NSInteger numberOfRows = 0;
     if (nextBuses != nil) numberOfRows = [nextBuses count];
     
-    // Empty UITableView?
-    if (numberOfRows == 0) {
+    // Empty UITableView because not buses found?
+    if (self.stopID != -1 && self.viewLoaded && numberOfRows == 0) {
         self.tableViewIsEmpty = YES;
         numberOfRows = 1;   // Row used for showing an empty table message
     }
@@ -291,8 +303,8 @@ static NSString *const ALERT_VIEW_ACCEPT_BUTTON_LOCALIZED_TITLE_ID = @"NEW_FAVOR
 
 static NSString *const NEXT_BUS_INFO_CELL_ID = @"NextBusInfo";
 static NSString *const NEXT_BUS_NOT_FOUND_CELL_ID = @"NextBusNotFound";
-static NSString *const IMMINENT_BUS_LOCALIZED_TIME_ID = @"IMMINENT_BUS";
-static NSString *const BUS_LOCALIZED_TIME_ID = @"BUS_TIME";
+static NSString *const IMMINENT_BUS_LOCALIZED_TIME = @"IMMINENT_BUS";
+static NSString *const BUS_LOCALIZED_TIME = @"BUS_TIME";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -318,10 +330,10 @@ static NSString *const BUS_LOCALIZED_TIME_ID = @"BUS_TIME";
         else busTimeString = [busTimeString stringByAppendingString:@", "];
         // Time itself
         if ([time integerValue] == 0) {
-            busTimeString = [busTimeString stringByAppendingString:NSLocalizedString(IMMINENT_BUS_LOCALIZED_TIME_ID, @"")];
+            busTimeString = [busTimeString stringByAppendingString:NSLocalizedString(IMMINENT_BUS_LOCALIZED_TIME, @"")];
         }
         else {
-            NSString *newTime = [NSString stringWithFormat:@"%@ %@", time, NSLocalizedString(BUS_LOCALIZED_TIME_ID, @"")];
+            NSString *newTime = [NSString stringWithFormat:@"%@ %@", time, NSLocalizedString(BUS_LOCALIZED_TIME, @"")];
             busTimeString = [busTimeString stringByAppendingString:newTime];
         }
     }

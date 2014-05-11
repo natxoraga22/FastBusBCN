@@ -102,18 +102,18 @@ static NSString *const BUS_STOP_LOCALIZED_STRING = @"BUS_STOP";
 }
 
 // Editing a favorite
-static NSString *const ALERT_VIEW_LOCALIZED_TITLE_ID = @"EDIT_FAVORITE_ALERT_VIEW_TITLE";
-static NSString *const ALERT_VIEW_CANCEL_BUTTON_LOCALIZED_TITLE_ID = @"EDIT_FAVORITE_ALERT_VIEW_CANCEL_BUTTON_TITLE";
-static NSString *const ALERT_VIEW_ACCEPT_BUTTON_LOCALIZED_TITLE_ID = @"EDIT_FAVORITE_ALERT_VIEW_ACCEPT_BUTTON_TITLE";
+static NSString *const ALERT_VIEW_LOCALIZED_TITLE = @"EDIT_FAVORITE_ALERT_VIEW_TITLE";
+static NSString *const ALERT_VIEW_CANCEL_BUTTON_LOCALIZED_TITLE = @"EDIT_FAVORITE_ALERT_VIEW_CANCEL_BUTTON_TITLE";
+static NSString *const ALERT_VIEW_ACCEPT_BUTTON_LOCALIZED_TITLE = @"EDIT_FAVORITE_ALERT_VIEW_ACCEPT_BUTTON_TITLE";
 
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
 {
     self.selectedRowIndex = indexPath.row;
-    UIAlertView *customNameAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(ALERT_VIEW_LOCALIZED_TITLE_ID, @"")
+    UIAlertView *customNameAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(ALERT_VIEW_LOCALIZED_TITLE, @"")
                                                               message:nil
                                                              delegate:self
-                                                    cancelButtonTitle:NSLocalizedString(ALERT_VIEW_CANCEL_BUTTON_LOCALIZED_TITLE_ID, @"")
-                                                    otherButtonTitles:NSLocalizedString(ALERT_VIEW_ACCEPT_BUTTON_LOCALIZED_TITLE_ID, @""), nil];
+                                                    cancelButtonTitle:NSLocalizedString(ALERT_VIEW_CANCEL_BUTTON_LOCALIZED_TITLE, @"")
+                                                    otherButtonTitles:NSLocalizedString(ALERT_VIEW_ACCEPT_BUTTON_LOCALIZED_TITLE, @""), nil];
     
     customNameAlert.alertViewStyle = UIAlertViewStylePlainTextInput;
     NSDictionary *favoriteBusStop = [FavoriteBusStopsManager favoriteBusStopAtIndex:indexPath.row];

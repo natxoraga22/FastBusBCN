@@ -178,13 +178,7 @@
                             <constraint firstItem="3c8-eM-Sfa" firstAttribute="top" secondItem="QXs-ea-4dF" secondAttribute="bottom" constant="8" id="niz-lm-31l"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="geD-qJ-rdr">
-                        <barButtonItem key="rightBarButtonItem" enabled="NO" systemItem="refresh" id="1vv-yX-XJ1">
-                            <connections>
-                                <action selector="refreshPressed:" destination="Fno-yN-utB" id="Klv-30-I9j"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" id="geD-qJ-rdr"/>
                     <connections>
                         <outlet property="busStopNameLabel" destination="iw5-fa-6G8" id="y4P-1X-dLk"/>
                         <outlet property="busStopSearchBar" destination="QXs-ea-4dF" id="0oY-i1-OSK"/>
