@@ -17,8 +17,13 @@
 "WRONG_STOP" = "Wrong bus stop";
 "CONNECTION_FAILED" = "Connection failed";
 
-// Custom name alert view
-"CUSTOM_NAME_ALERT_VIEW_TITLE" = "New favorite";
-"CUSTOM_NAME_ALERT_VIEW_MESSAGE" = "Pick a name for the bus stop. This name will be shown in your favorites list.";
-"CUSTOM_NAME_ALERT_VIEW_CANCEL_BUTTON_TITLE" = "Cancel";
-"CUSTOM_NAME_ALERT_VIEW_ACCEPT_BUTTON_TITLE" = "OK";
+// New favorite alert view
+"NEW_FAVORITE_ALERT_VIEW_TITLE" = "New favorite";
+"NEW_FAVORITE_ALERT_VIEW_MESSAGE" = "Pick a name for the bus stop. This name will be shown in your favorites list.";
+"NEW_FAVORITE_ALERT_VIEW_CANCEL_BUTTON_TITLE" = "Cancel";
+"NEW_FAVORITE_ALERT_VIEW_ACCEPT_BUTTON_TITLE" = "OK";
+
+// Edit favorite alert view
+"EDIT_FAVORITE_ALERT_VIEW_TITLE" = "Edit favorite";
+"EDIT_FAVORITE_ALERT_VIEW_CANCEL_BUTTON_TITLE" = "Cancel";
+"EDIT_FAVORITE_ALERT_VIEW_ACCEPT_BUTTON_TITLE" = "OK";

@@ -10,6 +10,6 @@
 #import <iAd/iAd.h>
 
 
-@interface FavoriteBusStopsTableViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate>
+@interface FavoriteBusStopsTableViewController : UITableViewController <UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate>
 
 @end

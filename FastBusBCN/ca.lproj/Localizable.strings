@@ -17,8 +17,13 @@
 "WRONG_STOP" = "Parada equivocada";
 "CONNECTION_FAILED" = "La connexió ha fallat";
 
-// Custom name alert view
-"CUSTOM_NAME_ALERT_VIEW_TITLE" = "Nou favorit";
-"CUSTOM_NAME_ALERT_VIEW_MESSAGE" = "Escull un nom per a la parada. Aquest nom es mostrarà en la llista de favorits.";
-"CUSTOM_NAME_ALERT_VIEW_CANCEL_BUTTON_TITLE" = "Cancel·lar";
-"CUSTOM_NAME_ALERT_VIEW_ACCEPT_BUTTON_TITLE" = "Acceptar";
+// New favorite alert view
+"NEW_FAVORITE_ALERT_VIEW_TITLE" = "Nou favorit";
+"NEW_FAVORITE_ALERT_VIEW_MESSAGE" = "Escull un nom per a la parada. Aquest nom es mostrarà en la llista de favorits.";
+"NEW_FAVORITE_ALERT_VIEW_CANCEL_BUTTON_TITLE" = "Cancel·lar";
+"NEW_FAVORITE_ALERT_VIEW_ACCEPT_BUTTON_TITLE" = "Acceptar";
+
+// Edit favorite alert view
+"EDIT_FAVORITE_ALERT_VIEW_TITLE" = "Editar favorit";
+"EDIT_FAVORITE_ALERT_VIEW_CANCEL_BUTTON_TITLE" = "Cancel·lar";
+"EDIT_FAVORITE_ALERT_VIEW_ACCEPT_BUTTON_TITLE" = "Acceptar";

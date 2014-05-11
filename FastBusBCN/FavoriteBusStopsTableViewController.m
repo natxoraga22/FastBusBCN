@@ -7,7 +7,13 @@
 //
 
 #import "FavoriteBusStopsTableViewController.h"
+#import "FavoriteBusStopsManager.h"
 #import "BusStopViewController.h"
+
+
+@interface FavoriteBusStopsTableViewController()
+@property (nonatomic) NSUInteger selectedRowIndex;
+@end
 
 
 @implementation FavoriteBusStopsTableViewController
@@ -18,10 +24,12 @@
 {
     [super viewDidLoad];
     
-    // iAd
-    self.canDisplayBannerAds = YES;
+    // iAd (only iOS7)
+    if ([self respondsToSelector:@selector(setCanDisplayBannerAds:)]) {
+        self.canDisplayBannerAds = YES;
+    }
     
-    // Edit button
+    // TableView edit button
     self.navigationItem.leftBarButtonItem = self.editButtonItem;
 }
 
@@ -31,6 +39,7 @@
 
     // Reload the data every time we are going to appear on screen
     // because our data can be modified by other view controllers
+    // i.e. BusStopViewController can add favorites
     [self.tableView reloadData];
 }
 
@@ -38,30 +47,27 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSArray *favoriteBusStops = [[NSUserDefaults standardUserDefaults] objectForKey:FAVORITE_BUS_STOPS_KEY];
-    if (favoriteBusStops == nil) return 0;
-    else return [favoriteBusStops count];
+    return [FavoriteBusStopsManager favoriteBusStopsCount];
 }
 
 static NSString *const FAVORITE_BUS_STOP_CELL_ID = @"FavoriteBusStop";
-static NSString *const BUS_STOP_LOCALIZED_STRING_ID = @"BUS_STOP";
+static NSString *const BUS_STOP_LOCALIZED_STRING = @"BUS_STOP";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {    
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:FAVORITE_BUS_STOP_CELL_ID forIndexPath:indexPath];
     
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSDictionary *favoriteBusStop = [userDefaults objectForKey:FAVORITE_BUS_STOPS_KEY][indexPath.row];
+    NSDictionary *favoriteBusStop = [FavoriteBusStopsManager favoriteBusStopAtIndex:indexPath.row];
     
-    // Title --> Name, Subtitle --> ID
+    // If custom title: Cell Title --> Bus Stop name, Cell Subtitle --> Bus Stop ID
     if (![favoriteBusStop[FAVORITE_BUS_STOP_CUSTOM_NAME_KEY] isEqualToString:@""]) {
         cell.textLabel.text = favoriteBusStop[FAVORITE_BUS_STOP_CUSTOM_NAME_KEY];
-        cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(BUS_STOP_LOCALIZED_STRING_ID, @""),
+        cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(BUS_STOP_LOCALIZED_STRING, @""),
                                                                          favoriteBusStop[FAVORITE_BUS_STOP_ID_KEY]];
     }
-    // Title --> ID, no Subtitle
+    // Otherwise: Cell Title --> Bus Stop ID, no Cell Subtitle
     else {
-        cell.textLabel.text = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(BUS_STOP_LOCALIZED_STRING_ID, @""),
+        cell.textLabel.text = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(BUS_STOP_LOCALIZED_STRING, @""),
                                                                    favoriteBusStop[FAVORITE_BUS_STOP_ID_KEY]];
         cell.detailTextLabel.text = @"";
     }
@@ -76,16 +82,7 @@ static NSString *const BUS_STOP_LOCALIZED_STRING_ID = @"BUS_STOP";
 
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
 {
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSMutableArray *favoriteBusStops = [[userDefaults objectForKey:FAVORITE_BUS_STOPS_KEY] mutableCopy];
-    NSDictionary *movingBusStop = favoriteBusStops[fromIndexPath.row];
-    
-    // Remove the bus stop from the old index and insert it to the new index
-    [favoriteBusStops removeObjectAtIndex:fromIndexPath.row];
-    [favoriteBusStops insertObject:movingBusStop atIndex:toIndexPath.row];
-    
-    [userDefaults setObject:[favoriteBusStops copy] forKey:FAVORITE_BUS_STOPS_KEY];
-    [userDefaults synchronize];
+    [FavoriteBusStopsManager moveFavoriteBusStopFromIndex:fromIndexPath.row toIndex:toIndexPath.row];
 }
 
 // Deleting rows from the UITableView
@@ -97,14 +94,46 @@ static NSString *const BUS_STOP_LOCALIZED_STRING_ID = @"BUS_STOP";
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-        NSMutableArray *favoriteBusStops = [[userDefaults objectForKey:FAVORITE_BUS_STOPS_KEY] mutableCopy];
-        [favoriteBusStops removeObjectAtIndex:indexPath.row];
-        [userDefaults setObject:[favoriteBusStops copy] forKey:FAVORITE_BUS_STOPS_KEY];
-        [userDefaults synchronize];
+        [FavoriteBusStopsManager removeFavoriteBusStopAtIndex:indexPath.row];
         
         // UI deleting
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+    }
+}
+
+// Editing a favorite
+static NSString *const ALERT_VIEW_LOCALIZED_TITLE_ID = @"EDIT_FAVORITE_ALERT_VIEW_TITLE";
+static NSString *const ALERT_VIEW_CANCEL_BUTTON_LOCALIZED_TITLE_ID = @"EDIT_FAVORITE_ALERT_VIEW_CANCEL_BUTTON_TITLE";
+static NSString *const ALERT_VIEW_ACCEPT_BUTTON_LOCALIZED_TITLE_ID = @"EDIT_FAVORITE_ALERT_VIEW_ACCEPT_BUTTON_TITLE";
+
+- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
+{
+    self.selectedRowIndex = indexPath.row;
+    UIAlertView *customNameAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(ALERT_VIEW_LOCALIZED_TITLE_ID, @"")
+                                                              message:nil
+                                                             delegate:self
+                                                    cancelButtonTitle:NSLocalizedString(ALERT_VIEW_CANCEL_BUTTON_LOCALIZED_TITLE_ID, @"")
+                                                    otherButtonTitles:NSLocalizedString(ALERT_VIEW_ACCEPT_BUTTON_LOCALIZED_TITLE_ID, @""), nil];
+    
+    customNameAlert.alertViewStyle = UIAlertViewStylePlainTextInput;
+    NSDictionary *favoriteBusStop = [FavoriteBusStopsManager favoriteBusStopAtIndex:indexPath.row];
+    [customNameAlert textFieldAtIndex:0].text = favoriteBusStop[FAVORITE_BUS_STOP_CUSTOM_NAME_KEY];
+    [customNameAlert show];
+}
+
+- (void)editFavoriteWithCustomName:(NSString *)customName
+{
+    [FavoriteBusStopsManager setCustomName:customName forFavoriteBusStopAtIndex:self.selectedRowIndex];
+    [self.tableView reloadData];
+}
+
+#pragma mark - UIAlertView Delegate
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    // Accept button
+    if (buttonIndex == 1) {
+        [self editFavoriteWithCustomName:[alertView textFieldAtIndex:0].text];
     }
 }
 
@@ -120,8 +149,8 @@ static NSString *const SHOW_SEARCH_BUS_STOP_SEGUE_ID = @"ShowSearchBusStop";
     // Segue from a UITableView row
     if ([segue.identifier isEqualToString:SHOW_NEXT_BUSES_SEGUE_ID]) {
         NSIndexPath *busStopIndexPath = [self.tableView indexPathForSelectedRow];
-        NSArray *favoriteBusStops = [[NSUserDefaults standardUserDefaults] objectForKey:FAVORITE_BUS_STOPS_KEY];
-        busStopVC.stopID = [favoriteBusStops[busStopIndexPath.row][FAVORITE_BUS_STOP_ID_KEY] integerValue];
+        NSDictionary *favoriteBusStop = [FavoriteBusStopsManager favoriteBusStopAtIndex:busStopIndexPath.row];
+        busStopVC.stopID = [favoriteBusStop[FAVORITE_BUS_STOP_ID_KEY] integerValue];
     }
     // Segue from a search UIBarButtonItem
     else if ([segue.identifier isEqualToString:SHOW_SEARCH_BUS_STOP_SEGUE_ID]) {

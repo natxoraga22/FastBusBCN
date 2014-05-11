@@ -7,8 +7,9 @@
 //
 
 #import "BusStopViewController.h"
-#import "NextBusTableViewCell.h"
 #import "NextBusesFetcher.h"
+#import "FavoriteBusStopsManager.h"
+#import "NextBusTableViewCell.h"
 #import "UIColor+BusLinesColor.h"
 
 
@@ -18,48 +19,32 @@
 @property (weak, nonatomic) IBOutlet UIButton *favoriteButton;
 @property (weak, nonatomic) IBOutlet UISearchBar *busStopSearchBar;
 @property (strong, nonatomic) NextBusesFetcher *nextBusesFetcher;
-@property (nonatomic) BOOL isFavorite;
 @property (nonatomic) BOOL tableViewIsEmpty;
 @end
 
 
 @implementation BusStopViewController
 
-// Keys used in order to acces the favorite bus stop dictionary
-NSString *const FAVORITE_BUS_STOPS_KEY = @"FavoriteBusStops";
-NSString *const FAVORITE_BUS_STOP_ID_KEY = @"FavoriteBusStopID";
-NSString *const FAVORITE_BUS_STOP_CUSTOM_NAME_KEY = @"FavoriteBusStopCustomName";
-
 #pragma mark - ViewController Lifecycle
 
 static const NSInteger DEFAULT_TOOLBAR_HEIGHT = 44;
-static NSString *const SEARCH_LOCALIZED_STRING_ID = @"SEARCH";
-static NSString *const BUS_STOP_LOCALIZED_ID_ID = @"BUS_STOP_ID";
+static NSString *const SEARCH_LOCALIZED_STRING = @"SEARCH";
+static NSString *const BUS_STOP_LOCALIZED_ID = @"BUS_STOP_ID";
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    // iAd
-    self.canDisplayBannerAds = YES;
+    // iAd (only iOS7)
+    if ([self respondsToSelector:@selector(setCanDisplayBannerAds:)]) {
+        self.canDisplayBannerAds = YES;
+    }
     
     // Update UI
     [self updateUI];
     
     // Search bar
-    self.busStopSearchBar.delegate = self;
-    self.busStopSearchBar.placeholder = NSLocalizedString(BUS_STOP_LOCALIZED_ID_ID, @"");
-    CGRect keyboardToolbarRect = CGRectMake(0, 0, self.view.bounds.size.width, DEFAULT_TOOLBAR_HEIGHT);
-    UIToolbar *keyboardToolbar = [[UIToolbar alloc] initWithFrame:keyboardToolbarRect];
-    UIBarButtonItem *spaceBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
-                                                                                        target:nil
-                                                                                        action:nil];
-    UIBarButtonItem *searchBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(SEARCH_LOCALIZED_STRING_ID, @"")
-                                                                            style:UIBarButtonItemStyleDone
-                                                                           target:self
-                                                                           action:@selector(searchButtonPressed:)];
-    [keyboardToolbar setItems:@[spaceBarButtonItem, searchBarButtonItem]];
-    self.busStopSearchBar.inputAccessoryView = keyboardToolbar;
+    [self setupSearch];
     
     // Conditional setup
     if (self.stopID == -1) {
@@ -67,6 +52,24 @@ static NSString *const BUS_STOP_LOCALIZED_ID_ID = @"BUS_STOP_ID";
         self.favoriteButton.enabled = NO;
     }
     else [self fetchNextBuses];
+}
+
+- (void)setupSearch
+{
+    self.busStopSearchBar.delegate = self;
+    self.busStopSearchBar.placeholder = NSLocalizedString(BUS_STOP_LOCALIZED_ID, @"");
+    
+    CGRect keyboardToolbarRect = CGRectMake(0, 0, self.view.bounds.size.width, DEFAULT_TOOLBAR_HEIGHT);
+    UIToolbar *keyboardToolbar = [[UIToolbar alloc] initWithFrame:keyboardToolbarRect];
+    UIBarButtonItem *spaceBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+                                                                                        target:nil
+                                                                                        action:nil];
+    UIBarButtonItem *searchBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(SEARCH_LOCALIZED_STRING, @"")
+                                                                            style:UIBarButtonItemStyleDone
+                                                                           target:self
+                                                                           action:@selector(searchButtonPressed:)];
+    [keyboardToolbar setItems:@[spaceBarButtonItem, searchBarButtonItem]];
+    self.busStopSearchBar.inputAccessoryView = keyboardToolbar;
 }
 
 #pragma mark - Getters & Setters
@@ -84,31 +87,8 @@ static NSString *const BUS_STOP_LOCALIZED_ID_ID = @"BUS_STOP_ID";
 {
     if (_stopID != stopID) {
         _stopID = stopID;
-        [self updateIsFavorite];
         [self updateUI];
     }
-}
-
-- (void)setIsFavorite:(BOOL)isFavorite
-{
-    if (_isFavorite != isFavorite) {
-        _isFavorite = isFavorite;
-        [self updateUI];
-    }
-}
-
-- (void)updateIsFavorite
-{
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSArray *favoriteBusStops = [userDefaults objectForKey:FAVORITE_BUS_STOPS_KEY];
-    BOOL found = NO;
-    for (NSDictionary *favoriteBusStop in favoriteBusStops) {
-        if ([favoriteBusStop[FAVORITE_BUS_STOP_ID_KEY] isEqualToNumber:@(self.stopID)]) {
-            found = YES;
-            self.isFavorite = YES;
-        }
-    }
-    if (!found) self.isFavorite = NO;
 }
 
 #pragma mark - UI
@@ -121,31 +101,28 @@ static NSString *const FAVORITE_BUTTON_DEACTIVATED_TITLE = @"☆";
 - (void)updateUI
 {
     // ViewController title
-    if (self.stopID == -1) self.title = NSLocalizedString(SEARCH_LOCALIZED_STRING_ID, @"");
+    if (self.stopID == -1) self.title = NSLocalizedString(SEARCH_LOCALIZED_STRING, @"");
     else self.title = [NSString stringWithFormat:@"%@ %ld", NSLocalizedString(BUS_STOP_LOCALIZED_STRING_ID, @""),
                                                            (long)self.stopID];
     
     // BusStop title
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSArray *favoriteBusStops = [userDefaults objectForKey:FAVORITE_BUS_STOPS_KEY];
-    BOOL found = NO;
-    for (NSDictionary *favoriteBusStop in favoriteBusStops) {
-        if ([favoriteBusStop[FAVORITE_BUS_STOP_ID_KEY] isEqualToNumber:@(self.stopID)]) {
-            found = YES;
-            self.busStopNameLabel.textAlignment = NSTextAlignmentLeft;
-            self.busStopNameLabel.textColor = [UIColor blackColor];
-            self.busStopNameLabel.text = favoriteBusStop[FAVORITE_BUS_STOP_CUSTOM_NAME_KEY];
-        }
+    if ([FavoriteBusStopsManager busStopWithStopIDisFavorite:self.stopID]) {
+        NSDictionary *favoriteBusStop = [FavoriteBusStopsManager favoriteBusStopWithStopID:self.stopID];
+        self.busStopNameLabel.textAlignment = NSTextAlignmentLeft;
+        self.busStopNameLabel.textColor = [UIColor blackColor];
+        self.busStopNameLabel.text = favoriteBusStop[FAVORITE_BUS_STOP_CUSTOM_NAME_KEY];
     }
-    if (!found) {
+    else {
         self.busStopNameLabel.textAlignment = NSTextAlignmentRight;
         self.busStopNameLabel.textColor = [UIColor blackColor];
         self.busStopNameLabel.text = NSLocalizedString(ADD_FAVORITE_LOCALIZED_STRING_ID, @"");
     }
     
     // Favorite button
-    if (self.isFavorite) [self.favoriteButton setTitle:FAVORITE_BUTTON_ACTIVATED_TITLE forState:UIControlStateNormal];
-    else [self.favoriteButton setTitle:FAVORITE_BUTTON_DEACTIVATED_TITLE forState:UIControlStateNormal];
+    if ([FavoriteBusStopsManager busStopWithStopIDisFavorite:self.stopID])
+        [self.favoriteButton setTitle:FAVORITE_BUTTON_ACTIVATED_TITLE forState:UIControlStateNormal];
+    else
+        [self.favoriteButton setTitle:FAVORITE_BUTTON_DEACTIVATED_TITLE forState:UIControlStateNormal];
 }
 
 #pragma mark - Fetching
@@ -162,7 +139,8 @@ static NSString *const FAVORITE_BUTTON_DEACTIVATED_TITLE = @"☆";
     // Disable the favorite button
     self.favoriteButton.enabled = NO;
     
-    // Put a UIActivityIndicatorView on the NavigationBar
+    // Put a UIActivityIndicatorView on the NavigationBar and activate the network activity indicator
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     UIActivityIndicatorView *activityIndicatorView = [[UIActivityIndicatorView alloc]
                                                       initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     [activityIndicatorView startAnimating];
@@ -193,10 +171,7 @@ static NSString *const FAILED_CONNECTION_LOCALIZED_ID = @"CONNECTION_FAILED";
     [self.nextBusesTableView reloadData];
     
     // Replace the UIActivityIndicatorView with a refresh button
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh
-                                                                                           target:self
-                                                                                           action:@selector(refreshPressed:)];
-    self.navigationItem.rightBarButtonItem.enabled = YES;
+    [self stopShowingNetworkActivityIndicators];
 }
 
 - (void)nextBusesFetcherDidFail:(NextBusesFetcher *)nextBusesFetcher
@@ -206,6 +181,12 @@ static NSString *const FAILED_CONNECTION_LOCALIZED_ID = @"CONNECTION_FAILED";
     self.busStopNameLabel.text = NSLocalizedString(FAILED_CONNECTION_LOCALIZED_ID, @"");
     
     // Replace the UIActivityIndicatorView with a refresh button
+    [self stopShowingNetworkActivityIndicators];
+}
+
+- (void)stopShowingNetworkActivityIndicators
+{
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh
                                                                                            target:self
                                                                                            action:@selector(refreshPressed:)];
@@ -216,14 +197,14 @@ static NSString *const FAILED_CONNECTION_LOCALIZED_ID = @"CONNECTION_FAILED";
 
 - (IBAction)favoriteButtonPressed:(UIButton *)sender
 {
-    if (self.isFavorite) [self removeFromFavorites];
+    if ([FavoriteBusStopsManager busStopWithStopIDisFavorite:self.stopID]) [self removeFromFavorites];
     else [self askFavoriteCustomName];
 }
 
-static NSString *const ALERT_VIEW_LOCALIZED_TITLE_ID = @"CUSTOM_NAME_ALERT_VIEW_TITLE";
-static NSString *const ALERT_VIEW_LOCALIZED_MESSAGE_ID = @"CUSTOM_NAME_ALERT_VIEW_MESSAGE";
-static NSString *const ALERT_VIEW_CANCEL_BUTTON_LOCALIZED_TITLE_ID = @"CUSTOM_NAME_ALERT_VIEW_CANCEL_BUTTON_TITLE";
-static NSString *const ALERT_VIEW_ACCEPT_BUTTON_LOCALIZED_TITLE_ID = @"CUSTOM_NAME_ALERT_VIEW_ACCEPT_BUTTON_TITLE";
+static NSString *const ALERT_VIEW_LOCALIZED_TITLE_ID = @"NEW_FAVORITE_ALERT_VIEW_TITLE";
+static NSString *const ALERT_VIEW_LOCALIZED_MESSAGE_ID = @"NEW_FAVORITE_ALERT_VIEW_MESSAGE";
+static NSString *const ALERT_VIEW_CANCEL_BUTTON_LOCALIZED_TITLE_ID = @"NEW_FAVORITE_ALERT_VIEW_CANCEL_BUTTON_TITLE";
+static NSString *const ALERT_VIEW_ACCEPT_BUTTON_LOCALIZED_TITLE_ID = @"NEW_FAVORITE_ALERT_VIEW_ACCEPT_BUTTON_TITLE";
 
 - (void)askFavoriteCustomName
 {
@@ -234,43 +215,19 @@ static NSString *const ALERT_VIEW_ACCEPT_BUTTON_LOCALIZED_TITLE_ID = @"CUSTOM_NA
                                                     otherButtonTitles:NSLocalizedString(ALERT_VIEW_ACCEPT_BUTTON_LOCALIZED_TITLE_ID, @""), nil];
     
     customNameAlert.alertViewStyle = UIAlertViewStylePlainTextInput;
-    if (![self.busStopNameLabel.text isEqualToString:NSLocalizedString(ADD_FAVORITE_LOCALIZED_STRING_ID, @"")]) {
-        [customNameAlert textFieldAtIndex:0].text = self.busStopNameLabel.text;
-    }
     [customNameAlert show];
 }
 
 - (void)addToFavoritesWithCustomName:(NSString *)customName
 {
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSMutableArray *favoriteBusStops = [[userDefaults objectForKey:FAVORITE_BUS_STOPS_KEY] mutableCopy];
-    if (!favoriteBusStops) favoriteBusStops = [[NSMutableArray alloc] init];
-    [favoriteBusStops addObject:@{FAVORITE_BUS_STOP_ID_KEY: @(self.stopID),
-                                  FAVORITE_BUS_STOP_CUSTOM_NAME_KEY: customName}];
-    [userDefaults setObject:[favoriteBusStops copy] forKey:FAVORITE_BUS_STOPS_KEY];
-    [userDefaults synchronize];
-    
-    self.isFavorite = YES;
+    [FavoriteBusStopsManager addFavoriteBusStopWithID:self.stopID andCustomName:customName];
+    [self updateUI];
 }
 
 - (void)removeFromFavorites
 {
-    self.isFavorite = NO;
-    
-    // Remove favorite from NSUserDefaults
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSMutableArray *favoriteBusStops = [[userDefaults objectForKey:FAVORITE_BUS_STOPS_KEY] mutableCopy];
-    
-    NSInteger index = -1;
-    for (int i = 0; i < [favoriteBusStops count]; i++) {
-        NSDictionary *favoriteBusStop = favoriteBusStops[i];
-        if ([favoriteBusStop[FAVORITE_BUS_STOP_ID_KEY] isEqualToNumber:@(self.stopID)]) {
-            index = i;
-        }
-    }
-    [favoriteBusStops removeObjectAtIndex:index];
-    [userDefaults setObject:[favoriteBusStops copy] forKey:FAVORITE_BUS_STOPS_KEY];
-    [userDefaults synchronize];
+    [FavoriteBusStopsManager removeFavoriteBusStopWithID:self.stopID];
+    [self updateUI];
 }
 
 #pragma mark - UIAlertView Delegate
@@ -279,7 +236,6 @@ static NSString *const ALERT_VIEW_ACCEPT_BUTTON_LOCALIZED_TITLE_ID = @"CUSTOM_NA
 {
     // Accept button
     if (buttonIndex == 1) {
-        // Add favorite to NSUserDefaults with the custom name
         [self addToFavoritesWithCustomName:[alertView textFieldAtIndex:0].text];
     }
 }
