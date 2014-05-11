@@ -267,6 +267,11 @@ static NSString *const ALERT_VIEW_ACCEPT_BUTTON_LOCALIZED_TITLE = @"NEW_FAVORITE
     [self fetchNextBuses];
 }
 
+- (IBAction)tap:(UITapGestureRecognizer *)sender
+{
+    [self cancelSearch];
+}
+
 - (void)cancelSearch
 {
     self.busStopSearchBar.text = @"";
