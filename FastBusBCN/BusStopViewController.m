@@ -59,8 +59,6 @@ static NSString *const BUS_STOP_LOCALIZED_ID = @"BUS_STOP_ID";
     else {
         [self fetchNextBuses];
     }
-    
-    self.viewLoaded = YES;
 }
 
 - (void)setupSearch
@@ -87,6 +85,11 @@ static NSString *const BUS_STOP_LOCALIZED_ID = @"BUS_STOP_ID";
     [refreshControl addTarget:self action:@selector(refreshTriggered) forControlEvents:UIControlEventValueChanged];
     [self.nextBusesTableView addSubview:refreshControl];
     self.nextBusesRefreshControl = refreshControl;
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    self.viewLoaded = YES;
 }
 
 #pragma mark - Getters & Setters
