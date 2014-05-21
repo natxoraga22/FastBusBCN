@@ -18,9 +18,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *busStopNameLabel;
 @property (weak, nonatomic) IBOutlet UIButton *favoriteButton;
 @property (weak, nonatomic) IBOutlet UISearchBar *busStopSearchBar;
-@property (weak, nonatomic) IBOutlet UIRefreshControl *nextBusesRefreshControl;
 @property (strong, nonatomic) NextBusesFetcher *nextBusesFetcher;
-@property (nonatomic) BOOL viewLoaded;
 @property (nonatomic) BOOL tableViewIsEmpty;
 @end
 
@@ -42,23 +40,18 @@ static NSString *const BUS_STOP_LOCALIZED_ID = @"BUS_STOP_ID";
         self.canDisplayBannerAds = YES;
     }
     
-    // Search bar
-    [self setupSearch];
-    
-    // Pull to refresh
-    [self setupPullToRefresh];
-    
     // Update UI
     [self updateUI];
+    
+    // Search bar
+    [self setupSearch];
     
     // Conditional setup
     if (self.stopID == -1) {
         [self.busStopSearchBar becomeFirstResponder];
         self.favoriteButton.enabled = NO;
     }
-    else {
-        [self fetchNextBuses];
-    }
+    else [self fetchNextBuses];
 }
 
 - (void)setupSearch
@@ -77,19 +70,6 @@ static NSString *const BUS_STOP_LOCALIZED_ID = @"BUS_STOP_ID";
                                                                            action:@selector(searchButtonPressed:)];
     [keyboardToolbar setItems:@[spaceBarButtonItem, searchBarButtonItem]];
     self.busStopSearchBar.inputAccessoryView = keyboardToolbar;
-}
-
-- (void)setupPullToRefresh
-{
-    UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
-    [refreshControl addTarget:self action:@selector(refreshTriggered) forControlEvents:UIControlEventValueChanged];
-    [self.nextBusesTableView addSubview:refreshControl];
-    self.nextBusesRefreshControl = refreshControl;
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    self.viewLoaded = YES;
 }
 
 #pragma mark - Getters & Setters
@@ -147,7 +127,7 @@ static NSString *const FAVORITE_BUTTON_DEACTIVATED_TITLE = @"☆";
 
 #pragma mark - Fetching
 
-- (void)refreshTriggered
+- (IBAction)refreshPressed:(UIBarButtonItem *)sender
 {
     [self fetchNextBuses];
 }
@@ -155,9 +135,12 @@ static NSString *const FAVORITE_BUTTON_DEACTIVATED_TITLE = @"☆";
 - (void)fetchNextBuses
 {
     // Activate the network activity indicators
-    [self.nextBusesRefreshControl beginRefreshing];
-    [self.nextBusesTableView setContentOffset:CGPointMake(0, -self.nextBusesRefreshControl.frame.size.height) animated:YES];
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+    UIActivityIndicatorView *activityIndicatorView = [[UIActivityIndicatorView alloc]
+                                                      initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    [activityIndicatorView startAnimating];
+    UIBarButtonItem *activityBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:activityIndicatorView];
+    self.navigationItem.rightBarButtonItem = activityBarButtonItem;
     
     // Disable the favorite button
     self.favoriteButton.enabled = NO;
@@ -204,8 +187,10 @@ static NSString *const FAILED_CONNECTION_LOCALIZED_STRING = @"CONNECTION_FAILED"
 - (void)stopShowingNetworkActivityIndicators
 {
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-    [self.nextBusesRefreshControl endRefreshing];
-    [self.nextBusesTableView setContentOffset:CGPointMake(0, 0) animated:YES];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh
+                                                                                           target:self
+                                                                                           action:@selector(refreshPressed:)];
+    self.navigationItem.rightBarButtonItem.enabled = YES;
 }
 
 #pragma mark - Favorites management
@@ -300,7 +285,7 @@ static NSString *const ALERT_VIEW_ACCEPT_BUTTON_LOCALIZED_TITLE = @"NEW_FAVORITE
     if (nextBuses != nil) numberOfRows = [nextBuses count];
     
     // Empty UITableView because not buses found?
-    if (self.stopID != -1 && self.viewLoaded && numberOfRows == 0) {
+    if (self.stopID != -1 && numberOfRows == 0) {
         self.tableViewIsEmpty = YES;
         numberOfRows = 1;   // Row used for showing an empty table message
     }

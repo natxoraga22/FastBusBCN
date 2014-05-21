@@ -182,7 +182,9 @@
                             <outletCollection property="gestureRecognizers" destination="MDa-ha-RiO" appends="YES" id="FuH-2W-OiS"/>
                         </connections>
                     </view>
-                    <navigationItem key="navigationItem" id="geD-qJ-rdr"/>
+                    <navigationItem key="navigationItem" id="geD-qJ-rdr">
+                        <barButtonItem key="rightBarButtonItem" systemItem="refresh" id="fj4-9A-NBS"/>
+                    </navigationItem>
                     <connections>
                         <outlet property="busStopNameLabel" destination="iw5-fa-6G8" id="y4P-1X-dLk"/>
                         <outlet property="busStopSearchBar" destination="QXs-ea-4dF" id="0oY-i1-OSK"/>
