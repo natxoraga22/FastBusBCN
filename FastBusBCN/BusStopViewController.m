@@ -136,8 +136,16 @@ static NSString *const FAVORITE_BUTTON_DEACTIVATED_TITLE = @"☆";
 {
     // Activate the network activity indicators
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-    UIActivityIndicatorView *activityIndicatorView = [[UIActivityIndicatorView alloc]
-                                                      initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    UIActivityIndicatorView *activityIndicatorView;
+    if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1) {
+        // iOS 6.1 or earlier
+        activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+    }
+    else {
+        // iOS 7 or later
+        activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    }
+    
     [activityIndicatorView startAnimating];
     UIBarButtonItem *activityBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:activityIndicatorView];
     self.navigationItem.rightBarButtonItem = activityBarButtonItem;
@@ -164,7 +172,6 @@ static NSString *const FAILED_CONNECTION_LOCALIZED_STRING = @"CONNECTION_FAILED"
     // Bus stop found
     else {
         self.favoriteButton.enabled = YES;
-        // TODO: Test! Try to fail a connection and refresh later without failing
         [self updateUI];    // Necessary if we refresh from a failed connection (in order to remove the error message)
     }
     

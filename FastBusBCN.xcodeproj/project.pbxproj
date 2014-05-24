@@ -143,7 +143,7 @@
 			name = Protocols;
 			sourceTree = "<group>";
 		};
-		387CFB4F188DA3F400AAECC9 /* Utility */ = {
+		387CFB4F188DA3F400AAECC9 /* ViewControllersUtility */ = {
 			isa = PBXGroup;
 			children = (
 				3896AD47188C5236004C082E /* NextBusTableViewCell.h */,
@@ -151,7 +151,7 @@
 				387CFB50188DA42B00AAECC9 /* UIColor+BusLinesColor.h */,
 				387CFB51188DA42B00AAECC9 /* UIColor+BusLinesColor.m */,
 			);
-			name = Utility;
+			name = ViewControllersUtility;
 			sourceTree = "<group>";
 		};
 		38A0D17D1887231000E21635 = {
@@ -238,7 +238,7 @@
 				38A0D1CF18873D2C00E21635 /* FavoriteBusStopsTableViewController.m */,
 				382AF97C188B675B003161C5 /* BusStopViewController.h */,
 				382AF97D188B675B003161C5 /* BusStopViewController.m */,
-				387CFB4F188DA3F400AAECC9 /* Utility */,
+				387CFB4F188DA3F400AAECC9 /* ViewControllersUtility */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
