@@ -18,7 +18,7 @@ extern NSString *const FAVORITE_BUS_STOP_CUSTOM_NAME_KEY;
 
 #pragma mark - Querying
 
-+ (NSArray *)favoriteBusStops;
+//+ (NSArray *)favoriteBusStops;
 + (NSUInteger)favoriteBusStopsCount;
 + (NSDictionary *)favoriteBusStopAtIndex:(NSUInteger)index;
 + (NSDictionary *)favoriteBusStopWithStopID:(NSUInteger)stopID;

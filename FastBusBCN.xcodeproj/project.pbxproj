@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		382AF97E188B675B003161C5 /* BusStopViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 382AF97D188B675B003161C5 /* BusStopViewController.m */; };
+		383037021CCA94B000A4E0A8 /* BusStop.m in Sources */ = {isa = PBXBuildFile; fileRef = 383037011CCA94B000A4E0A8 /* BusStop.m */; };
+		383037051CCA968A00A4E0A8 /* BusLine.m in Sources */ = {isa = PBXBuildFile; fileRef = 383037041CCA968A00A4E0A8 /* BusLine.m */; };
 		387CFB52188DA42B00AAECC9 /* UIColor+BusLinesColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 387CFB51188DA42B00AAECC9 /* UIColor+BusLinesColor.m */; };
 		3886C87A189F38140026C865 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3886C87C189F38140026C865 /* Localizable.strings */; };
 		3896AD49188C5236004C082E /* NextBusTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3896AD48188C5236004C082E /* NextBusTableViewCell.m */; };
@@ -51,6 +53,10 @@
 /* Begin PBXFileReference section */
 		382AF97C188B675B003161C5 /* BusStopViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BusStopViewController.h; sourceTree = "<group>"; };
 		382AF97D188B675B003161C5 /* BusStopViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BusStopViewController.m; sourceTree = "<group>"; };
+		383037001CCA94B000A4E0A8 /* BusStop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BusStop.h; sourceTree = "<group>"; };
+		383037011CCA94B000A4E0A8 /* BusStop.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BusStop.m; sourceTree = "<group>"; };
+		383037031CCA968A00A4E0A8 /* BusLine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BusLine.h; sourceTree = "<group>"; };
+		383037041CCA968A00A4E0A8 /* BusLine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BusLine.m; sourceTree = "<group>"; };
 		3839FA591888BDD9005D146D /* NextBusesFetcherDataDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NextBusesFetcherDataDelegate.h; sourceTree = "<group>"; };
 		387CFB50188DA42B00AAECC9 /* UIColor+BusLinesColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+BusLinesColor.h"; sourceTree = "<group>"; };
 		387CFB51188DA42B00AAECC9 /* UIColor+BusLinesColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+BusLinesColor.m"; sourceTree = "<group>"; };
@@ -250,6 +256,10 @@
 				38A0D1D218874A3700E21635 /* NextBusesFetcher.m */,
 				38F64CC5191EA2CF00898FC2 /* FavoriteBusStopsManager.h */,
 				38F64CC6191EA2CF00898FC2 /* FavoriteBusStopsManager.m */,
+				383037001CCA94B000A4E0A8 /* BusStop.h */,
+				383037011CCA94B000A4E0A8 /* BusStop.m */,
+				383037031CCA968A00A4E0A8 /* BusLine.h */,
+				383037041CCA968A00A4E0A8 /* BusLine.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -324,7 +334,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = FastBusBCN;
-				LastUpgradeCheck = 0600;
+				LastUpgradeCheck = 0710;
 				ORGANIZATIONNAME = RagaSoft;
 				TargetAttributes = {
 					38A0D1851887231000E21635 = {
@@ -383,10 +393,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				383037051CCA968A00A4E0A8 /* BusLine.m in Sources */,
 				38F64CC7191EA2CF00898FC2 /* FavoriteBusStopsManager.m in Sources */,
 				38BAD11B18A00CEE009A1BB6 /* HTMLNode.m in Sources */,
 				38BAD11C18A00CEE009A1BB6 /* HTMLParser.m in Sources */,
 				38A0D1D018873D2C00E21635 /* FavoriteBusStopsTableViewController.m in Sources */,
+				383037021CCA94B000A4E0A8 /* BusStop.m in Sources */,
 				38A0D1D318874A3700E21635 /* NextBusesFetcher.m in Sources */,
 				38BAD11E18A00CEE009A1BB6 /* HTMLSelector.m in Sources */,
 				38BAD11D18A00CEE009A1BB6 /* HTMLPreprocessedInputStream.m in Sources */,
@@ -483,6 +495,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -555,6 +568,7 @@
 				GCC_PREFIX_HEADER = "FastBusBCN/FastBusBCN-Prefix.pch";
 				INFOPLIST_FILE = "FastBusBCN/FastBusBCN-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.ragasoft.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
@@ -573,6 +587,7 @@
 				GCC_PREFIX_HEADER = "FastBusBCN/FastBusBCN-Prefix.pch";
 				INFOPLIST_FILE = "FastBusBCN/FastBusBCN-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.ragasoft.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
@@ -595,6 +610,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "FastBusBCNTests/FastBusBCNTests-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "ragasoft.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
@@ -613,6 +629,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "FastBusBCN/FastBusBCN-Prefix.pch";
 				INFOPLIST_FILE = "FastBusBCNTests/FastBusBCNTests-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "ragasoft.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
