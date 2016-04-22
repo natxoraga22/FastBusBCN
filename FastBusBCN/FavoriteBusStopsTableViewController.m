@@ -57,18 +57,18 @@ static NSString *const BUS_STOP_LOCALIZED_STRING = @"BUS_STOP";
 {    
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:FAVORITE_BUS_STOP_CELL_ID forIndexPath:indexPath];
     
-    NSDictionary *favoriteBusStop = [FavoriteBusStopsManager favoriteBusStopAtIndex:indexPath.row];
+    BusStop *favoriteBusStop = [FavoriteBusStopsManager favoriteBusStopAtIndex:indexPath.row];
     
     // If custom title: Cell Title --> Bus Stop name, Cell Subtitle --> Bus Stop ID
-    if (![favoriteBusStop[FAVORITE_BUS_STOP_CUSTOM_NAME_KEY] isEqualToString:@""]) {
-        cell.textLabel.text = favoriteBusStop[FAVORITE_BUS_STOP_CUSTOM_NAME_KEY];
+    if (![favoriteBusStop.customName isEqualToString:@""]) {
+        cell.textLabel.text = favoriteBusStop.customName;
         cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(BUS_STOP_LOCALIZED_STRING, @""),
-                                                                         favoriteBusStop[FAVORITE_BUS_STOP_ID_KEY]];
+                                                                         @(favoriteBusStop.identifier)];
     }
     // Otherwise: Cell Title --> Bus Stop ID, no Cell Subtitle
     else {
         cell.textLabel.text = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(BUS_STOP_LOCALIZED_STRING, @""),
-                                                                   favoriteBusStop[FAVORITE_BUS_STOP_ID_KEY]];
+                                                                   @(favoriteBusStop.identifier)];
         cell.detailTextLabel.text = @"";
     }
     return cell;
@@ -116,8 +116,8 @@ static NSString *const ALERT_VIEW_ACCEPT_BUTTON_LOCALIZED_TITLE = @"EDIT_FAVORIT
                                                     otherButtonTitles:NSLocalizedString(ALERT_VIEW_ACCEPT_BUTTON_LOCALIZED_TITLE, @""), nil];
     
     customNameAlert.alertViewStyle = UIAlertViewStylePlainTextInput;
-    NSDictionary *favoriteBusStop = [FavoriteBusStopsManager favoriteBusStopAtIndex:indexPath.row];
-    [customNameAlert textFieldAtIndex:0].text = favoriteBusStop[FAVORITE_BUS_STOP_CUSTOM_NAME_KEY];
+    BusStop *favoriteBusStop = [FavoriteBusStopsManager favoriteBusStopAtIndex:indexPath.row];
+    [customNameAlert textFieldAtIndex:0].text = favoriteBusStop.customName;
     [customNameAlert show];
 }
 
@@ -149,8 +149,8 @@ static NSString *const SHOW_SEARCH_BUS_STOP_SEGUE_ID = @"ShowSearchBusStop";
     // Segue from a UITableView row
     if ([segue.identifier isEqualToString:SHOW_NEXT_BUSES_SEGUE_ID]) {
         NSIndexPath *busStopIndexPath = [self.tableView indexPathForSelectedRow];
-        NSDictionary *favoriteBusStop = [FavoriteBusStopsManager favoriteBusStopAtIndex:busStopIndexPath.row];
-        busStopVC.stopID = [favoriteBusStop[FAVORITE_BUS_STOP_ID_KEY] integerValue];
+        BusStop *favoriteBusStop = [FavoriteBusStopsManager favoriteBusStopAtIndex:busStopIndexPath.row];
+        busStopVC.stopID = favoriteBusStop.identifier;
     }
     // Segue from a search UIBarButtonItem
     else if ([segue.identifier isEqualToString:SHOW_SEARCH_BUS_STOP_SEGUE_ID]) {

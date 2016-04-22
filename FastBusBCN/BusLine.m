@@ -13,9 +13,9 @@
 
 #pragma mark - NSCoding
 
-static NSString *const IDENTIFIER_KEY = @"identifier";
-static NSString *const REMAINING_TIMES_KEY = @"remainingTimes";
-static NSString *const CUSTOM_NOTE_KEY = @"customNote";
+static NSString* const IDENTIFIER_KEY = @"identifier";
+static NSString* const REMAINING_TIMES_KEY = @"remainingTimes";
+static NSString* const CUSTOM_NOTE_KEY = @"customNote";
 
 - (void)encodeWithCoder:(NSCoder*)encoder {
     [encoder encodeObject:self.identifier forKey:IDENTIFIER_KEY];

@@ -11,8 +11,8 @@
 
 @interface BusLine : NSObject <NSCoding>
 
-@property (strong, nonatomic) NSString *identifier;
-@property (strong, nonatomic) NSArray<NSNumber*> *remainingTimes;  // NSArray of NSUInteger representing time in minutes
-@property (strong, nonatomic) NSString *customNote;
+@property (strong, nonatomic) NSString* identifier;
+@property (strong, nonatomic) NSArray<NSNumber*>* remainingTimes;  // NSArray of NSUInteger representing time in minutes
+@property (strong, nonatomic) NSString* customNote;
 
 @end

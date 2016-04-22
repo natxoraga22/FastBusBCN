@@ -13,7 +13,7 @@
 @interface BusStop : NSObject <NSCoding>
 
 @property (nonatomic) NSUInteger identifier;
-@property (strong, nonatomic) NSString *customName;
-@property (strong, nonatomic) NSArray<BusLine*> *busLines;
+@property (strong, nonatomic) NSString* customName;
+@property (strong, nonatomic) NSArray<BusLine*>* busLines;
 
 @end

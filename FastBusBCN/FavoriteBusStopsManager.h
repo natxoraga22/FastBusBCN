@@ -7,28 +7,22 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "BusStop.h"
 
 
 @interface FavoriteBusStopsManager : NSObject
 
-// Keys used in order to acces the favorite bus stops dictionary
-extern NSString *const FAVORITE_BUS_STOPS_KEY;
-extern NSString *const FAVORITE_BUS_STOP_ID_KEY;
-extern NSString *const FAVORITE_BUS_STOP_CUSTOM_NAME_KEY;
-
 #pragma mark - Querying
 
-//+ (NSArray *)favoriteBusStops;
 + (NSUInteger)favoriteBusStopsCount;
-+ (NSDictionary *)favoriteBusStopAtIndex:(NSUInteger)index;
-+ (NSDictionary *)favoriteBusStopWithStopID:(NSUInteger)stopID;
-+ (BOOL)busStopWithStopIDisFavorite:(NSUInteger)stopID;
++ (BusStop*)favoriteBusStopAtIndex:(NSUInteger)index;
++ (BusStop*)favoriteBusStopWithID:(NSUInteger)stopID;
++ (BOOL)busStopWithIDisFavorite:(NSUInteger)stopID;
 
 #pragma mark - Adding/Removing
 
-+ (void)addFavoriteBusStopWithID:(NSUInteger)stopID andCustomName:(NSString *)stopCustomName;
++ (void)addBusStopToFavorites:(BusStop*)busStop;
 + (void)removeFavoriteBusStopAtIndex:(NSUInteger)index;
-+ (void)removeFavoriteBusStopWithID:(NSUInteger)stopID;
 
 #pragma mark - Modifying
 
