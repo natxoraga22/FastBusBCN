@@ -288,7 +288,7 @@ static NSString *const ALERT_VIEW_ACCEPT_BUTTON_LOCALIZED_TITLE = @"NEW_FAVORITE
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSArray *nextBuses = [self.nextBusesFetcher busStopInfo][FETCHED_NEXT_BUSES_KEY];
+    NSArray<BusLine*>* nextBuses = self.nextBusesFetcher.nextBuses;
     NSInteger numberOfRows = 0;
     if (nextBuses != nil) numberOfRows = [nextBuses count];
     
@@ -316,26 +316,26 @@ static NSString *const BUS_LOCALIZED_TIME = @"BUS_TIME";
     }
     
     NextBusTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:NEXT_BUS_INFO_CELL_ID forIndexPath:indexPath];
-    NSDictionary *nextBus = [self.nextBusesFetcher busStopInfo][FETCHED_NEXT_BUSES_KEY][indexPath.row];
+    BusLine* nextBus = self.nextBusesFetcher.nextBuses[indexPath.row];
     
     // Bus line
-    cell.nextBusLineLabel.text = nextBus[FETCHED_NEXT_BUS_LINE_KEY];
-    cell.nextBusLineLabel.backgroundColor = [self lineColorForLine:nextBus[FETCHED_NEXT_BUS_LINE_KEY]];
+    cell.nextBusLineLabel.text = nextBus.identifier;
+    cell.nextBusLineLabel.backgroundColor = [self lineColorForLine:nextBus.identifier];
     
     // Bus time
-    NSString *busTimeString = @"";
+    NSMutableString *busTimeString = [NSMutableString stringWithString:@""];
     BOOL first = YES;
-    for (NSNumber *time in nextBus[FETCHED_NEXT_BUS_TIME_KEY]) {
+    for (NSNumber* time in nextBus.remainingTimes) {
         // Comma separator between times
         if (first) first = NO;
-        else busTimeString = [busTimeString stringByAppendingString:@", "];
+        else [busTimeString appendString:@", "];
         // Time itself
         if ([time integerValue] == 0) {
-            busTimeString = [busTimeString stringByAppendingString:NSLocalizedString(IMMINENT_BUS_LOCALIZED_TIME, @"")];
+            [busTimeString appendString:NSLocalizedString(IMMINENT_BUS_LOCALIZED_TIME, @"")];
         }
         else {
             NSString *newTime = [NSString stringWithFormat:@"%@ %@", time, NSLocalizedString(BUS_LOCALIZED_TIME, @"")];
-            busTimeString = [busTimeString stringByAppendingString:newTime];
+            [busTimeString appendString:newTime];
         }
     }
     cell.nextBusTimeLabel.text = busTimeString;
