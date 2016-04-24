@@ -303,6 +303,7 @@ static NSString *const ALERT_VIEW_ACCEPT_BUTTON_LOCALIZED_TITLE = @"NEW_FAVORITE
 }
 
 static NSString *const NEXT_BUS_INFO_CELL_ID = @"NextBusInfo";
+static NSString *const NEXT_BUS_INFO_WITH_NOTE_CELL_ID = @"NextBusInfoWithNote";
 static NSString *const NEXT_BUS_NOT_FOUND_CELL_ID = @"NextBusNotFound";
 static NSString *const IMMINENT_BUS_LOCALIZED_TIME = @"IMMINENT_BUS";
 static NSString *const BUS_LOCALIZED_TIME = @"BUS_TIME";
@@ -315,12 +316,15 @@ static NSString *const BUS_LOCALIZED_TIME = @"BUS_TIME";
         return cell;
     }
     
-    NextBusTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:NEXT_BUS_INFO_CELL_ID forIndexPath:indexPath];
     BusLine* nextBus = self.nextBusesFetcher.nextBuses[indexPath.row];
+    NextBusTableViewCell *cell = nil;
+    if (!nextBus.customNote) cell = [tableView dequeueReusableCellWithIdentifier:NEXT_BUS_INFO_CELL_ID forIndexPath:indexPath];
+    else [tableView dequeueReusableCellWithIdentifier:NEXT_BUS_INFO_WITH_NOTE_CELL_ID forIndexPath:indexPath];
     
     // Bus line
     cell.nextBusLineLabel.text = nextBus.identifier;
     cell.nextBusLineLabel.backgroundColor = [self lineColorForLine:nextBus.identifier];
+    cell.nextBusNoteLabel.text = nextBus.customNote;
     
     // Bus time
     NSMutableString *busTimeString = [NSMutableString stringWithString:@""];
@@ -338,16 +342,16 @@ static NSString *const BUS_LOCALIZED_TIME = @"BUS_TIME";
             [busTimeString appendString:newTime];
         }
     }
-    cell.nextBusTimeLabel.text = busTimeString;
+    cell.nextBusTimeLabel.text = [busTimeString copy];
 
     return cell;
 }
 
-static NSString *const BAIXBUS_LINE_PREFIX = @"L";
-static NSString *const NITBUS_LINE_PREFIX = @"N";
-static NSString *const VERTICAL_BUS_LINE_PREFIX = @"V";
-static NSString *const HORITZONTAL_BUS_LINE_PREFIX = @"H";
-static NSString *const DIAGONAL_BUS_LINE_PREFIX = @"D";
+static NSString* const BAIXBUS_LINE_PREFIX = @"L";
+static NSString* const NITBUS_LINE_PREFIX = @"N";
+static NSString* const VERTICAL_BUS_LINE_PREFIX = @"V";
+static NSString* const HORITZONTAL_BUS_LINE_PREFIX = @"H";
+static NSString* const DIAGONAL_BUS_LINE_PREFIX = @"D";
 
 - (UIColor *)lineColorForLine:(NSString *)busLine
 {
