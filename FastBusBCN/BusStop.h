@@ -16,4 +16,6 @@
 @property (strong, nonatomic) NSString* customName;
 @property (strong, nonatomic) NSArray<BusLine*>* busLines;
 
+- (instancetype)initWithID:(NSUInteger)identifier andCustomName:(NSString*)customName;
+
 @end

@@ -11,6 +11,16 @@
 
 @implementation BusStop
 
+- (instancetype)initWithID:(NSUInteger)identifier andCustomName:(NSString*)customName
+{
+    self = [super init];
+    if (self) {
+        self.identifier = identifier;
+        self.customName = customName;
+    }
+    return self;
+}
+
 #pragma mark - NSCoding
 
 static NSString* const IDENTIFIER_KEY = @"identifier";

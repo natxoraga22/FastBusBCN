@@ -53,22 +53,22 @@
 static NSString *const FAVORITE_BUS_STOP_CELL_ID = @"FavoriteBusStop";
 static NSString *const BUS_STOP_LOCALIZED_STRING = @"BUS_STOP";
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+- (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {    
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:FAVORITE_BUS_STOP_CELL_ID forIndexPath:indexPath];
+    UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:FAVORITE_BUS_STOP_CELL_ID forIndexPath:indexPath];
     
-    BusStop *favoriteBusStop = [FavoriteBusStopsManager favoriteBusStopAtIndex:indexPath.row];
+    BusStop* favoriteBusStop = [FavoriteBusStopsManager favoriteBusStopAtIndex:indexPath.row];
+    NSString* busStopIDString = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(BUS_STOP_LOCALIZED_STRING, @""),
+                                                                    @(favoriteBusStop.identifier)];
     
     // If custom title: Cell Title --> Bus Stop name, Cell Subtitle --> Bus Stop ID
     if (![favoriteBusStop.customName isEqualToString:@""]) {
         cell.textLabel.text = favoriteBusStop.customName;
-        cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(BUS_STOP_LOCALIZED_STRING, @""),
-                                                                         @(favoriteBusStop.identifier)];
+        cell.detailTextLabel.text = busStopIDString;
     }
     // Otherwise: Cell Title --> Bus Stop ID, no Cell Subtitle
     else {
-        cell.textLabel.text = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(BUS_STOP_LOCALIZED_STRING, @""),
-                                                                   @(favoriteBusStop.identifier)];
+        cell.textLabel.text = busStopIDString;
         cell.detailTextLabel.text = @"";
     }
     return cell;

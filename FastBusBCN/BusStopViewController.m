@@ -106,11 +106,11 @@ static NSString *const FAVORITE_BUTTON_DEACTIVATED_TITLE = @"☆";
                                                            (long)self.stopID];
     
     // BusStop title
-    if ([FavoriteBusStopsManager busStopWithStopIDisFavorite:self.stopID]) {
-        NSDictionary *favoriteBusStop = [FavoriteBusStopsManager favoriteBusStopWithStopID:self.stopID];
+    if ([FavoriteBusStopsManager busStopWithIDisFavorite:self.stopID]) {
+        BusStop *favoriteBusStop = [FavoriteBusStopsManager favoriteBusStopWithID:self.stopID];
         self.busStopNameLabel.textAlignment = NSTextAlignmentLeft;
         self.busStopNameLabel.textColor = [UIColor blackColor];
-        self.busStopNameLabel.text = favoriteBusStop[FAVORITE_BUS_STOP_CUSTOM_NAME_KEY];
+        self.busStopNameLabel.text = favoriteBusStop.customName;
     }
     else {
         self.busStopNameLabel.textAlignment = NSTextAlignmentRight;
@@ -119,7 +119,7 @@ static NSString *const FAVORITE_BUTTON_DEACTIVATED_TITLE = @"☆";
     }
     
     // Favorite button
-    if ([FavoriteBusStopsManager busStopWithStopIDisFavorite:self.stopID])
+    if ([FavoriteBusStopsManager busStopWithIDisFavorite:self.stopID])
         [self.favoriteButton setTitle:FAVORITE_BUTTON_ACTIVATED_TITLE forState:UIControlStateNormal];
     else
         [self.favoriteButton setTitle:FAVORITE_BUTTON_DEACTIVATED_TITLE forState:UIControlStateNormal];
@@ -204,7 +204,7 @@ static NSString *const FAILED_CONNECTION_LOCALIZED_STRING = @"CONNECTION_FAILED"
 
 - (IBAction)favoriteButtonPressed:(UIButton *)sender
 {
-    if ([FavoriteBusStopsManager busStopWithStopIDisFavorite:self.stopID]) [self removeFromFavorites];
+    if ([FavoriteBusStopsManager busStopWithIDisFavorite:self.stopID]) [self removeFromFavorites];
     else [self askFavoriteCustomName];
 }
 
@@ -227,7 +227,8 @@ static NSString *const ALERT_VIEW_ACCEPT_BUTTON_LOCALIZED_TITLE = @"NEW_FAVORITE
 
 - (void)addToFavoritesWithCustomName:(NSString *)customName
 {
-    [FavoriteBusStopsManager addFavoriteBusStopWithID:self.stopID andCustomName:customName];
+    BusStop* busStop = [[BusStop alloc] initWithID:self.stopID andCustomName:customName];
+    [FavoriteBusStopsManager addBusStopToFavorites:busStop];
     [self updateUI];
 }
 

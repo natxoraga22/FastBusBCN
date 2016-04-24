@@ -69,6 +69,18 @@ static NSString* const FAVORITE_BUS_STOPS_KEY = @"FavoriteBusStops";
     [self setFavoriteBusStops:favoriteBusStops];
 }
 
++ (void)removeFavoriteBusStopWithID:(NSUInteger)stopID
+{
+    NSMutableArray* favoriteBusStops = [[self favoriteBusStops] mutableCopy];
+    BusStop* favoriteBusStop = [self favoriteBusStopWithID:stopID];
+    NSData* favoriteBusStopData = [NSKeyedArchiver archivedDataWithRootObject:favoriteBusStop];
+    
+    [favoriteBusStops removeObject:favoriteBusStopData];
+    
+    [self setFavoriteBusStops:favoriteBusStops];
+}
+
+
 #pragma mark - Modifying
 
 + (void)setCustomName:(NSString *)customName forFavoriteBusStopAtIndex:(NSUInteger)index

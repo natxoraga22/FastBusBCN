@@ -23,6 +23,7 @@
 
 + (void)addBusStopToFavorites:(BusStop*)busStop;
 + (void)removeFavoriteBusStopAtIndex:(NSUInteger)index;
++ (void)removeFavoriteBusStopWithID:(NSUInteger)stopID;
 
 #pragma mark - Modifying
 
