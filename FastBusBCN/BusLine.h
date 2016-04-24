@@ -15,4 +15,8 @@
 @property (strong, nonatomic) NSArray<NSNumber*>* remainingTimes;  // NSArray of NSUInteger representing time in minutes
 @property (strong, nonatomic) NSString* customNote;
 
+- (instancetype)initWithID:(NSString*)identifier;
+
+- (void)addRemainingTime:(NSUInteger)remainingTime;
+
 @end

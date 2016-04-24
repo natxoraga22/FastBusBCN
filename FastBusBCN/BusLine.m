@@ -11,6 +11,28 @@
 
 @implementation BusLine
 
+- (instancetype)initWithID:(NSString*)identifier
+{
+    self = [super init];
+    if (self) {
+        self.identifier = identifier;
+    }
+    return self;
+}
+
+- (NSArray<NSNumber*>*)remainingTimes
+{
+    if (!_remainingTimes) {
+        _remainingTimes = [[NSArray<NSNumber*> alloc] init];
+    }
+    return _remainingTimes;
+}
+
+- (void)addRemainingTime:(NSUInteger)remainingTime
+{
+    self.remainingTimes = [self.remainingTimes arrayByAddingObject:@(remainingTime)];
+}
+
 #pragma mark - NSCoding
 
 static NSString* const IDENTIFIER_KEY = @"identifier";

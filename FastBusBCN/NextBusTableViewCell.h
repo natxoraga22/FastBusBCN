@@ -12,4 +12,5 @@
 @interface NextBusTableViewCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UILabel *nextBusLineLabel;
 @property (weak, nonatomic) IBOutlet UILabel *nextBusTimeLabel;
+@property (weak, nonatomic) IBOutlet UILabel *nextBusNoteLabel;
 @end

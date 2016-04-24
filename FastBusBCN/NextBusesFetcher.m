@@ -13,7 +13,7 @@
 @interface NextBusesFetcher()
 @property (strong, nonatomic) NSURLConnection *currentConnection;
 @property (strong, nonatomic) NSMutableData *nextBusesHTMLData;
-@property (strong, nonatomic, readwrite) NSDictionary *busStopInfo;
+@property (strong, nonatomic, readwrite) NSArray<BusLine*>* nextBuses;
 @property (nonatomic, readwrite) BOOL busStopFound;
 @end
 
@@ -29,7 +29,7 @@ NSString *const FETCHED_NEXT_BUS_TIME_KEY = @"FetchedNextBus_BusTime";
 
 static NSString *const NEXT_BUSES_URL = @"http://www.ambmobilitat.cat/ambtempsbus?codi=";
 
-- (void)fetchStopNameAndNextBusesForStop:(NSInteger)stopID
+- (void)fetchNextBusesForStop:(NSInteger)stopID
 {    
     // Create the HTML call string
     NSString *nextBusesFetchingString = [NSString stringWithFormat:@"%@%ld", NEXT_BUSES_URL, (long)stopID];
@@ -62,10 +62,7 @@ static NSString *const NEXT_BUS_TIME_CSS_SELECTOR = @"div b span";
 - (void)parseObtainedHTMLData
 {
     NSString *nextBusesHTMLString = [[NSString alloc] initWithData:self.nextBusesHTMLData encoding:NSUTF8StringEncoding];
-    
-    // Create the HTML parser
     HTMLDocument *HTMLParser = [HTMLDocument documentWithString:nextBusesHTMLString];
-    NSMutableDictionary *busStopMutableInfo = [[NSMutableDictionary alloc] init];
     
     // Parse the HTML in order to obtain the next buses
     NSMutableArray *nextBusesNodes = [[HTMLParser nodesMatchingSelector:NEXT_BUSES_CSS_SELECTOR] mutableCopy];
@@ -79,36 +76,30 @@ static NSString *const NEXT_BUS_TIME_CSS_SELECTOR = @"div b span";
     
     // If the stop is valid, parse the data
     if (self.busStopFound) {
-        NSMutableArray *nextBuses = [[NSMutableArray alloc] init];
+        NSMutableArray<BusLine*>* mutableNextBuses = [[NSMutableArray alloc] init];
         for (HTMLNode *nextBusNode in nextBusesNodes) {
-            // BUS LINE
             NSString *busLine = [self parseLine:[[nextBusNode firstNodeMatchingSelector:NEXT_BUS_LINE_CSS_SELECTOR] innerHTML]];
-            // BUS TIME
             NSUInteger busTime = [self parseTime:[[nextBusNode firstNodeMatchingSelector:NEXT_BUS_TIME_CSS_SELECTOR] innerHTML]];
             
+            // Search for the line: if already found just add the time
             BOOL found = NO;
-            for (int i = 0; i < [nextBuses count]; i++) {
-                NSDictionary *nextBus = nextBuses[i];
-                // If we already have the line, add the time
-                if ([nextBus[FETCHED_NEXT_BUS_LINE_KEY] isEqualToString:busLine]) {
+            for (int i = 0; i < [mutableNextBuses count]; i++) {
+                BusLine* nextBus = mutableNextBuses[i];
+                if ([nextBus.identifier isEqualToString:busLine]) {
                     found = YES;
-                    NSMutableDictionary *mutableNextBus = [nextBus mutableCopy];
-                    NSArray *nextBusTime = [mutableNextBus[FETCHED_NEXT_BUS_TIME_KEY] arrayByAddingObject:@(busTime)];
-                    mutableNextBus[FETCHED_NEXT_BUS_TIME_KEY] = nextBusTime;
-                    nextBuses[i] = [mutableNextBus copy];
+                    [nextBus addRemainingTime:busTime];
                 }
             }
             // Otherwise, create a new line with the corresponding time
             if (!found) {
-                [nextBuses addObject:@{FETCHED_NEXT_BUS_LINE_KEY: busLine,
-                                       FETCHED_NEXT_BUS_TIME_KEY: @[@(busTime)]}];
+                BusLine* nextBus = [[BusLine alloc] initWithID:busLine];
+                [nextBus addRemainingTime:busTime];
+                [mutableNextBuses addObject:nextBus];
             }
         }
-        busStopMutableInfo[FETCHED_NEXT_BUSES_KEY] = [nextBuses copy];
-
-        self.busStopInfo = [busStopMutableInfo copy];
+        self.nextBuses = [mutableNextBuses copy];
     }
-    else self.busStopInfo = nil;
+    else self.nextBuses = nil;
 }
 
 - (NSString *)parseLine:(NSString *)line

@@ -28,8 +28,8 @@
 #pragma mark - ViewController Lifecycle
 
 static const NSInteger DEFAULT_TOOLBAR_HEIGHT = 44;
-static NSString *const SEARCH_LOCALIZED_STRING = @"SEARCH";
-static NSString *const BUS_STOP_LOCALIZED_ID = @"BUS_STOP_ID";
+static NSString* const SEARCH_LOCALIZED_STRING = @"SEARCH";
+static NSString* const BUS_STOP_LOCALIZED_ID = @"BUS_STOP_ID";
 
 - (void)viewDidLoad
 {
@@ -153,7 +153,7 @@ static NSString *const FAVORITE_BUTTON_DEACTIVATED_TITLE = @"☆";
     // Disable the favorite button
     self.favoriteButton.enabled = NO;
     
-    [self.nextBusesFetcher fetchStopNameAndNextBusesForStop:self.stopID];
+    [self.nextBusesFetcher fetchNextBusesForStop:self.stopID];
 }
 
 #pragma mark - NextBusesFetcher Data Delegate
