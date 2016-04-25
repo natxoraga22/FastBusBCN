@@ -18,6 +18,7 @@
 + (BusStop*)favoriteBusStopAtIndex:(NSUInteger)index;
 + (BusStop*)favoriteBusStopWithID:(NSUInteger)stopID;
 + (BOOL)busStopWithIDisFavorite:(NSUInteger)stopID;
++ (NSString*)customNoteForBusLine:(NSString*)lineID andBusStop:(NSUInteger)stopID;
 
 #pragma mark - Adding/Removing
 
@@ -28,6 +29,7 @@
 #pragma mark - Modifying
 
 + (void)setCustomName:(NSString *)stopCustomName forFavoriteBusStopAtIndex:(NSUInteger)index;
++ (void)addBusLine:(BusLine*)busLine toBusStopWithID:(NSUInteger)stopID;
 
 #pragma mark - Organizing
 

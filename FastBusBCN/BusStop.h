@@ -18,4 +18,7 @@
 
 - (instancetype)initWithID:(NSUInteger)identifier andCustomName:(NSString*)customName;
 
+- (BusLine*)busLineWithID:(NSString*)lineID;
+- (void)addBusLine:(BusLine*)busLine;
+
 @end

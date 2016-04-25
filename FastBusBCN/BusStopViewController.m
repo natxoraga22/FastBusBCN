@@ -20,6 +20,7 @@
 @property (weak, nonatomic) IBOutlet UISearchBar *busStopSearchBar;
 @property (strong, nonatomic) NextBusesFetcher *nextBusesFetcher;
 @property (nonatomic) BOOL tableViewIsEmpty;
+@property (nonatomic) NSUInteger selectedRowIndex;
 @end
 
 
@@ -208,18 +209,18 @@ static NSString *const FAILED_CONNECTION_LOCALIZED_STRING = @"CONNECTION_FAILED"
     else [self askFavoriteCustomName];
 }
 
-static NSString *const ALERT_VIEW_LOCALIZED_TITLE = @"NEW_FAVORITE_ALERT_VIEW_TITLE";
-static NSString *const ALERT_VIEW_LOCALIZED_MESSAGE = @"NEW_FAVORITE_ALERT_VIEW_MESSAGE";
-static NSString *const ALERT_VIEW_CANCEL_BUTTON_LOCALIZED_TITLE = @"NEW_FAVORITE_ALERT_VIEW_CANCEL_BUTTON_TITLE";
-static NSString *const ALERT_VIEW_ACCEPT_BUTTON_LOCALIZED_TITLE = @"NEW_FAVORITE_ALERT_VIEW_ACCEPT_BUTTON_TITLE";
+static NSString *const NEW_FAVORITE_ALERT_VIEW_TITLE = @"NEW_FAVORITE_ALERT_VIEW_TITLE";
+static NSString *const NEW_FAVORITE_ALERT_VIEW_MESSAGE = @"NEW_FAVORITE_ALERT_VIEW_MESSAGE";
+static NSString *const NEW_FAVORITE_ALERT_VIEW_CANCEL_BUTTON_TITLE = @"NEW_FAVORITE_ALERT_VIEW_CANCEL_BUTTON_TITLE";
+static NSString *const NEW_FAVORITE_ALERT_VIEW_ACCEPT_BUTTON_TITLE = @"NEW_FAVORITE_ALERT_VIEW_ACCEPT_BUTTON_TITLE";
 
 - (void)askFavoriteCustomName
 {
-    UIAlertView *customNameAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(ALERT_VIEW_LOCALIZED_TITLE, @"")
-                                                              message:NSLocalizedString(ALERT_VIEW_LOCALIZED_MESSAGE, @"")
+    UIAlertView *customNameAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(NEW_FAVORITE_ALERT_VIEW_TITLE, @"")
+                                                              message:NSLocalizedString(NEW_FAVORITE_ALERT_VIEW_MESSAGE, @"")
                                                              delegate:self
-                                                    cancelButtonTitle:NSLocalizedString(ALERT_VIEW_CANCEL_BUTTON_LOCALIZED_TITLE, @"")
-                                                    otherButtonTitles:NSLocalizedString(ALERT_VIEW_ACCEPT_BUTTON_LOCALIZED_TITLE, @""), nil];
+                                                    cancelButtonTitle:NSLocalizedString(NEW_FAVORITE_ALERT_VIEW_CANCEL_BUTTON_TITLE, @"")
+                                                    otherButtonTitles:NSLocalizedString(NEW_FAVORITE_ALERT_VIEW_ACCEPT_BUTTON_TITLE, @""), nil];
     
     customNameAlert.alertViewStyle = UIAlertViewStylePlainTextInput;
     [customNameAlert show];
@@ -236,16 +237,6 @@ static NSString *const ALERT_VIEW_ACCEPT_BUTTON_LOCALIZED_TITLE = @"NEW_FAVORITE
 {
     [FavoriteBusStopsManager removeFavoriteBusStopWithID:self.stopID];
     [self updateUI];
-}
-
-#pragma mark - UIAlertView Delegate
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    // Accept button
-    if (buttonIndex == 1) {
-        [self addToFavoritesWithCustomName:[alertView textFieldAtIndex:0].text];
-    }
 }
 
 #pragma mark - Search management
@@ -317,14 +308,15 @@ static NSString *const BUS_LOCALIZED_TIME = @"BUS_TIME";
     }
     
     BusLine* nextBus = self.nextBusesFetcher.nextBuses[indexPath.row];
+    NSString* customNote = [FavoriteBusStopsManager customNoteForBusLine:nextBus.identifier andBusStop:self.stopID];
     NextBusTableViewCell *cell = nil;
-    if (!nextBus.customNote) cell = [tableView dequeueReusableCellWithIdentifier:NEXT_BUS_INFO_CELL_ID forIndexPath:indexPath];
-    else [tableView dequeueReusableCellWithIdentifier:NEXT_BUS_INFO_WITH_NOTE_CELL_ID forIndexPath:indexPath];
+    if (!customNote) cell = [tableView dequeueReusableCellWithIdentifier:NEXT_BUS_INFO_CELL_ID forIndexPath:indexPath];
+    else cell = [tableView dequeueReusableCellWithIdentifier:NEXT_BUS_INFO_WITH_NOTE_CELL_ID forIndexPath:indexPath];
     
     // Bus line
     cell.nextBusLineLabel.text = nextBus.identifier;
     cell.nextBusLineLabel.backgroundColor = [self lineColorForLine:nextBus.identifier];
-    cell.nextBusNoteLabel.text = nextBus.customNote;
+    cell.nextBusNoteLabel.text = customNote;
     
     // Bus time
     NSMutableString *busTimeString = [NSMutableString stringWithString:@""];
@@ -346,6 +338,46 @@ static NSString *const BUS_LOCALIZED_TIME = @"BUS_TIME";
 
     return cell;
 }
+
+static NSString *const EDIT_LINE_ALERT_VIEW_TITLE = @"EDIT_LINE_ALERT_VIEW_TITLE";
+static NSString *const EDIT_LINE_ALERT_VIEW_MESSAGE = @"EDIT_LINE_ALERT_VIEW_MESSAGE";
+static NSString *const EDIT_LINE_ALERT_VIEW_CANCEL_BUTTON_TITLE = @"EDIT_LINE_ALERT_VIEW_CANCEL_BUTTON_TITLE";
+static NSString *const EDIT_LINE_ALERT_VIEW_ACCEPT_BUTTON_TITLE = @"EDIT_LINE_ALERT_VIEW_ACCEPT_BUTTON_TITLE";
+
+- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
+{
+    self.selectedRowIndex = indexPath.row;
+    UIAlertView *customNoteAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(EDIT_LINE_ALERT_VIEW_TITLE, @"")
+                                                              message:NSLocalizedString(EDIT_LINE_ALERT_VIEW_MESSAGE, @"")
+                                                             delegate:self
+                                                    cancelButtonTitle:NSLocalizedString(EDIT_LINE_ALERT_VIEW_CANCEL_BUTTON_TITLE, @"")
+                                                    otherButtonTitles:NSLocalizedString(EDIT_LINE_ALERT_VIEW_ACCEPT_BUTTON_TITLE, @""), nil];
+    
+    customNoteAlert.alertViewStyle = UIAlertViewStylePlainTextInput;
+    [customNoteAlert show];
+}
+
+- (void)setBusLineCustomNote:(NSString*)customNote
+{
+    BusLine* busLine = self.nextBusesFetcher.nextBuses[self.selectedRowIndex];
+    busLine.customNote = customNote;
+    [FavoriteBusStopsManager addBusLine:busLine toBusStopWithID:self.stopID];
+    [self updateUI];
+}
+
+#pragma mark - UIAlertView Delegate
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if ([alertView.title isEqualToString:NSLocalizedString(NEW_FAVORITE_ALERT_VIEW_TITLE, @"")]) {
+        if (buttonIndex == 1) [self addToFavoritesWithCustomName:[alertView textFieldAtIndex:0].text];
+    }
+    else if ([alertView.title isEqualToString:NSLocalizedString(EDIT_LINE_ALERT_VIEW_TITLE, @"")]) {
+        if (buttonIndex == 1) [self setBusLineCustomNote:[alertView textFieldAtIndex:0].text];
+    }
+}
+
+#pragma mark - Utility
 
 static NSString* const BAIXBUS_LINE_PREFIX = @"L";
 static NSString* const NITBUS_LINE_PREFIX = @"N";

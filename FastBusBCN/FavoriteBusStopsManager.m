@@ -15,7 +15,7 @@ static NSString* const FAVORITE_BUS_STOPS_KEY = @"FavoriteBusStops";
 
 #pragma mark - Querying
 
-+ (NSArray*)favoriteBusStops
++ (NSArray<NSData*>*)favoriteBusStops
 {
     return [[NSUserDefaults standardUserDefaults] objectForKey:FAVORITE_BUS_STOPS_KEY];
 }
@@ -47,11 +47,18 @@ static NSString* const FAVORITE_BUS_STOPS_KEY = @"FavoriteBusStops";
     return [self favoriteBusStopWithID:stopID] != nil;
 }
 
++ (NSString*)customNoteForBusLine:(NSString*)lineID andBusStop:(NSUInteger)stopID
+{
+    BusStop* busStop = [self favoriteBusStopWithID:stopID];
+    BusLine* busLine = [busStop busLineWithID:lineID];
+    return busLine.customNote;
+}
+
 #pragma mark - Adding/Removing
 
 + (void)addBusStopToFavorites:(BusStop*)busStop
 {
-    NSMutableArray *favoriteBusStops = [[self favoriteBusStops] mutableCopy];
+    NSMutableArray<NSData*>* favoriteBusStops = [[self favoriteBusStops] mutableCopy];
     if (!favoriteBusStops) favoriteBusStops = [[NSMutableArray alloc] init];
     
     NSData* busStopData = [NSKeyedArchiver archivedDataWithRootObject:busStop];
@@ -62,7 +69,7 @@ static NSString* const FAVORITE_BUS_STOPS_KEY = @"FavoriteBusStops";
 
 + (void)removeFavoriteBusStopAtIndex:(NSUInteger)index
 {
-    NSMutableArray* favoriteBusStops = [[self favoriteBusStops] mutableCopy];
+    NSMutableArray<NSData*>* favoriteBusStops = [[self favoriteBusStops] mutableCopy];
     
     [favoriteBusStops removeObjectAtIndex:index];
     
@@ -71,7 +78,7 @@ static NSString* const FAVORITE_BUS_STOPS_KEY = @"FavoriteBusStops";
 
 + (void)removeFavoriteBusStopWithID:(NSUInteger)stopID
 {
-    NSMutableArray* favoriteBusStops = [[self favoriteBusStops] mutableCopy];
+    NSMutableArray<NSData*>* favoriteBusStops = [[self favoriteBusStops] mutableCopy];
     BusStop* favoriteBusStop = [self favoriteBusStopWithID:stopID];
     NSData* favoriteBusStopData = [NSKeyedArchiver archivedDataWithRootObject:favoriteBusStop];
     
@@ -85,12 +92,26 @@ static NSString* const FAVORITE_BUS_STOPS_KEY = @"FavoriteBusStops";
 
 + (void)setCustomName:(NSString *)customName forFavoriteBusStopAtIndex:(NSUInteger)index
 {
-    NSMutableArray* favoriteBusStops = [[self favoriteBusStops] mutableCopy];
-    NSData* favoriteBusStopData = favoriteBusStops[index];
-    BusStop* favoriteBusStop = [NSKeyedUnarchiver unarchiveObjectWithData:favoriteBusStopData];
-    
+    BusStop* favoriteBusStop = [self favoriteBusStopAtIndex:index];
     favoriteBusStop.customName = customName;
+    
+    NSMutableArray<NSData*>* favoriteBusStops = [[self favoriteBusStops] mutableCopy];
     favoriteBusStops[index] = [NSKeyedArchiver archivedDataWithRootObject:favoriteBusStop];
+    
+    [self setFavoriteBusStops:favoriteBusStops];
+}
+
++ (void)addBusLine:(BusLine*)busLine toBusStopWithID:(NSUInteger)stopID
+{
+    NSMutableArray<NSData*>* favoriteBusStops = [[self favoriteBusStops] mutableCopy];
+    BusStop* favoriteBusStop = [self favoriteBusStopWithID:stopID];
+    
+    // First remove the old bus stop data
+    [favoriteBusStops removeObject:[NSKeyedArchiver archivedDataWithRootObject:favoriteBusStop]];
+    
+    // Add the bus line to the bus stop and add the new data
+    [favoriteBusStop addBusLine:busLine];
+    [favoriteBusStops addObject:[NSKeyedArchiver archivedDataWithRootObject:favoriteBusStop]];
     
     [self setFavoriteBusStops:favoriteBusStops];
 }
@@ -99,7 +120,7 @@ static NSString* const FAVORITE_BUS_STOPS_KEY = @"FavoriteBusStops";
 
 + (void)moveFavoriteBusStopFromIndex:(NSUInteger)fromIndex toIndex:(NSUInteger)toIndex
 {
-    NSMutableArray* favoriteBusStops = [[self favoriteBusStops] mutableCopy];
+    NSMutableArray<NSData*>* favoriteBusStops = [[self favoriteBusStops] mutableCopy];
     NSData* movingBusStop = favoriteBusStops[fromIndex];
     
     // Remove the bus stop from the old index and insert it to the new index
@@ -111,7 +132,7 @@ static NSString* const FAVORITE_BUS_STOPS_KEY = @"FavoriteBusStops";
 
 #pragma mark - Private utility methods
 
-+ (void)setFavoriteBusStops:(NSArray *)favoriteBusStops
++ (void)setFavoriteBusStops:(NSArray<NSData*>*)favoriteBusStops
 {
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     [userDefaults setObject:[favoriteBusStops copy] forKey:FAVORITE_BUS_STOPS_KEY];
