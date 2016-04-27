@@ -107,15 +107,14 @@ static NSString* const FAVORITE_BUS_STOPS_KEY = @"FavoriteBusStops";
 + (void)addBusLine:(BusLine*)busLine toBusStopWithID:(NSUInteger)stopID
 {
     NSMutableArray<NSData*>* favoriteBusStops = [[self favoriteBusStops] mutableCopy];
-    BusStop* favoriteBusStop = [self favoriteBusStopWithID:stopID];
-    
-    // First remove the old bus stop data
-    [favoriteBusStops removeObject:[NSKeyedArchiver archivedDataWithRootObject:favoriteBusStop]];
-    
-    // Add the bus line to the bus stop and add the new data
-    [favoriteBusStop addBusLine:busLine];
-    [favoriteBusStops addObject:[NSKeyedArchiver archivedDataWithRootObject:favoriteBusStop]];
-    
+
+    for (NSUInteger i = 0; i < favoriteBusStops.count; i++) {
+        BusStop* favoriteBusStop = [NSKeyedUnarchiver unarchiveObjectWithData:favoriteBusStops[i]];
+        if (favoriteBusStop.identifier == stopID) {
+            [favoriteBusStop addBusLine:busLine];
+            favoriteBusStops[i] = [NSKeyedArchiver archivedDataWithRootObject:favoriteBusStop];
+        }
+    }
     [self setFavoriteBusStops:favoriteBusStops];
 }
 
@@ -150,7 +149,7 @@ static NSString* const FAVORITE_BUS_STOP_CUSTOM_NAME_KEY = @"FavoriteBusStopCust
 {
     NSMutableArray* favoriteBusStops = [[[NSUserDefaults standardUserDefaults] objectForKey:FAVORITE_BUS_STOPS_KEY] mutableCopy];
     BOOL somethingUpdated = NO;
-    for (int i = 0; i < favoriteBusStops.count; i++) {
+    for (NSUInteger i = 0; i < favoriteBusStops.count; i++) {
         NSObject* favoriteBusStop = favoriteBusStops[i];
         
         // If we find a Bus Stop in NSDictionary form, transform it into an archived BusStop

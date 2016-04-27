@@ -124,6 +124,9 @@ static NSString *const FAVORITE_BUTTON_DEACTIVATED_TITLE = @"☆";
         [self.favoriteButton setTitle:FAVORITE_BUTTON_ACTIVATED_TITLE forState:UIControlStateNormal];
     else
         [self.favoriteButton setTitle:FAVORITE_BUTTON_DEACTIVATED_TITLE forState:UIControlStateNormal];
+    
+    // Reload table data
+    [self.nextBusesTableView reloadData];
 }
 
 #pragma mark - Fetching
@@ -307,11 +310,18 @@ static NSString *const BUS_LOCALIZED_TIME = @"BUS_TIME";
         return cell;
     }
     
+    // Cell type
     BusLine* nextBus = self.nextBusesFetcher.nextBuses[indexPath.row];
     NSString* customNote = [FavoriteBusStopsManager customNoteForBusLine:nextBus.identifier andBusStop:self.stopID];
     NextBusTableViewCell *cell = nil;
     if (!customNote) cell = [tableView dequeueReusableCellWithIdentifier:NEXT_BUS_INFO_CELL_ID forIndexPath:indexPath];
     else cell = [tableView dequeueReusableCellWithIdentifier:NEXT_BUS_INFO_WITH_NOTE_CELL_ID forIndexPath:indexPath];
+    
+    // Cell accessory
+    if (![FavoriteBusStopsManager busStopWithIDisFavorite:self.stopID]) {
+        cell.accessoryType = UITableViewCellAccessoryNone;
+    }
+    else cell.accessoryType = UITableViewCellAccessoryDetailButton;
     
     // Bus line
     cell.nextBusLineLabel.text = nextBus.identifier;
@@ -354,6 +364,8 @@ static NSString *const EDIT_LINE_ALERT_VIEW_ACCEPT_BUTTON_TITLE = @"EDIT_LINE_AL
                                                     otherButtonTitles:NSLocalizedString(EDIT_LINE_ALERT_VIEW_ACCEPT_BUTTON_TITLE, @""), nil];
     
     customNoteAlert.alertViewStyle = UIAlertViewStylePlainTextInput;
+    NSString* busLine = self.nextBusesFetcher.nextBuses[indexPath.row].identifier;
+    [customNoteAlert textFieldAtIndex:0].text = [FavoriteBusStopsManager customNoteForBusLine:busLine andBusStop:self.stopID];
     [customNoteAlert show];
 }
 
