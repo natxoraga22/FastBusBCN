@@ -17,6 +17,9 @@ static NSString* const FAVORITE_BUS_STOPS_KEY = @"FavoriteBusStops";
 
 + (NSArray<NSData*>*)favoriteBusStops
 {
+    // Update user defaults from FastBus 1.0 to 2.0 if needed
+    [self updateFavoriteBusStops];
+    
     return [[NSUserDefaults standardUserDefaults] objectForKey:FAVORITE_BUS_STOPS_KEY];
 }
 
@@ -137,6 +140,30 @@ static NSString* const FAVORITE_BUS_STOPS_KEY = @"FavoriteBusStops";
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     [userDefaults setObject:[favoriteBusStops copy] forKey:FAVORITE_BUS_STOPS_KEY];
     [userDefaults synchronize];
+}
+
+// Old keys from the bus stop NSDictionary
+static NSString* const FAVORITE_BUS_STOP_ID_KEY = @"FavoriteBusStopID";
+static NSString* const FAVORITE_BUS_STOP_CUSTOM_NAME_KEY = @"FavoriteBusStopCustomName";
+
++ (void)updateFavoriteBusStops
+{
+    NSMutableArray* favoriteBusStops = [[[NSUserDefaults standardUserDefaults] objectForKey:FAVORITE_BUS_STOPS_KEY] mutableCopy];
+    BOOL somethingUpdated = NO;
+    for (int i = 0; i < favoriteBusStops.count; i++) {
+        NSObject* favoriteBusStop = favoriteBusStops[i];
+        
+        // If we find a Bus Stop in NSDictionary form, transform it into an archived BusStop
+        if ([favoriteBusStop isKindOfClass:[NSDictionary class]]) {
+            somethingUpdated = YES;
+            NSDictionary* busStopDictionary = (NSDictionary*)favoriteBusStop;
+            NSUInteger busStopID = [[busStopDictionary objectForKey:FAVORITE_BUS_STOP_ID_KEY] unsignedIntegerValue];
+            NSString* busStopCustomName = [busStopDictionary objectForKey:FAVORITE_BUS_STOP_CUSTOM_NAME_KEY];
+            BusStop *busStop = [[BusStop alloc] initWithID:busStopID andCustomName:busStopCustomName];
+            favoriteBusStops[i] = [NSKeyedArchiver archivedDataWithRootObject:busStop];
+        }
+    }
+    if (somethingUpdated) [self setFavoriteBusStops:[favoriteBusStops copy]];
 }
 
 @end
