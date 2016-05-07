@@ -10,6 +10,8 @@
 #import "FavoriteBusStopsManager.h"
 #import "BusStopViewController.h"
 
+@import GoogleMobileAds;
+
 
 @interface FavoriteBusStopsTableViewController()
 @property (nonatomic) NSUInteger selectedRowIndex;
@@ -25,9 +27,11 @@
     [super viewDidLoad];
     
     // iAd (only iOS7)
-    if ([self respondsToSelector:@selector(setCanDisplayBannerAds:)]) {
-        self.canDisplayBannerAds = YES;
-    }
+    //if ([self respondsToSelector:@selector(setCanDisplayBannerAds:)]) {
+    //    self.canDisplayBannerAds = YES;
+    //}
+    
+    NSLog(@"Google Mobile Ads SDK version: %@", [GADRequest sdkVersion]);
     
     // TableView edit button
     self.navigationItem.leftBarButtonItem = self.editButtonItem;

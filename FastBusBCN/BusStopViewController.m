@@ -37,9 +37,9 @@ static NSString* const BUS_STOP_LOCALIZED_ID = @"BUS_STOP_ID";
     [super viewDidLoad];
     
     // iAd (only iOS7)
-    if ([self respondsToSelector:@selector(setCanDisplayBannerAds:)]) {
-        self.canDisplayBannerAds = YES;
-    }
+    //if ([self respondsToSelector:@selector(setCanDisplayBannerAds:)]) {
+    //    self.canDisplayBannerAds = YES;
+    //}
     
     // Update UI
     [self updateUI];

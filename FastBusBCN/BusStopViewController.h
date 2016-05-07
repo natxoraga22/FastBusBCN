@@ -8,10 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import <iAd/iAd.h>
+#import "AdBannerViewController.h"
 #import "NextBusesFetcherDataDelegate.h"
 
 
-@interface BusStopViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, NextBusesFetcherDataDelegate, UIAlertViewDelegate>
+@interface BusStopViewController : AdBannerViewController <UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, NextBusesFetcherDataDelegate, UIAlertViewDelegate>
 
 /// Bus stop identifier
 @property (nonatomic) NSInteger stopID;
