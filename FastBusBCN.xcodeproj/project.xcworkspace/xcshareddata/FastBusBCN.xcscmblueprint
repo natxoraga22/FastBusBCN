@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "717DF90AC5B21AECA6CC604ECB0CBACB2E9262F1",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "717DF90AC5B21AECA6CC604ECB0CBACB2E9262F1" : 0,
+    "3B7D84660CA0A4984AC45911801FC3F5070A6DC2" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "10B7CD03-7B47-4F8F-B240-8886569E7B92",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "717DF90AC5B21AECA6CC604ECB0CBACB2E9262F1" : "FastBusBCN\/",
+    "3B7D84660CA0A4984AC45911801FC3F5070A6DC2" : "FastBusBCN\/HTMLReader\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "FastBusBCN",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "FastBusBCN.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/nolanw\/HTMLReader.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "3B7D84660CA0A4984AC45911801FC3F5070A6DC2"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/natxoraga22\/FastBusBCN.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "717DF90AC5B21AECA6CC604ECB0CBACB2E9262F1"
+    }
+  ]
+}

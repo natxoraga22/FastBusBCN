@@ -12,27 +12,29 @@
 
 
 @interface AdBannerViewController() <GADBannerViewDelegate>
-//@property (weak, nonatomic) IBOutlet GADBannerView* bannerView;
+@property (strong, nonatomic) IBOutlet GADBannerView* bannerView;
 @end
 
 
 @implementation AdBannerViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     
     CGPoint bannerViewOrigin = CGPointMake(self.view.bounds.origin.x,
                                            self.view.bounds.origin.y + self.view.bounds.size.height);
-    GADBannerView *bannerView = [[GADBannerView alloc] initWithAdSize:kGADAdSizeSmartBannerPortrait
-                                                               origin:bannerViewOrigin];
-    [self.view addSubview:bannerView];
-    bannerView.adUnitID = @"ca-app-pub-3940256099942544/2934735716";
-    bannerView.rootViewController = self;
-    bannerView.delegate = self;
-    [bannerView loadRequest:[GADRequest request]];    
+    self.bannerView = [[GADBannerView alloc] initWithAdSize:kGADAdSizeSmartBannerPortrait
+                                                 origin:bannerViewOrigin];
+    [self.view addSubview:self.bannerView];
+    self.bannerView.adUnitID = @"ca-app-pub-3940256099942544/2934735716";
+    self.bannerView.rootViewController = self;
+    self.bannerView.delegate = self;
+    [self.bannerView loadRequest:[GADRequest request]];
 }
 
-- (void)adViewDidReceiveAd:(GADBannerView *)adView {
+- (void)adViewDidReceiveAd:(GADBannerView *)adView
+{
     adView.frame = CGRectMake(self.view.bounds.origin.x,
                               self.view.bounds.origin.y + self.view.bounds.size.height,
                               adView.frame.size.width,
@@ -43,6 +45,27 @@
                                   adView.frame.size.width,
                                   adView.frame.size.height);
     }];
+}
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    CGFloat yOrigin = 0.0;
+    if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {
+        self.bannerView.adSize = kGADAdSizeSmartBannerPortrait;
+        yOrigin = self.view.bounds.origin.y + self.view.bounds.size.height - CGSizeFromGADAdSize(kGADAdSizeSmartBannerPortrait).height;
+    }
+    else if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
+        self.bannerView.adSize = kGADAdSizeSmartBannerLandscape;
+        yOrigin = self.view.bounds.origin.y + self.view.bounds.size.height - CGSizeFromGADAdSize(kGADAdSizeSmartBannerPortrait).height;
+    }
+    self.bannerView.frame = CGRectMake(self.bannerView.frame.origin.x,
+                                       yOrigin,
+                                       self.bannerView.frame.size.width,
+                                       self.bannerView.frame.size.height);
+    // TODO Mirar si fent adSize = elquesigui es crida a adViewDidreceiveAd, ja que si es aixi no fa falta canviarli el frame aqui crec
+    // Fer PROVES
+    // Tambe mirar que el primer adSize que s'aplica sigui depenent de la orientacio, ja que ara
+    // si clico a una parada en landscape quan apareix el busstopviewcontroller peta
 }
 
 @end
